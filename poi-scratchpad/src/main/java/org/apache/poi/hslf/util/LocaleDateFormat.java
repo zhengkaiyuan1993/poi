@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.AbstractMap;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
@@ -64,8 +65,8 @@ public final class LocaleDateFormat {
         private final LocaleID lcid;
         private final Object[] mapping;
 
-        private static final Map<LocaleID,MapFormatPPT> LCID_LOOKUP =
-            Stream.of(values()).collect(Collectors.toMap(MapFormatPPT::getLocaleID, Function.identity()));
+        private static final Map<LocaleID,MapFormatPPT> LCID_LOOKUP = Collections.unmodifiableMap(
+            Stream.of(values()).collect(Collectors.toMap(MapFormatPPT::getLocaleID, Function.identity())));
 
         MapFormatPPT(LocaleID lcid, Object... mapping) {
             this.lcid = lcid;
@@ -195,9 +196,9 @@ public final class LocaleDateFormat {
         private final LocaleID[] lcid;
         private final Object[] mapping;
 
-        private static final Map<LocaleID, MapFormatException> LCID_LOOKUP =
+        private static final Map<LocaleID, MapFormatException> LCID_LOOKUP = Collections.unmodifiableMap(
             Stream.of(values()).flatMap(m -> Stream.of(m.lcid).map(l -> new AbstractMap.SimpleEntry<>(l, m)))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
         MapFormatException(LocaleID[] lcid, Object... mapping) {
             this.lcid = lcid;

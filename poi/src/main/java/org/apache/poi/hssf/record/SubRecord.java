@@ -18,6 +18,7 @@
 package org.apache.poi.hssf.record;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -64,8 +65,8 @@ public abstract class SubRecord implements Duplicatable, GenericRecord {
             T apply(LittleEndianInput in, int size, int cmoOt);
         }
 
-        private static final Map<Short,SubRecordTypes> LOOKUP =
-            Arrays.stream(values()).collect(Collectors.toMap(SubRecordTypes::getSid, Function.identity()));
+        private static final Map<Short,SubRecordTypes> LOOKUP = Collections.unmodifiableMap(
+            Arrays.stream(values()).collect(Collectors.toMap(SubRecordTypes::getSid, Function.identity())));
 
         public final short sid;
         public final RecordConstructor<?> recordConstructor;

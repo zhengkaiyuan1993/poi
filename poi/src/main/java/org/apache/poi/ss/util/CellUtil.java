@@ -265,31 +265,33 @@ public final class CellUtil {
     public static final String QUOTE_PREFIXED = "quotePrefixed";
 
     // FIXME Must be deleted along with string constants
-    static final Map<String, CellPropertyType> namePropertyMap = new HashMap<>();
+    static final Map<String, CellPropertyType> namePropertyMap;
 
     static {
-        namePropertyMap.put(ALIGNMENT, CellPropertyType.ALIGNMENT);
-        namePropertyMap.put(BORDER_BOTTOM, CellPropertyType.BORDER_BOTTOM);
-        namePropertyMap.put(BORDER_LEFT, CellPropertyType.BORDER_LEFT);
-        namePropertyMap.put(BORDER_RIGHT, CellPropertyType.BORDER_RIGHT);
-        namePropertyMap.put(BORDER_TOP, CellPropertyType.BORDER_TOP);
-        namePropertyMap.put(BOTTOM_BORDER_COLOR, CellPropertyType.BOTTOM_BORDER_COLOR);
-        namePropertyMap.put(LEFT_BORDER_COLOR, CellPropertyType.LEFT_BORDER_COLOR);
-        namePropertyMap.put(RIGHT_BORDER_COLOR, CellPropertyType.RIGHT_BORDER_COLOR);
-        namePropertyMap.put(TOP_BORDER_COLOR, CellPropertyType.TOP_BORDER_COLOR);
-        namePropertyMap.put(FILL_BACKGROUND_COLOR, CellPropertyType.FILL_BACKGROUND_COLOR);
-        namePropertyMap.put(FILL_FOREGROUND_COLOR, CellPropertyType.FILL_FOREGROUND_COLOR);
-        namePropertyMap.put(FILL_BACKGROUND_COLOR_COLOR, CellPropertyType.FILL_BACKGROUND_COLOR_COLOR);
-        namePropertyMap.put(FILL_FOREGROUND_COLOR_COLOR, CellPropertyType.FILL_FOREGROUND_COLOR_COLOR);
-        namePropertyMap.put(FILL_PATTERN, CellPropertyType.FILL_PATTERN);
-        namePropertyMap.put(FONT, CellPropertyType.FONT);
-        namePropertyMap.put(HIDDEN, CellPropertyType.HIDDEN);
-        namePropertyMap.put(INDENTION, CellPropertyType.INDENTION);
-        namePropertyMap.put(LOCKED, CellPropertyType.LOCKED);
-        namePropertyMap.put(ROTATION, CellPropertyType.ROTATION);
-        namePropertyMap.put(VERTICAL_ALIGNMENT, CellPropertyType.VERTICAL_ALIGNMENT);
-        namePropertyMap.put(SHRINK_TO_FIT, CellPropertyType.SHRINK_TO_FIT);
-        namePropertyMap.put(QUOTE_PREFIXED, CellPropertyType.QUOTE_PREFIXED);
+        final Map<String, CellPropertyType> map = new HashMap<>();
+        map.put(ALIGNMENT, CellPropertyType.ALIGNMENT);
+        map.put(BORDER_BOTTOM, CellPropertyType.BORDER_BOTTOM);
+        map.put(BORDER_LEFT, CellPropertyType.BORDER_LEFT);
+        map.put(BORDER_RIGHT, CellPropertyType.BORDER_RIGHT);
+        map.put(BORDER_TOP, CellPropertyType.BORDER_TOP);
+        map.put(BOTTOM_BORDER_COLOR, CellPropertyType.BOTTOM_BORDER_COLOR);
+        map.put(LEFT_BORDER_COLOR, CellPropertyType.LEFT_BORDER_COLOR);
+        map.put(RIGHT_BORDER_COLOR, CellPropertyType.RIGHT_BORDER_COLOR);
+        map.put(TOP_BORDER_COLOR, CellPropertyType.TOP_BORDER_COLOR);
+        map.put(FILL_BACKGROUND_COLOR, CellPropertyType.FILL_BACKGROUND_COLOR);
+        map.put(FILL_FOREGROUND_COLOR, CellPropertyType.FILL_FOREGROUND_COLOR);
+        map.put(FILL_BACKGROUND_COLOR_COLOR, CellPropertyType.FILL_BACKGROUND_COLOR_COLOR);
+        map.put(FILL_FOREGROUND_COLOR_COLOR, CellPropertyType.FILL_FOREGROUND_COLOR_COLOR);
+        map.put(FILL_PATTERN, CellPropertyType.FILL_PATTERN);
+        map.put(FONT, CellPropertyType.FONT);
+        map.put(HIDDEN, CellPropertyType.HIDDEN);
+        map.put(INDENTION, CellPropertyType.INDENTION);
+        map.put(LOCKED, CellPropertyType.LOCKED);
+        map.put(ROTATION, CellPropertyType.ROTATION);
+        map.put(VERTICAL_ALIGNMENT, CellPropertyType.VERTICAL_ALIGNMENT);
+        map.put(SHRINK_TO_FIT, CellPropertyType.SHRINK_TO_FIT);
+        map.put(QUOTE_PREFIXED, CellPropertyType.QUOTE_PREFIXED);
+        namePropertyMap = Collections.unmodifiableMap(map);
     }
 
     private static final UnicodeMapping[] unicodeMappings;
