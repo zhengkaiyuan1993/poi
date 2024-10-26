@@ -265,8 +265,24 @@ public class XSSFReader {
      *
      * @throws InvalidFormatException if the sheet data format is invalid
      * @throws IOException if there is an I/O issue reading the data
+     * @see #getSheetIterator()
      */
     public Iterator<InputStream> getSheetsData() throws IOException, InvalidFormatException {
+        return getSheetIterator();
+    }
+
+    /**
+     * Returns an Iterator which will let you get at all the
+     * different Sheets in turn.
+     * Each sheet's InputStream is only opened when fetched
+     * from the Iterator. It's up to you to close the
+     * InputStreams when done with each one.
+     *
+     * @throws InvalidFormatException if the sheet data format is invalid
+     * @throws IOException if there is an I/O issue reading the data
+     * @since POI 5.3.1
+     */
+    public SheetIterator getSheetIterator() throws IOException, InvalidFormatException {
         return new SheetIterator(workbookPart);
     }
 
