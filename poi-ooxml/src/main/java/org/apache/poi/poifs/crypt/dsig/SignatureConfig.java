@@ -118,12 +118,12 @@ public class SignatureConfig {
     private static final String XMLSEC_SANTUARIO = "org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI";
     private static final String XMLSEC_JDK = "org.jcp.xml.dsig.internal.dom.XMLDSigRI";
 
-    private static final List<Supplier<SignatureFacet>> DEFAULT_FACETS = Arrays.asList(
+    private static final List<Supplier<SignatureFacet>> DEFAULT_FACETS = Collections.unmodifiableList(Arrays.asList(
         OOXMLSignatureFacet::new,
         KeyInfoSignatureFacet::new,
         XAdESSignatureFacet::new,
         Office2010SignatureFacet::new
-    );
+    ));
 
     private List<SignatureFacet> signatureFacets = new ArrayList<>();
     private HashAlgorithm digestAlgo = HashAlgorithm.sha256;
