@@ -60,7 +60,7 @@ import org.apache.poi.util.Internal;
     // Using a HashSet instead of a TreeSet because we don't care about order.
     private final Set<Integer> untrackedColumns = new HashSet<>();
     private boolean trackAllColumns;
-    // arbitraryExtraWidth is the extra width added to the best-fit column width (since POI 5.3.1)
+    // arbitraryExtraWidth is the extra width added to the best-fit column width (since POI 5.4.0)
     private double arbitraryExtraWidth = 0.0d;
 
     /**
@@ -123,7 +123,7 @@ import org.apache.poi.util.Internal;
      * Set the extra width added to the best-fit column width (default 0.0).
      *
      * @param arbitraryExtraWidth the extra width added to the best-fit column width
-     * @since 5.3.1
+     * @since 5.4.0
      */
     public void setArbitraryExtraWidth(final double arbitraryExtraWidth) {
         this.arbitraryExtraWidth = arbitraryExtraWidth;
@@ -133,7 +133,7 @@ import org.apache.poi.util.Internal;
      * Get the extra width added to the best-fit column width.
      *
      * @return the extra width added to the best-fit column width
-     * @since 5.3.1
+     * @since 5.4.0
      */
     public double getArbitraryExtraWidth() {
         return arbitraryExtraWidth;

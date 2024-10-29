@@ -1456,7 +1456,7 @@ public class SXSSFSheet implements Sheet, OoxmlSheetExtensions {
      *
      * @param arbitraryExtraWidth the extra width added to the best-fit column width
      * @throws IllegalStateException if autoSizeColumnTracker failed to initialize (possibly due to fonts not being installed in your OS)
-     * @since 5.3.1
+     * @since 5.4.0
      */
     public void setArbitraryExtraWidth(final double arbitraryExtraWidth) {
         if (_autoSizeColumnTracker == null) {
@@ -1470,7 +1470,7 @@ public class SXSSFSheet implements Sheet, OoxmlSheetExtensions {
      *
      * @return the extra width added to the best-fit column width
      * @throws IllegalStateException if autoSizeColumnTracker failed to initialize (possibly due to fonts not being installed in your OS)
-     * @since 5.3.1
+     * @since 5.4.0
      */
     public double getArbitraryExtraWidth() {
         if (_autoSizeColumnTracker == null) {

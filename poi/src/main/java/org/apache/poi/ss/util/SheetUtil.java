@@ -101,7 +101,7 @@ public class SheetUtil {
     /**
      * A system property which can be enabled to not fail when the
      * font-system is not available on the current machine.
-     * Since POI 5.3.1, this flag is enabled by default.
+     * Since POI 5.4.0, this flag is enabled by default.
      */
     private static boolean ignoreMissingFontSystem = initIgnoreMissingFontSystemFlag();
 

@@ -152,7 +152,7 @@ public class XWPFStyles extends POIXMLDocumentPart {
      * Gets the underlying CTStyles object for the Styles.
      *
      * @return CTStyles object
-     * @since POI 5.3.1
+     * @since POI 5.4.0
      */
     public CTStyles getCtStyles() {
         return ctStyles;
@@ -161,7 +161,7 @@ public class XWPFStyles extends POIXMLDocumentPart {
     /**
      * Get the list of {@link XWPFStyle} in the Styles part.
      *
-     * @since POI 5.3.1
+     * @since POI 5.4.0
      */
     public List<XWPFStyle> getStyles() {
         return Collections.unmodifiableList(listStyle);
@@ -172,7 +172,7 @@ public class XWPFStyles extends POIXMLDocumentPart {
      *
      * @param pos Array position of the style to be removed
      * @return True if the style was removed.
-     * @since POI 5.3.1
+     * @since POI 5.4.0
      */
     public boolean removeStyle(int pos) {
         if (pos >= 0 && pos < getNumberOfStyles()) {

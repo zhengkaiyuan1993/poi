@@ -56,7 +56,7 @@ public final class RegionUtil {
         /**
          * @param property The property to set
          * @param value The value to set the property to
-         * @since POI 5.3.1
+         * @since POI 5.4.0
          */
         public CellPropertySetter(CellPropertyType property, int value) {
             this.property = property;
@@ -66,7 +66,7 @@ public final class RegionUtil {
         /**
          * @param property The property to set
          * @param value The value to set the property to
-         * @since POI 5.3.1
+         * @since POI 5.4.0
          */
         public CellPropertySetter(CellPropertyType property, BorderStyle value) {
             this.property = property;

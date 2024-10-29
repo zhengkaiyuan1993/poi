@@ -97,168 +97,168 @@ public final class CellUtil {
 
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#ALIGNMENT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#ALIGNMENT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String ALIGNMENT = "alignment";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#BORDER_BOTTOM} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#BORDER_BOTTOM} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String BORDER_BOTTOM = "borderBottom";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#BORDER_LEFT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#BORDER_LEFT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String BORDER_LEFT = "borderLeft";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#BORDER_RIGHT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#BORDER_RIGHT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String BORDER_RIGHT = "borderRight";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#BORDER_TOP} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#BORDER_TOP} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String BORDER_TOP = "borderTop";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#BORDER_BOTTOM} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#BORDER_BOTTOM} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String BOTTOM_BORDER_COLOR = "bottomBorderColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#BOTTOM_BORDER_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#BOTTOM_BORDER_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String LEFT_BORDER_COLOR = "leftBorderColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#RIGHT_BORDER_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#RIGHT_BORDER_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String RIGHT_BORDER_COLOR = "rightBorderColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#TOP_BORDER_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#TOP_BORDER_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String TOP_BORDER_COLOR = "topBorderColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#DATA_FORMAT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#DATA_FORMAT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String DATA_FORMAT = "dataFormat";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#FILL_BACKGROUND_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#FILL_BACKGROUND_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String FILL_BACKGROUND_COLOR = "fillBackgroundColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#FILL_FOREGROUND_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#FILL_FOREGROUND_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String FILL_FOREGROUND_COLOR = "fillForegroundColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#FILL_BACKGROUND_COLOR_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#FILL_BACKGROUND_COLOR_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String FILL_BACKGROUND_COLOR_COLOR = "fillBackgroundColorColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#FILL_FOREGROUND_COLOR_COLOR} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#FILL_FOREGROUND_COLOR_COLOR} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String FILL_FOREGROUND_COLOR_COLOR = "fillForegroundColorColor";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#FILL_PATTERN} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#FILL_PATTERN} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String FILL_PATTERN = "fillPattern";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#FONT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#FONT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String FONT = "font";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#HIDDEN} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#HIDDEN} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String HIDDEN = "hidden";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#INDENTION} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#INDENTION} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String INDENTION = "indention";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#LOCKED} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#LOCKED} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String LOCKED = "locked";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#ROTATION} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#ROTATION} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String ROTATION = "rotation";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#VERTICAL_ALIGNMENT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#VERTICAL_ALIGNMENT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String VERTICAL_ALIGNMENT = "verticalAlignment";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#WRAP_TEXT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#WRAP_TEXT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String WRAP_TEXT = "wrapText";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#SHRINK_TO_FIT} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#SHRINK_TO_FIT} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
     public static final String SHRINK_TO_FIT = "shrinkToFit";
 
     /**
-     * @deprecated as of POI 5.3.1. Use {@link CellPropertyType#QUOTE_PREFIXED} instead.
+     * @deprecated as of POI 5.4.0. Use {@link CellPropertyType#QUOTE_PREFIXED} instead.
      */
     @Deprecated
     @Removal(version = "7.0.0")
@@ -565,7 +565,7 @@ public final class CellUtil {
      * @param cell The cell to change the style of
      * @param properties The properties to be added to a cell style, as {property: propertyValue}.
      * @since POI 3.14 beta 2
-     * @deprecated as of POI 5.3.1. See {@link #setCellStylePropertiesEnum(Cell, Map)}
+     * @deprecated as of POI 5.4.0. See {@link #setCellStylePropertiesEnum(Cell, Map)}
      */
     @Deprecated
     @Removal(version = "7.0.0")
@@ -598,7 +598,7 @@ public final class CellUtil {
      *
      * @param cell       The cell to change the style of
      * @param properties The properties to be added to a cell style, as {property: propertyValue}.
-     * @since POI 5.3.1
+     * @since POI 5.4.0
      */
     public static void setCellStylePropertiesEnum(Cell cell, Map<CellPropertyType, Object> properties) {
         setCellStyleProperties(cell, properties, false);
@@ -684,7 +684,7 @@ public final class CellUtil {
      * @param property The name of the property that is to be changed.
      * @param propertyValue The value of the property that is to be changed.
      *
-     * @since POI 5.3.1
+     * @since POI 5.4.0
      */
     public static void setCellStyleProperty(Cell cell, CellPropertyType property, Object propertyValue) {
         boolean disableNullColorCheck = false;
@@ -721,7 +721,7 @@ public final class CellUtil {
      * @param cell The cell that is to be changed.
      * @param propertyName The name of the property that is to be changed.
      * @param propertyValue The value of the property that is to be changed.
-     * @deprecated as of POI 5.3.1. See {@link #setCellStyleProperty(Cell, CellPropertyType, Object)}
+     * @deprecated as of POI 5.4.0. See {@link #setCellStyleProperty(Cell, CellPropertyType, Object)}
      */
     @Deprecated
     @Removal(version = "7.0.0")

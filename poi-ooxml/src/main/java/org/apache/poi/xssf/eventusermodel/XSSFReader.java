@@ -280,7 +280,7 @@ public class XSSFReader {
      *
      * @throws InvalidFormatException if the sheet data format is invalid
      * @throws IOException if there is an I/O issue reading the data
-     * @since POI 5.3.1
+     * @since POI 5.4.0
      */
     public SheetIterator getSheetIterator() throws IOException, InvalidFormatException {
         return new SheetIterator(workbookPart);
