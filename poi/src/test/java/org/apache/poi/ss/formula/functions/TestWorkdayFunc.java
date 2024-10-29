@@ -46,7 +46,7 @@ class TestWorkdayFunc {
             cellB1.setCellValue(5);
             Cell cellResult = sheet.createRow(1).createCell(0);
             HSSFFormulaEvaluator fe = new HSSFFormulaEvaluator(wb);
-            assertDouble(fe, cellResult, "WORKDAY(A1,5)", DateUtil.getExcelDate(LocalDate.parse("2024-11-05")));
+            assertDouble(fe, cellResult, "WORKDAY(A1,B1)", DateUtil.getExcelDate(LocalDate.parse("2024-11-05")));
         }
     }
 }

@@ -18,6 +18,7 @@
 package org.apache.poi.ss.formula.eval;
 
 import org.apache.poi.ss.formula.EvaluationCell;
+import org.apache.poi.ss.formula.LazyRefEval;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -266,6 +267,14 @@ public final class OperandResolver {
                 throw EvaluationException.invalidValue();
             }
             return dd;
+        }
+        if (ev instanceof LazyRefEval) {
+            final LazyRefEval lre = (LazyRefEval) ev;
+            final ValueEval innerValueEval = lre.getInnerValueEvalForFirstSheet();
+            if (innerValueEval == ev) {
+                throw new IllegalStateException("Circular lazy reference " + lre);
+            }
+            return coerceValueToDouble(innerValueEval);
         }
         throw new IllegalStateException("Unexpected arg eval type (" + ev.getClass().getName() + ")");
     }
