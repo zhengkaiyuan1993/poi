@@ -193,6 +193,15 @@ public final class TestBasics {
       noRecipientAddress.setReturnNullOnMissingChunk(false);
    }
 
+   @Test
+   public void testAttachmentProperties() {
+      AttachmentChunks[] attachmentChunks = noRecipientAddress.getAttachmentFiles();
+      assertEquals(11, attachmentChunks.length);
+      assertEquals("1.jpg", attachmentChunks[0].getAttachContentLocation().toString());
+      assertEquals("1.jpg", attachmentChunks[0].getAttachDisplayName().toString());
+      assertEquals(4, attachmentChunks[0].getAttachRecordKey().getValue().length);
+   }
+
    /**
     * Test the 7 bit detection
     */
