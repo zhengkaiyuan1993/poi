@@ -23,8 +23,8 @@ repositories {
 }
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.21'
-    compile 'org.apache.poi:poi:5.2.2'
-    compile 'org.apache.poi:poi-ooxml:5.2.2'
+    compile 'org.apache.poi:poi:5.2.1'
+    compile 'org.apache.poi:poi-ooxml:5.2.1'
 }
 
 // Our files are in the current directory
