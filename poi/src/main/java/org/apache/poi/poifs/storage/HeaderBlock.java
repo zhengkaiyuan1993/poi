@@ -234,7 +234,6 @@ public final class HeaderBlock implements HeaderBlockConstants {
 
     /**
      * @return the number of property blocks
-     *
      * @since POI 5.4.0
      */
     public int getPropertyCount() {
