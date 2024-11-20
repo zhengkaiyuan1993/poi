@@ -1800,6 +1800,7 @@ public abstract class BaseTestBugzillaIssues {
         assertEquals(expectedResultOrNull, eval.evaluate(intF).formatAsString());
     }
 
+    // ensure a simple workbook can be reproducibly written
     @Test
     void testWriteDocumentTwice() throws Exception {
         try (Workbook wb = _testDataProvider.createWorkbook()) {
