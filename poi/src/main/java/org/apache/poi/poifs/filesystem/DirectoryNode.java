@@ -16,16 +16,13 @@
    limitations under the License.
 ==================================================================== */
 
-
 package org.apache.poi.poifs.filesystem;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -44,8 +41,7 @@ import org.apache.poi.poifs.property.Property;
  */
 public class DirectoryNode
         extends EntryNode
-        implements DirectoryEntry, POIFSViewable, Iterable<Entry>
-{
+        implements DirectoryEntry, POIFSViewable, Iterable<Entry> {
 
     // Map of Entry instances, keyed by their literal names as stored
     private final Map<String,Entry> _byname = new HashMap<>();
@@ -72,36 +68,25 @@ public class DirectoryNode
      */
     DirectoryNode(final DirectoryProperty property,
                   final POIFSFileSystem filesystem,
-                  final DirectoryNode parent)
-    {
+                  final DirectoryNode parent) {
         super(property, parent);
         this._filesystem = filesystem;
 
-        if (parent == null)
-        {
+        if (parent == null) {
             _path = new POIFSDocumentPath();
-        }
-        else
-        {
-            _path = new POIFSDocumentPath(parent._path, new String[]
-                    {
-                            property.getName()
-                    });
+        } else {
+            _path = new POIFSDocumentPath(parent._path, new String[] { property.getName() });
         }
         Iterator<Property> iter = property.getChildren();
 
-        while (iter.hasNext())
-        {
-            Property child     = iter.next();
-            Entry    childNode;
+        while (iter.hasNext()) {
+            Property child = iter.next();
+            Entry childNode;
 
-            if (child.isDirectory())
-            {
+            if (child.isDirectory()) {
                 DirectoryProperty childDir = (DirectoryProperty) child;
                 childNode = new DirectoryNode(childDir, _filesystem, this);
-            }
-            else
-            {
+            } else {
                 childNode = new DocumentNode((DocumentProperty) child, this);
             }
             _entries.add(childNode);
@@ -113,17 +98,14 @@ public class DirectoryNode
     /**
      * @return this directory's path representation
      */
-
-    public POIFSDocumentPath getPath()
-    {
+    public POIFSDocumentPath getPath() {
         return _path;
     }
 
     /**
      * @return the filesystem that this belongs to
      */
-    public POIFSFileSystem getFileSystem()
-    {
+    public POIFSFileSystem getFileSystem() {
         return _filesystem;
     }
 
@@ -139,8 +121,7 @@ public class DirectoryNode
      */
     public DocumentInputStream createDocumentInputStream(
             final String documentName)
-            throws IOException
-    {
+            throws IOException {
         return createDocumentInputStream(getEntryCaseInsensitive(documentName));
     }
 
@@ -156,8 +137,7 @@ public class DirectoryNode
      */
     public DocumentInputStream createDocumentInputStream(
             final Entry document)
-            throws IOException
-    {
+            throws IOException {
         if (!document.isDocumentEntry()) {
             throw new IOException("Entry '" + document.getName()
                     + "' is not a DocumentEntry");
@@ -177,10 +157,9 @@ public class DirectoryNode
      * @throws IOException if the document can't be created
      */
     DocumentEntry createDocument(final POIFSDocument document)
-            throws IOException
-    {
+            throws IOException {
         DocumentProperty property = document.getDocumentProperty();
-        DocumentNode     rval     = new DocumentNode(property, this);
+        DocumentNode rval = new DocumentNode(property, this);
 
         (( DirectoryProperty ) getProperty()).addChild(property);
         _filesystem.addDocument(document);
@@ -199,17 +178,14 @@ public class DirectoryNode
      *
      * @return true if the operation succeeded, else false
      */
-    boolean changeName(final String oldName, final String newName)
-    {
-        boolean   rval  = false;
+    boolean changeName(final String oldName, final String newName) {
+        boolean rval = false;
         EntryNode child = ( EntryNode ) _byUCName.get(oldName.toUpperCase(Locale.ROOT));
 
-        if (child != null)
-        {
+        if (child != null) {
             rval = (( DirectoryProperty ) getProperty())
                     .changeName(child.getProperty(), newName);
-            if (rval)
-            {
+            if (rval) {
                 _byname.remove(oldName);
                 _byname.put(child.getProperty().getName(), child);
                 _byUCName.remove(oldName.toUpperCase(Locale.ROOT));
@@ -227,14 +203,12 @@ public class DirectoryNode
      * @return true if the entry was deleted, else false
      */
 
-    boolean deleteEntry(final EntryNode entry)
-    {
+    boolean deleteEntry(final EntryNode entry) {
         boolean rval =
                 (( DirectoryProperty ) getProperty())
                         .deleteChild(entry.getProperty());
 
-        if (rval)
-        {
+        if (rval) {
             _entries.remove(entry);
             _byname.remove(entry.getName());
             _byUCName.remove(entry.getName().toUpperCase(Locale.ROOT));
@@ -263,8 +237,7 @@ public class DirectoryNode
      */
 
     @Override
-    public Iterator<Entry> getEntries()
-    {
+    public Iterator<Entry> getEntries() {
         return _entries.iterator();
     }
 
@@ -278,8 +251,7 @@ public class DirectoryNode
      *         DirectoryEntry is empty)
      */
     @Override
-    public Set<String> getEntryNames()
-    {
+    public Set<String> getEntryNames() {
         return _byname.keySet();
     }
 
@@ -290,8 +262,7 @@ public class DirectoryNode
      */
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return _entries.isEmpty();
     }
 
@@ -304,32 +275,29 @@ public class DirectoryNode
      */
 
     @Override
-    public int getEntryCount()
-    {
+    public int getEntryCount() {
         return _entries.size();
     }
 
     /**
      * Checks for a specific entry in a case-sensitive way.
      *
-     * @param name
+     * @param name the name of the Entry to check
      * @return whether or not an entry exists for that name (case-sensitive)
      */
     @Override
-    public boolean hasEntry(String name )
-    {
+    public boolean hasEntry(String name ) {
         return name != null && _byname.containsKey(name);
     }
 
     /**
      * Checks for a specific entry in a case-insensitive way.
      *
-     * @param name
+     * @param name the name of the Entry to check
      * @return whether or not an entry exists for that name (case-insensitive)
      */
     @Override
-    public boolean hasEntryCaseInsensitive(String name )
-    {
+    public boolean hasEntryCaseInsensitive(String name ) {
         return name != null && _byUCName.containsKey(name.toUpperCase(Locale.ROOT));
     }
 
@@ -351,6 +319,7 @@ public class DirectoryNode
         if (name != null) {
             rval = _byname.get(name);
         }
+
         if (rval == null) {
             // throw more useful exceptions for known wrong file-extensions
             if(_byname.containsKey("Workbook")) {
@@ -386,6 +355,7 @@ public class DirectoryNode
         if (name != null) {
             rval = _byUCName.get(name.toUpperCase(Locale.ROOT));
         }
+
         if (rval == null) {
             // throw more useful exceptions for known wrong file-extensions
             if(_byname.containsKey("Workbook")) {
@@ -414,12 +384,9 @@ public class DirectoryNode
      *
      * @throws IOException if the document can't be created
      */
-
     @Override
     public DocumentEntry createDocument(final String name,
-                                        final InputStream stream)
-            throws IOException
-    {
+                                        final InputStream stream) throws IOException {
         return createDocument(new POIFSDocument(name, _filesystem, stream));
     }
 
@@ -434,12 +401,9 @@ public class DirectoryNode
      *
      * @throws IOException if the document can't be created
      */
-
     @Override
     public DocumentEntry createDocument(final String name, final int size,
-                                        final POIFSWriterListener writer)
-            throws IOException
-    {
+                                        final POIFSWriterListener writer) throws IOException {
         return createDocument(new POIFSDocument(name, size, _filesystem, writer));
     }
 
@@ -452,11 +416,8 @@ public class DirectoryNode
      *
      * @throws IOException if the directory can't be created
      */
-
     @Override
-    public DirectoryEntry createDirectory(final String name)
-            throws IOException
-    {
+    public DirectoryEntry createDirectory(final String name) throws IOException {
         DirectoryProperty property = new DirectoryProperty(name);
 
         DirectoryNode rval = new DirectoryNode(property, _filesystem, this);
@@ -482,9 +443,7 @@ public class DirectoryNode
      */
     @SuppressWarnings("WeakerAccess")
     public DocumentEntry createOrUpdateDocument(final String name,
-                                                final InputStream stream)
-            throws IOException
-    {
+                                                final InputStream stream) throws IOException {
         if (! hasEntryCaseInsensitive(name)) {
             return createDocument(name, stream);
         } else {
@@ -501,8 +460,7 @@ public class DirectoryNode
      * @return storage Class ID
      */
     @Override
-    public ClassID getStorageClsid()
-    {
+    public ClassID getStorageClsid() {
         return getProperty().getStorageClsid();
     }
 
@@ -512,8 +470,7 @@ public class DirectoryNode
      * @param clsidStorage storage Class ID
      */
     @Override
-    public void setStorageClsid(ClassID clsidStorage)
-    {
+    public void setStorageClsid(ClassID clsidStorage) {
         getProperty().setStorageClsid(clsidStorage);
     }
 
@@ -527,8 +484,7 @@ public class DirectoryNode
      */
 
     @Override
-    public boolean isDirectoryEntry()
-    {
+    public boolean isDirectoryEntry() {
         return true;
     }
 
@@ -544,9 +500,7 @@ public class DirectoryNode
      */
 
     @Override
-    protected boolean isDeleteOK()
-    {
-
+    protected boolean isDeleteOK() {
         // if this directory is empty, we can delete it
         return isEmpty();
     }
@@ -562,8 +516,7 @@ public class DirectoryNode
      */
 
     @Override
-    public Object [] getViewableArray()
-    {
+    public Object [] getViewableArray() {
         return new Object[ 0 ];
     }
 
@@ -592,8 +545,7 @@ public class DirectoryNode
      */
 
     @Override
-    public boolean preferArray()
-    {
+    public boolean preferArray() {
         return false;
     }
 
@@ -605,10 +557,11 @@ public class DirectoryNode
      */
 
     @Override
-    public String getShortDescription()
-    {
+    public String getShortDescription() {
         return getName();
     }
+
+    /* **********  END  begin implementation of POIFSViewable ********** */
 
     /**
      * Returns an Iterator over all the entries
@@ -627,7 +580,4 @@ public class DirectoryNode
     public Spliterator<Entry> spliterator() {
         return _entries.spliterator();
     }
-
-    /* **********  END  begin implementation of POIFSViewable ********** */
-}   // end public class DirectoryNode
-
+}

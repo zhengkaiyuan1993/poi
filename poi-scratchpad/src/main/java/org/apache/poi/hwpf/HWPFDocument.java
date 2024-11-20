@@ -291,7 +291,7 @@ public final class HWPFDocument extends HWPFDocumentCore {
         _text = _tpt.getText();
 
         /*
-         * in this mode we preserving PAPX/CHPX structure from file, so text may
+         * in this mode we are preserving PAPX/CHPX structure from file, so text may
          * miss from output, and text order may be corrupted
          */
         boolean preserveBinTables = false;

@@ -173,7 +173,7 @@ public final class RecordFactory {
      *
      * @param in the InputStream from which the records will be obtained
      *
-     * @return an array of Records created from the InputStream
+     * @return a list of Records created from the InputStream
      *
      * @throws org.apache.poi.util.RecordFormatException on error processing the InputStream
      */

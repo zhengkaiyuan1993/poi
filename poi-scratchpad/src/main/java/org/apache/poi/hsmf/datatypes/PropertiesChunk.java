@@ -447,8 +447,9 @@ public abstract class PropertiesChunk extends Chunk {
     /**
      * Writes out pre-calculated raw values which assume any variable length property `data`
      *  field to already have size, reserved and manually written header
-     * @param out
-     * @throws IOException
+     *
+     * @param out The OutputStream to write the data to
+     * @throws IOException If an I/O error occurs while writing data
      */
     private void writeVariableLengthPreCalculatedValue(OutputStream out, PropertyValue value) throws IOException {
         // variable length header

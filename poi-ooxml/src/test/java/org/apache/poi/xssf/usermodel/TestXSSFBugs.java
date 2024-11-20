@@ -3331,7 +3331,7 @@ public final class TestXSSFBugs extends BaseTestBugzillaIssues {
             LOG.atInfo().log(between(start, now()));
 
             assertTrue(between(start, now()).getSeconds() < 25,
-                    "Had start: " + start + ", now: " + now() +
+                    "Expected to have less than 25s duration for test, but had start: " + start + ", now: " + now() +
                             ", diff: " + Duration.between(start, now()).getSeconds());
         }
     }

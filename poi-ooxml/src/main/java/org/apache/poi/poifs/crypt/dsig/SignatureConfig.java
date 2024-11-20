@@ -26,7 +26,6 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PrivateKey;
-import java.security.Provider;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -52,14 +51,11 @@ import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.crypto.dsig.Transform;
-import javax.xml.crypto.dsig.XMLSignatureFactory;
-import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hpsf.ClassID;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.poifs.crypt.HashAlgorithm;
 import org.apache.poi.poifs.crypt.dsig.facets.KeyInfoSignatureFacet;
 import org.apache.poi.poifs.crypt.dsig.facets.OOXMLSignatureFacet;
@@ -73,7 +69,6 @@ import org.apache.poi.poifs.crypt.dsig.services.TimeStampHttpClient;
 import org.apache.poi.poifs.crypt.dsig.services.TimeStampService;
 import org.apache.poi.poifs.crypt.dsig.services.TimeStampServiceValidator;
 import org.apache.poi.poifs.crypt.dsig.services.TimeStampSimpleHttpClient;
-import org.apache.poi.util.Internal;
 import org.apache.poi.util.LocaleUtil;
 import org.apache.poi.util.Removal;
 import org.apache.xml.security.signature.XMLSignature;
@@ -382,7 +377,7 @@ public class SignatureConfig {
      * @since POI 4.0.0
      */
     public void setExecutionTime(String executionTime) {
-        if (executionTime != null && !"".equals(executionTime)){
+        if (executionTime != null && !executionTime.isEmpty()){
             final DateFormat fmt = new SimpleDateFormat(SIGNATURE_TIME_FORMAT, Locale.ROOT);
             fmt.setTimeZone(LocaleUtil.TIMEZONE_UTC);
             try {
@@ -992,12 +987,12 @@ public class SignatureConfig {
      * <li>the JDK xmlsec provider</li>
      * </ol>
      *
-     * @return a list of possible XMLSEC provider class names
+     * @return an array of possible XMLSEC provider class names
      */
     public static String[] getProviderNames() {
         // need to check every time, as the system property might have been changed in the meantime
         String sysProp = System.getProperty("jsr105Provider");
-        return (sysProp == null || "".equals(sysProp))
+        return (sysProp == null || sysProp.isEmpty())
             ? new String[]{XMLSEC_SANTUARIO, XMLSEC_JDK}
             : new String[]{sysProp, XMLSEC_SANTUARIO, XMLSEC_JDK};
     }
@@ -1031,7 +1026,7 @@ public class SignatureConfig {
 
     /**
      * The signature config can be updated if a document is succesful validated.
-     * This flag is used for activating this modifications.
+     * This flag is used for activating these modifications.
      * Defaults to {@code false}
      *
      * @param updateConfigOnValidate if true, update config on validate

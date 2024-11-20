@@ -19,6 +19,7 @@ package org.apache.poi.xslf.usermodel;
 import static org.apache.poi.sl.usermodel.BaseTestSlideShow.getColor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -467,21 +468,21 @@ class TestXSLFTextParagraph {
                         attributes = iterator.getAttributes();
                     }
 
-                    if ("This is a".equals(sb.toString())) {
+                    if ("This is a".contentEquals(sb)) {
                         // Should be no background.
                         assertNotNull(attributes);
                         Object background = attributes.get(TextAttribute.BACKGROUND);
                         assertNull(background);
                     }
-                    if ("highlight".equals(sb.toString())) {
+                    if ("highlight".contentEquals(sb)) {
                         // Should be yellow background.
                         assertNotNull(attributes);
                         Object background = attributes.get(TextAttribute.BACKGROUND);
                         assertNotNull(background);
-                        assertTrue(background instanceof Color);
+                        assertInstanceOf(Color.class, background);
                         assertEquals(Color.yellow, background);
                     }
-                    if (" test".equals(sb.toString())) {
+                    if (" test".contentEquals(sb)) {
                         // Should be no background.
                         assertNotNull(attributes);
                         Object background = attributes.get(TextAttribute.BACKGROUND);
@@ -494,5 +495,4 @@ class TestXSLFTextParagraph {
             ppt.getSlides().get(0).draw(dgfx);
         }
     }
-
 }
