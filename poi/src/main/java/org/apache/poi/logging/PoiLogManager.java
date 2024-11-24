@@ -56,6 +56,27 @@ public final class PoiLogManager {
         }
     }
 
+    public static Logger getLogger(String name) {
+        try {
+            final Logger logger = LogManager.getLogger(name);
+            if (logger == null) {
+                if (shouldLog()) {
+                    System.err.println("[PoiLogManager] Log4J returned null logger. Falling back to No-Op logger.");
+                }
+                return NoOpLogger.INSTANCE;
+            }
+            return logger;
+        } catch (Throwable t) {
+            if (!ExceptionUtil.isFatal(t)) {
+                if (shouldLog()) {
+                    System.err.println("[PoiLogManager] Issue loading Log4J. Falling back to No-Op logger.");
+                    t.printStackTrace();
+                }
+            }
+            return NoOpLogger.INSTANCE;
+        }
+    }
+
     private static synchronized boolean shouldLog() {
         final long time = System.currentTimeMillis();
         if (time > LAST_TIME + SLEEP_TIME) {
