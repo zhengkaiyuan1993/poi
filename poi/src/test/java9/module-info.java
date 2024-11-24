@@ -67,6 +67,7 @@ module org.apache.poi.poi {
     exports org.apache.poi.hssf.usermodel;
     exports org.apache.poi.hssf.usermodel.helpers;
     exports org.apache.poi.hssf.util;
+    exports org.apache.poi.logging;
     exports org.apache.poi.poifs.common;
     exports org.apache.poi.poifs.crypt;
     exports org.apache.poi.poifs.crypt.agile;
