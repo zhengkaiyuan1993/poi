@@ -18,6 +18,7 @@ package org.apache.poi.logging;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.util.ExceptionUtil;
+import org.apache.poi.util.SuppressForbidden;
 
 /**
  * This class is used to get a log4j logger for the XmlBeans project.
@@ -35,6 +36,7 @@ public final class PoiLogManager {
     private PoiLogManager() {
     }
 
+    @SuppressForbidden("printStackTrace")
     public static Logger getLogger(Class<?> clz) {
         try {
             final Logger logger = LogManager.getLogger(clz);
@@ -56,6 +58,7 @@ public final class PoiLogManager {
         }
     }
 
+    @SuppressForbidden("printStackTrace")
     public static Logger getLogger(String name) {
         try {
             final Logger logger = LogManager.getLogger(name);
