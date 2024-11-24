@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.exceptions.PartAlreadyExistsException;
@@ -53,7 +53,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRelation;
  * </p>
  */
 public class POIXMLDocumentPart {
-    private static final Logger LOG = LogManager.getLogger(POIXMLDocumentPart.class);
+    private static final Logger LOG = PoiLogManager.getLogger(POIXMLDocumentPart.class);
 
     private String coreDocumentRel = PackageRelationshipTypes.CORE_DOCUMENT;
     private PackagePart packagePart;

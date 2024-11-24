@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.poi.UnsupportedFileFormatException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -63,7 +63,7 @@ public final class ZipPackage extends OPCPackage {
     private static boolean useTempFilePackageParts = false;
     private static boolean encryptTempFilePackageParts = false;
 
-    private static final Logger LOG = LogManager.getLogger(ZipPackage.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ZipPackage.class);
 
     /**
      * Zip archive, as either a file on disk,

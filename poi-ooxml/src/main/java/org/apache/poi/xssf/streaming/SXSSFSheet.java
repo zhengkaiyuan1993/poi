@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellAddress;
@@ -43,7 +43,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTWorksheet;
  * Streaming version of XSSFSheet implementing the "BigGridDemo" strategy.
  */
 public class SXSSFSheet implements Sheet, OoxmlSheetExtensions {
-    private static final Logger LOG = LogManager.getLogger(SXSSFSheet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SXSSFSheet.class);
 
     /*package*/ final XSSFSheet _sh;
     protected final SXSSFWorkbook _workbook;

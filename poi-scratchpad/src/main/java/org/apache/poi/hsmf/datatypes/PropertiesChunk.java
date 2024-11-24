@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hsmf.datatypes.PropertyValue.BooleanPropertyValue;
 import org.apache.poi.hsmf.datatypes.PropertyValue.CurrencyPropertyValue;
 import org.apache.poi.hsmf.datatypes.PropertyValue.DoublePropertyValue;
@@ -72,7 +72,7 @@ public abstract class PropertiesChunk extends Chunk {
     public static final int PROPERTIES_FLAG_WRITEABLE = 4;
 
     /** For logging problems we spot with the file */
-    private static final Logger LOG = LogManager.getLogger(PropertiesChunk.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PropertiesChunk.class);
 
     /**
      * Holds properties, indexed by type. If a property is multi-valued, or

@@ -46,8 +46,8 @@ import javax.xml.crypto.MarshalException;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.dsig.SignatureConfig;
 import org.apache.poi.poifs.crypt.dsig.SignatureInfo;
 import org.apache.poi.poifs.crypt.dsig.services.RevocationData;
@@ -86,7 +86,7 @@ import org.w3c.dom.NodeList;
  */
 public class XAdESXLSignatureFacet implements SignatureFacet {
 
-    private static final Logger LOG = LogManager.getLogger(XAdESXLSignatureFacet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XAdESXLSignatureFacet.class);
 
     private final CertificateFactory certificateFactory;
 

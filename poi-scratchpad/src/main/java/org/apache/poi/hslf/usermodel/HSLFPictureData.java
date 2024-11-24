@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.GenericRecord;
 import org.apache.poi.ddf.EscherBSERecord;
 import org.apache.poi.ddf.EscherContainerRecord;
@@ -55,7 +55,7 @@ import org.apache.poi.util.Units;
  */
 public abstract class HSLFPictureData implements PictureData, GenericRecord {
 
-    private static final Logger LOGGER = LogManager.getLogger(HSLFPictureData.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(HSLFPictureData.class);
 
     /**
      * Size of the image checksum calculated using MD5 algorithm.

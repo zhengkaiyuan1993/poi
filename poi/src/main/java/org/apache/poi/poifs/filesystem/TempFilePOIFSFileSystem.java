@@ -16,8 +16,8 @@
 ==================================================================== */
 package org.apache.poi.poifs.filesystem;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.nio.FileBackedDataSource;
 import org.apache.poi.util.Beta;
 import org.apache.poi.util.TempFile;
@@ -32,7 +32,7 @@ import java.io.IOException;
  */
 @Beta
 public class TempFilePOIFSFileSystem extends POIFSFileSystem {
-    private static final Logger LOG = LogManager.getLogger(TempFilePOIFSFileSystem.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TempFilePOIFSFileSystem.class);
     File tempFile;
 
     @Override

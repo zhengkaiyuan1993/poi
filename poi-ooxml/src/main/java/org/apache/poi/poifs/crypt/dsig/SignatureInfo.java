@@ -62,8 +62,8 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import org.apache.jcp.xml.dsig.internal.dom.DOMReference;
 import org.apache.jcp.xml.dsig.internal.dom.DOMSignedInfo;
 import org.apache.jcp.xml.dsig.internal.dom.DOMSubTreeData;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ooxml.util.DocumentHelper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -161,7 +161,7 @@ import org.w3c.dom.events.MutationEvent;
  */
 public class SignatureInfo {
 
-    private static final Logger LOG = LogManager.getLogger(SignatureInfo.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SignatureInfo.class);
 
     private SignatureConfig signatureConfig;
     private OPCPackage opcPackage;

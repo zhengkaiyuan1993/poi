@@ -52,8 +52,8 @@ import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.crypto.dsig.Transform;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hpsf.ClassID;
 import org.apache.poi.poifs.crypt.HashAlgorithm;
@@ -107,7 +107,7 @@ public class SignatureConfig {
 
     public static final String SIGNATURE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-    private static final Logger LOG = LogManager.getLogger(SignatureConfig.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SignatureConfig.class);
     private static final String DigestMethod_SHA224 = "http://www.w3.org/2001/04/xmldsig-more#sha224";
     private static final String DigestMethod_SHA384 = "http://www.w3.org/2001/04/xmldsig-more#sha384";
     private static final String XMLSEC_SANTUARIO = "org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI";

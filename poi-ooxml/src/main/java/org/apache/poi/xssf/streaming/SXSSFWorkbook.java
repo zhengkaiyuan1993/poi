@@ -40,8 +40,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.util.ZipArchiveThresholdInputStream;
 import org.apache.poi.openxml4j.util.ZipEntrySource;
@@ -113,7 +113,7 @@ public class SXSSFWorkbook implements Workbook {
      * via {@link SXSSFSheet#getRow} anymore.
      */
     public static final int DEFAULT_WINDOW_SIZE = 100;
-    private static final Logger LOG = LogManager.getLogger(SXSSFWorkbook.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SXSSFWorkbook.class);
 
     protected final XSSFWorkbook _wb;
 

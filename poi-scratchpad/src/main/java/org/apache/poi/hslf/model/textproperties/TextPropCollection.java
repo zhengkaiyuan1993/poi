@@ -29,8 +29,8 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.Duplicatable;
 import org.apache.poi.common.usermodel.GenericRecord;
 import org.apache.poi.hslf.exceptions.HSLFException;
@@ -45,7 +45,7 @@ import org.apache.poi.util.LittleEndian;
  *  properties, and the indent level if required.
  */
 public class TextPropCollection implements GenericRecord, Duplicatable {
-    private static final Logger LOG = LogManager.getLogger(TextPropCollection.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TextPropCollection.class);
 
     /** All the different kinds of paragraph properties we might handle */
     private static final TextProp[] paragraphTextPropTypes = {

@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 
 /**
  * Collection of convenience chunks for standard parts of the MSG file.
@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
  * TODO Deprecate the public Chunks in favour of Property Lookups
  */
 public final class Chunks implements ChunkGroupWithProperties {
-    private static final Logger LOG = LogManager.getLogger(Chunks.class);
+    private static final Logger LOG = PoiLogManager.getLogger(Chunks.class);
 
     /**
      * Holds all the chunks that were found, indexed by their MAPIProperty.

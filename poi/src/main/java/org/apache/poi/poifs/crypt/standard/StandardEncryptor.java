@@ -35,8 +35,8 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.SecretKey;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.poifs.crypt.CryptoFunctions;
 import org.apache.poi.poifs.crypt.DataSpaceMapUtils;
@@ -53,7 +53,7 @@ import org.apache.poi.util.RandomSingleton;
 import org.apache.poi.util.TempFile;
 
 public class StandardEncryptor extends Encryptor {
-    private static final Logger LOG = LogManager.getLogger(StandardEncryptor.class);
+    private static final Logger LOG = PoiLogManager.getLogger(StandardEncryptor.class);
 
     protected StandardEncryptor() {}
 

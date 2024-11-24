@@ -54,8 +54,8 @@ import javax.xml.crypto.dsig.XMLSignatureFactory;
 
 import com.microsoft.schemas.office.x2006.digsig.CTSignatureInfoV1;
 import com.microsoft.schemas.office.x2006.digsig.SignatureInfoV1Document;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.ContentTypes;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -82,7 +82,7 @@ import org.w3c.dom.Element;
  */
 public class OOXMLSignatureFacet implements SignatureFacet {
 
-    private static final Logger LOG = LogManager.getLogger(OOXMLSignatureFacet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(OOXMLSignatureFacet.class);
     private static final String ID_PACKAGE_OBJECT = "idPackageObject";
 
     @Override

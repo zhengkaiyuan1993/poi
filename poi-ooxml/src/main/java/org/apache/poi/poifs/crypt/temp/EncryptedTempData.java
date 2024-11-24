@@ -31,8 +31,8 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.io.output.CountingOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.ChainingMode;
 import org.apache.poi.poifs.crypt.CipherAlgorithm;
 import org.apache.poi.poifs.crypt.CryptoFunctions;
@@ -46,7 +46,7 @@ import org.apache.poi.util.TempFile;
 @Beta
 public class EncryptedTempData {
 
-    private static final Logger LOG = LogManager.getLogger(EncryptedTempData.class);
+    private static final Logger LOG = PoiLogManager.getLogger(EncryptedTempData.class);
     private static final CipherAlgorithm cipherAlgorithm = CipherAlgorithm.aes128;
     private static final String PADDING = "PKCS5Padding";
     private final SecretKeySpec skeySpec;

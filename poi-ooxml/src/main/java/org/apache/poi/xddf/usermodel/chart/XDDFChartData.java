@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.Beta;
 import org.apache.poi.util.Internal;
@@ -47,7 +47,7 @@ import org.openxmlformats.schemas.drawingml.x2006.chart.CTUnsignedInt;
  */
 @Beta
 public abstract class XDDFChartData {
-    private static final Logger LOGGER = LogManager.getLogger(XDDFChartData.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(XDDFChartData.class);
 
     protected XDDFChart parent;
     protected List<Series> series;

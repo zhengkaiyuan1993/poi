@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hsmf.MAPIMessage;
 
 /**
@@ -44,7 +44,7 @@ import org.apache.poi.hsmf.MAPIMessage;
  * attachment.
  */
 public class AttachmentChunks implements ChunkGroup {
-    private static final Logger LOG = LogManager.getLogger(AttachmentChunks.class);
+    private static final Logger LOG = PoiLogManager.getLogger(AttachmentChunks.class);
     public static final String PREFIX = "__attach_version1.0_#";
 
     private ByteChunk attachData;

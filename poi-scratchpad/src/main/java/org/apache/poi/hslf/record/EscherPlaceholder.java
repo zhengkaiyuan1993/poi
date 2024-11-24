@@ -20,8 +20,8 @@ package org.apache.poi.hslf.record;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ddf.EscherRecord;
 import org.apache.poi.ddf.EscherRecordFactory;
 import org.apache.poi.ddf.EscherSerializationListener;
@@ -34,7 +34,7 @@ import org.apache.poi.util.LittleEndian;
  * the slide layout as specified in the SlideAtom record.
  */
 public class EscherPlaceholder extends EscherRecord {
-    private static final Logger LOG = LogManager.getLogger(EscherPlaceholder.class);
+    private static final Logger LOG = PoiLogManager.getLogger(EscherPlaceholder.class);
 
     public static final short RECORD_ID = RecordTypes.OEPlaceholderAtom.typeID;
     public static final String RECORD_DESCRIPTION = "msofbtClientTextboxPlaceholder";

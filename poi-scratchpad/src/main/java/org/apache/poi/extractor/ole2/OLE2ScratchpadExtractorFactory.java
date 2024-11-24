@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.extractor.ExtractorFactory;
 import org.apache.poi.extractor.ExtractorProvider;
 import org.apache.poi.extractor.POIOLE2TextExtractor;
@@ -58,7 +58,7 @@ import org.apache.poi.sl.usermodel.SlideShowFactory;
  */
 @SuppressWarnings("WeakerAccess")
 public class OLE2ScratchpadExtractorFactory implements ExtractorProvider {
-    private static final Logger LOG = LogManager.getLogger(OLE2ScratchpadExtractorFactory.class);
+    private static final Logger LOG = PoiLogManager.getLogger(OLE2ScratchpadExtractorFactory.class);
 
     private static final String[] OUTLOOK_ENTRY_NAMES = {
         // message bodies, saved as plain text (PtypString)

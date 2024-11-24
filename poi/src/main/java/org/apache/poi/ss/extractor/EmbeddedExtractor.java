@@ -28,8 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.ClassID;
 import org.apache.poi.hpsf.ClassIDPredefined;
 import org.apache.poi.poifs.filesystem.DirectoryNode;
@@ -56,7 +56,7 @@ import org.apache.poi.util.LocaleUtil;
  */
 @Beta
 public class EmbeddedExtractor implements Iterable<EmbeddedExtractor> {
-    private static final Logger LOG = LogManager.getLogger(EmbeddedExtractor.class);
+    private static final Logger LOG = PoiLogManager.getLogger(EmbeddedExtractor.class);
     //arbitrarily selected; may need to increase
     private static final int DEFAULT_MAX_RECORD_LENGTH = 1_000_000;
     private static int MAX_RECORD_LENGTH = DEFAULT_MAX_RECORD_LENGTH;

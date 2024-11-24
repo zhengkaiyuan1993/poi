@@ -34,8 +34,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.util.POIXMLUnits;
 import org.apache.poi.ooxml.util.XPathHelper;
 import org.apache.poi.openxml4j.opc.PackagePart;
@@ -69,7 +69,7 @@ import org.openxmlformats.schemas.presentationml.x2006.main.CTPictureNonVisual;
 @Beta
 public class XSLFPictureShape extends XSLFSimpleShape
     implements PictureShape<XSLFShape,XSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(XSLFPictureShape.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSLFPictureShape.class);
 
     private static final String MS_DML_NS = "http://schemas.microsoft.com/office/drawing/2010/main";
     private static final String MS_SVG_NS = "http://schemas.microsoft.com/office/drawing/2016/SVG/main";

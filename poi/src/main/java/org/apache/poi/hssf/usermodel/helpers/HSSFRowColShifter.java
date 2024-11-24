@@ -17,8 +17,8 @@
 
 package org.apache.poi.hssf.usermodel.helpers;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.formula.*;
 import org.apache.poi.ss.formula.ptg.Ptg;
@@ -34,7 +34,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
  */
 @Internal
 /*private*/ final class HSSFRowColShifter {
-    private static final Logger LOG = LogManager.getLogger(HSSFRowColShifter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(HSSFRowColShifter.class);
 
     private HSSFRowColShifter() { /*no instances for static classes*/}
 

@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocumentPart.RelationPart;
 import org.apache.poi.ooxml.util.POIXMLUnits;
 import org.apache.poi.sl.draw.DrawPictureShape;
@@ -55,7 +55,7 @@ import org.openxmlformats.schemas.presentationml.x2006.main.CTShape;
 @Beta
 public class XSLFGroupShape extends XSLFShape
 implements XSLFShapeContainer, GroupShape<XSLFShape,XSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(XSLFGroupShape.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSLFGroupShape.class);
 
     private final List<XSLFShape> _shapes;
     private final CTGroupShapeProperties _grpSpPr;

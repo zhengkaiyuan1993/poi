@@ -21,8 +21,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
 import org.apache.poi.ooxml.util.DocumentHelper;
@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
  */
 public final class PackageRelationshipCollection implements Iterable<PackageRelationship> {
 
-    private static final Logger LOG = LogManager.getLogger(PackageRelationshipCollection.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PackageRelationshipCollection.class);
 
     /**
      * Package relationships ordered by ID.

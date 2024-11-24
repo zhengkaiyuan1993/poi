@@ -30,8 +30,8 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.fonts.FontGroup;
 import org.apache.poi.common.usermodel.fonts.FontInfo;
 import org.apache.poi.hslf.exceptions.HSLFException;
@@ -85,7 +85,7 @@ import org.apache.poi.util.Units;
  */
 
 public final class HSLFTextParagraph implements TextParagraph<HSLFShape,HSLFTextParagraph,HSLFTextRun> {
-    private static final Logger LOG = LogManager.getLogger(HSLFTextParagraph.class);
+    private static final Logger LOG = PoiLogManager.getLogger(HSLFTextParagraph.class);
 
     private static final int MAX_NUMBER_OF_STYLES = 20_000;
 

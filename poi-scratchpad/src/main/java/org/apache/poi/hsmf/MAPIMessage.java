@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.POIReadOnlyDocument;
 import org.apache.poi.hmef.attribute.MAPIRtfAttribute;
 import org.apache.poi.hsmf.datatypes.AttachmentChunks;
@@ -84,7 +84,7 @@ public class MAPIMessage extends POIReadOnlyDocument {
     /**
      * For logging problems we spot with the file
      */
-    private static final Logger LOG = LogManager.getLogger(MAPIMessage.class);
+    private static final Logger LOG = PoiLogManager.getLogger(MAPIMessage.class);
 
     private static final Pattern GUESS_7_BIT_ENCODING_PATTERN = Pattern.compile("content-type:.*?charset=[\"']?([^;'\"]+)[\"']?", Pattern.CASE_INSENSITIVE);
 

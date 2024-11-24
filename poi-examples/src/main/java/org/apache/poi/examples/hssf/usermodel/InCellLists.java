@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -32,6 +31,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.logging.PoiLogManager;
 
 /**
  * This class contains code that demonstrates how to insert plain, numbered
@@ -50,7 +50,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 @SuppressWarnings({"java:S106","java:S4823"})
 public class InCellLists {
-    private static final Logger LOG = LogManager.getLogger(InCellLists.class);
+    private static final Logger LOG = PoiLogManager.getLogger(InCellLists.class);
 
 
     // This character looks like a solid, black, loser case letter 'o'

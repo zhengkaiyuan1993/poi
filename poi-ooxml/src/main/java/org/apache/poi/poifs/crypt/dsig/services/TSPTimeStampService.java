@@ -45,8 +45,8 @@ import java.util.stream.Stream;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.CryptoFunctions;
 import org.apache.poi.poifs.crypt.HashAlgorithm;
 import org.apache.poi.poifs.crypt.dsig.SignatureConfig;
@@ -86,7 +86,7 @@ import org.bouncycastle.tsp.TimeStampToken;
  */
 public class TSPTimeStampService implements TimeStampService {
 
-    private static final Logger LOG = LogManager.getLogger(TSPTimeStampService.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TSPTimeStampService.class);
 
     /**
      * Maps the digest algorithm to corresponding OID value.

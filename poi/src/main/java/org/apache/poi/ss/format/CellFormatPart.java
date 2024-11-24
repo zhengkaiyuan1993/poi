@@ -16,8 +16,8 @@
 ==================================================================== */
 package org.apache.poi.ss.format;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.util.CodepointsUtil;
 import org.apache.poi.util.LocaleUtil;
@@ -47,7 +47,7 @@ import static org.apache.poi.ss.format.CellFormatter.quote;
  */
 @SuppressWarnings("RegExpRepeatedSpace")
 public class CellFormatPart {
-    private static final Logger LOG = LogManager.getLogger(CellFormatPart.class);
+    private static final Logger LOG = PoiLogManager.getLogger(CellFormatPart.class);
 
     static final Map<String, Color> NAMED_COLORS;
 

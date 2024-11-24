@@ -44,8 +44,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.ClassIDPredefined;
 import org.apache.poi.ooxml.HyperlinkRelationship;
 import org.apache.poi.ooxml.POIXMLDocument;
@@ -194,7 +194,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      */
     private List<XSSFPictureData> pictures;
 
-    private static final Logger LOG = LogManager.getLogger(XSSFWorkbook.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFWorkbook.class);
 
     /**
      * cached instance of XSSFCreationHelper for this workbook

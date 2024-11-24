@@ -46,8 +46,8 @@ import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.sl.usermodel.AbstractColorStyle;
 import org.apache.poi.sl.usermodel.ColorStyle;
 import org.apache.poi.sl.usermodel.Insets2D;
@@ -71,7 +71,7 @@ public class DrawPaint {
 
     // HSL code is public domain - see https://tips4java.wordpress.com/contact-us/
 
-    private static final Logger LOG = LogManager.getLogger(DrawPaint.class);
+    private static final Logger LOG = PoiLogManager.getLogger(DrawPaint.class);
 
     private static final Color TRANSPARENT = new Color(1f,1f,1f,0f);
 

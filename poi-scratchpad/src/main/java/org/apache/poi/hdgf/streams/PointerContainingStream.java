@@ -17,8 +17,8 @@
 
 package org.apache.poi.hdgf.streams;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hdgf.chunks.ChunkFactory;
 import org.apache.poi.hdgf.pointers.Pointer;
 import org.apache.poi.hdgf.pointers.PointerFactory;
@@ -28,7 +28,7 @@ import org.apache.poi.hdgf.pointers.PointerFactory;
  *  other data too.
  */
 public class PointerContainingStream extends Stream { // TODO - instantiable superclass
-    private static final Logger LOG = LogManager.getLogger(PointerContainingStream.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PointerContainingStream.class);
 
     private static final int MAX_CHILDREN_NESTING = 500;
 

@@ -26,8 +26,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hmef.Attachment;
 import org.apache.poi.hmef.HMEFMessage;
 import org.apache.poi.hpsf.Filetime;
@@ -39,7 +39,7 @@ import org.apache.poi.util.LocaleUtil;
  *  or one of its {@link Attachment}s.
  */
 public final class TNEFDateAttribute extends TNEFAttribute {
-   private static final Logger LOG = LogManager.getLogger(TNEFDateAttribute.class);
+   private static final Logger LOG = PoiLogManager.getLogger(TNEFDateAttribute.class);
    private final Date data;
 
    /**

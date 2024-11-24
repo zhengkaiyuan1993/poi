@@ -28,8 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -134,7 +134,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  */
 @SuppressWarnings({"java:S106","java:S4823","java:S1192"})
 public class ToCSV {
-    private static final Logger LOG = LogManager.getLogger(ToCSV.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ToCSV.class);
 
     private Workbook workbook;
     private ArrayList<ArrayList<String>> csvData;

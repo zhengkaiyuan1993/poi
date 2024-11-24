@@ -29,8 +29,8 @@ import java.security.GeneralSecurityException;
 import javax.crypto.Cipher;
 
 import com.zaxxer.sparsebits.SparseBitSet;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.poifs.filesystem.DirectoryNode;
 import org.apache.poi.poifs.filesystem.POIFSWriterEvent;
@@ -42,7 +42,7 @@ import org.apache.poi.util.TempFile;
 
 @Internal
 public abstract class ChunkedCipherOutputStream extends FilterOutputStream {
-    private static final Logger LOG = LogManager.getLogger(ChunkedCipherOutputStream.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ChunkedCipherOutputStream.class);
 
     private static final int STREAMING = -1;
 

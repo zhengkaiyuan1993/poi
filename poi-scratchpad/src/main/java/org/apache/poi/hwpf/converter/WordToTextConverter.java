@@ -28,8 +28,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.output.StringBuilderWriter;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.HWPFDocumentCore;
@@ -52,7 +52,7 @@ import org.w3c.dom.Element;
 
 @Beta
 public class WordToTextConverter extends AbstractWordConverter {
-    private static final Logger LOG = LogManager.getLogger(WordToTextConverter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(WordToTextConverter.class);
 
     private static final int MAX_NESTED_CHILD_NODES = 300;
 

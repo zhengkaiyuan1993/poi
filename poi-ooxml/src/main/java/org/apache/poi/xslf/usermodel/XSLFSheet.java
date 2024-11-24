@@ -34,8 +34,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import com.zaxxer.sparsebits.SparseBitSet;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -75,7 +75,7 @@ import org.openxmlformats.schemas.presentationml.x2006.main.CTShape;
 @Beta
 public abstract class XSLFSheet extends POIXMLDocumentPart
 implements XSLFShapeContainer, Sheet<XSLFShape,XSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(XSLFSheet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSLFSheet.class);
 
     private XSLFDrawing _drawing;
     private List<XSLFShape> _shapes;

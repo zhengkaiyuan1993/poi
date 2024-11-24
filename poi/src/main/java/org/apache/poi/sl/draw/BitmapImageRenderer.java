@@ -43,8 +43,8 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.apache.commons.collections4.iterators.IteratorIterable;
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.sl.usermodel.PictureData.PictureType;
 import org.apache.poi.util.IOUtils;
 
@@ -52,7 +52,7 @@ import org.apache.poi.util.IOUtils;
  * For now this class renders only images supported by the javax.imageio.ImageIO framework.
  **/
 public class BitmapImageRenderer implements ImageRenderer {
-    private static final Logger LOG = LogManager.getLogger(BitmapImageRenderer.class);
+    private static final Logger LOG = PoiLogManager.getLogger(BitmapImageRenderer.class);
     private static final ImageLoader[] IMAGE_LOADERS = {
         BitmapImageRenderer::loadColored,
         BitmapImageRenderer::loadGrayScaled,

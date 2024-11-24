@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.xssf.XSSFTestDataSamples;
 import org.junit.jupiter.api.Test;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCol;
@@ -43,7 +43,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCols;
  */
 class TestXSSFColGrouping {
 
-    private static final Logger LOG = LogManager.getLogger(TestXSSFColGrouping.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestXSSFColGrouping.class);
 
 
     /**

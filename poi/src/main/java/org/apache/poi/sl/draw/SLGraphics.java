@@ -37,8 +37,8 @@ import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.sl.usermodel.FreeformShape;
 import org.apache.poi.sl.usermodel.GroupShape;
 import org.apache.poi.sl.usermodel.Insets2D;
@@ -55,7 +55,7 @@ import org.apache.poi.util.SuppressForbidden;
  */
 public class SLGraphics extends Graphics2D implements Cloneable {
 
-    private static final Logger LOG = LogManager.getLogger(SLGraphics.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SLGraphics.class);
 
     //The ppt object to write into.
     private GroupShape<?,?> _group;

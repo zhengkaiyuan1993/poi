@@ -22,8 +22,8 @@ package org.apache.poi.xslf.usermodel;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.util.POIXMLUnits;
 import org.apache.poi.openxml4j.opc.PackagePart;
 import org.apache.poi.sl.draw.DrawPaint;
@@ -59,7 +59,7 @@ import org.openxmlformats.schemas.drawingml.x2006.main.*;
 public abstract class XSLFSimpleShape extends XSLFShape
     implements SimpleShape<XSLFShape,XSLFTextParagraph> {
     private static final CTOuterShadowEffect NO_SHADOW = CTOuterShadowEffect.Factory.newInstance();
-    private static final Logger LOG = LogManager.getLogger(XSLFSimpleShape.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSLFSimpleShape.class);
 
     /* package */XSLFSimpleShape(XmlObject shape, XSLFSheet sheet) {
         super(shape,sheet);

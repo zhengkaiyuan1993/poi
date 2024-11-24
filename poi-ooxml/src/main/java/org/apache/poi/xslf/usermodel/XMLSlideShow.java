@@ -35,8 +35,8 @@ import java.util.OptionalLong;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ooxml.POIXMLException;
@@ -74,7 +74,7 @@ import org.openxmlformats.schemas.presentationml.x2006.main.PresentationDocument
 @Beta
 public class XMLSlideShow extends POIXMLDocument
         implements SlideShow<XSLFShape, XSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(XMLSlideShow.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XMLSlideShow.class);
     //arbitrarily selected; may need to increase
     private static final int DEFAULT_MAX_RECORD_LENGTH = 1_000_000;
     private static int MAX_RECORD_LENGTH = DEFAULT_MAX_RECORD_LENGTH;

@@ -22,8 +22,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.usermodel.DifferentialStyleProvider;
 import org.apache.poi.ss.usermodel.TableStyle;
 import org.apache.poi.ss.usermodel.TableStyleType;
@@ -41,7 +41,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleElement;
  * Also used for built-in styles via dummy XML generated from presetTableStyles.xml.
  */
 public class XSSFTableStyle implements TableStyle {
-    private static final Logger LOG = LogManager.getLogger(XSSFTableStyle.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFTableStyle.class);
 
     private final String name;
     private final int index;

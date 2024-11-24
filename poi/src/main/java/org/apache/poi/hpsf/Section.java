@@ -31,8 +31,8 @@ import java.util.TreeMap;
 
 import org.apache.commons.collections4.bidimap.TreeBidiMap;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.wellknown.PropertyIDMap;
 import org.apache.poi.util.CodePageUtil;
 import org.apache.poi.util.IOUtils;
@@ -46,7 +46,7 @@ import org.apache.poi.util.LittleEndianOutputStream;
  */
 public class Section {
 
-    private static final Logger LOG = LogManager.getLogger(Section.class);
+    private static final Logger LOG = PoiLogManager.getLogger(Section.class);
 
     /**
      * Maps property IDs to section-private PID strings. These

@@ -50,8 +50,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.POIDocument;
 import org.apache.poi.ddf.EscherBSERecord;
@@ -197,7 +197,7 @@ public final class HSSFWorkbook extends POIDocument implements Workbook {
      */
     private MissingCellPolicy missingCellPolicy = MissingCellPolicy.RETURN_NULL_AND_BLANK;
 
-    private static final Logger LOGGER = LogManager.getLogger(HSSFWorkbook.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(HSSFWorkbook.class);
 
     /**
      * The locator of user-defined functions.

@@ -25,7 +25,6 @@ import java.util.zip.InflaterInputStream;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ddf.EscherBSERecord;
 import org.apache.poi.ddf.EscherBlipRecord;
@@ -39,6 +38,7 @@ import org.apache.poi.ddf.EscherRecordTypes;
 import org.apache.poi.ddf.EscherSimpleProperty;
 import org.apache.poi.hwpf.model.PICF;
 import org.apache.poi.hwpf.model.PICFAndOfficeArtData;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.sl.image.ImageHeaderPNG;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.StringUtil;
@@ -48,7 +48,7 @@ import org.apache.poi.util.Units;
  * Represents embedded picture extracted from Word Document
  */
 public final class Picture {
-    private static final Logger LOGGER = LogManager.getLogger(Picture.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(Picture.class);
 
     private static final byte[] COMPRESSED1 = { (byte) 0xFE, 0x78, (byte) 0xDA };
 

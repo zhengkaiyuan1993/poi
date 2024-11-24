@@ -33,8 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EmptyFileException;
 import org.apache.poi.poifs.common.POIFSBigBlockSize;
 import org.apache.poi.poifs.common.POIFSConstants;
@@ -65,7 +65,7 @@ public class POIFSFileSystem extends BlockStore
 
     private static final int MAX_ALLOCATION_SIZE = 250_000_000;
 
-    private static final Logger LOG = LogManager.getLogger(POIFSFileSystem.class);
+    private static final Logger LOG = PoiLogManager.getLogger(POIFSFileSystem.class);
 
     /**
      * Maximum number size (in blocks) of the allocation table as supported by

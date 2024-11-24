@@ -35,8 +35,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.POIDocument;
 import org.apache.poi.common.usermodel.GenericRecord;
 import org.apache.poi.common.usermodel.fonts.FontInfo;
@@ -83,7 +83,7 @@ public final class HSLFSlideShow extends POIDocument implements SlideShow<HSLFSh
     public static final String PP95_DOCUMENT = "PP40";
 
     // For logging
-    private static final Logger LOG = LogManager.getLogger(HSLFSlideShow.class);
+    private static final Logger LOG = PoiLogManager.getLogger(HSLFSlideShow.class);
 
     //arbitrarily selected; may need to increase
     private static final int DEFAULT_MAX_RECORD_LENGTH = 10_000_000;

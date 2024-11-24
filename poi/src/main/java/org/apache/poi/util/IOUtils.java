@@ -34,13 +34,13 @@ import java.util.zip.Checksum;
 
 import org.apache.commons.io.input.BoundedInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EmptyFileException;
 
 @Internal
 public final class IOUtils {
-    private static final Logger LOG = LogManager.getLogger(IOUtils.class);
+    private static final Logger LOG = PoiLogManager.getLogger(IOUtils.class);
 
     /**
      * The default buffer size to use for the skip() methods.

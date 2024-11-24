@@ -30,8 +30,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -76,7 +76,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.*;
  * </p>
  */
 public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetExtensions  {
-    private static final Logger LOG = LogManager.getLogger(XSSFSheet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFSheet.class);
 
     private static final double DEFAULT_ROW_HEIGHT = 15.0;
     private static final double DEFAULT_MARGIN_HEADER = 0.3;

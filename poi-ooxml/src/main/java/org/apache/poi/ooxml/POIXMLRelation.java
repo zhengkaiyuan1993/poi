@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.PackagePart;
 import org.apache.poi.openxml4j.opc.PackagePartName;
@@ -51,7 +51,7 @@ public abstract class POIXMLRelation {
         POIXMLDocumentPart init(POIXMLDocumentPart parent, PackagePart part) throws IOException, XmlException;
     }
 
-    private static final Logger LOGGER = LogManager.getLogger(POIXMLRelation.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(POIXMLRelation.class);
 
     /**
      * Describes the content stored in a part.

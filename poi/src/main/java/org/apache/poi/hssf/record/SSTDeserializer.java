@@ -19,8 +19,8 @@
 
 package org.apache.poi.hssf.record;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.record.common.UnicodeString;
 import org.apache.poi.util.IntMapper;
 
@@ -30,7 +30,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
  * Handles the task of deserializing a SST string.  The two main entry points are
  */
 class SSTDeserializer {
-    private static final Logger LOG = LogManager.getLogger(SSTDeserializer.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SSTDeserializer.class);
     private IntMapper<UnicodeString> strings;
 
     public SSTDeserializer(IntMapper<UnicodeString> strings) {

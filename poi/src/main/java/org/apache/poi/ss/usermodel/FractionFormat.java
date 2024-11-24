@@ -24,8 +24,8 @@ import java.text.ParsePosition;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.format.SimpleFraction;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 
@@ -43,7 +43,7 @@ import org.apache.poi.ss.formula.eval.NotImplementedException;
 
 @SuppressWarnings("serial")
 public class FractionFormat extends Format {
-    private static final Logger LOGGER = LogManager.getLogger(FractionFormat.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(FractionFormat.class);
     private static final Pattern DENOM_FORMAT_PATTERN = Pattern.compile("(#+)|(\\d+)");
 
     //this was chosen to match the earlier limitation of max denom power

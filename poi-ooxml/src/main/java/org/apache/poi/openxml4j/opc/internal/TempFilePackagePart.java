@@ -17,8 +17,8 @@
 
 package org.apache.poi.openxml4j.opc.internal;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -39,7 +39,7 @@ import java.nio.file.Files;
  */
 @Beta
 public final class TempFilePackagePart extends PackagePart {
-    private static final Logger LOG = LogManager.getLogger(TempFilePackagePart.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TempFilePackagePart.class);
 
     /**
      * Storage for the part data.

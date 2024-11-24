@@ -33,8 +33,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.PrimitiveIterator;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -54,7 +54,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.STCellType;
  * so that it was renamed to "SheetDataWriter"
  */
 public class SheetDataWriter implements Closeable {
-    private static final Logger LOG = LogManager.getLogger(SheetDataWriter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SheetDataWriter.class);
 
     private final File _fd;
     protected final Writer _out;

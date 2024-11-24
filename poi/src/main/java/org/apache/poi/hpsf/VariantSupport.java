@@ -25,8 +25,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.LittleEndian;
 import org.apache.poi.util.LittleEndianByteArrayInputStream;
@@ -58,7 +58,7 @@ public class VariantSupport extends Variant {
             Variant.VT_CF, Variant.VT_BOOL };
 
 
-    private static final Logger LOG = LogManager.getLogger(VariantSupport.class);
+    private static final Logger LOG = PoiLogManager.getLogger(VariantSupport.class);
 
     private static boolean logUnsupportedTypes;
 

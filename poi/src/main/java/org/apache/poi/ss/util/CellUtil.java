@@ -25,9 +25,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.common.Duplicatable;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellCopyContext;
@@ -57,7 +57,7 @@ import org.apache.poi.util.Removal;
  */
 public final class CellUtil {
 
-    private static final Logger LOGGER = LogManager.getLogger(CellUtil.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(CellUtil.class);
 
     private static final Set<CellPropertyType> SHORT_VALUES = EnumSet.of(
             CellPropertyType.BOTTOM_BORDER_COLOR,

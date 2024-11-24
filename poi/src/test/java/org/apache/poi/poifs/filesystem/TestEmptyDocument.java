@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.util.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,7 +35,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 final class TestEmptyDocument {
-    private static final Logger LOG = LogManager.getLogger(TestEmptyDocument.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestEmptyDocument.class);
 
     private interface EmptyDoc {
         void handle(DirectoryEntry dir) throws IOException;

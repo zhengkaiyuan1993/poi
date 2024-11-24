@@ -19,8 +19,8 @@ package org.apache.poi.xslf.usermodel;
 import java.awt.Color;
 import java.util.function.Consumer;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.fonts.FontCharset;
 import org.apache.poi.common.usermodel.fonts.FontFamily;
 import org.apache.poi.common.usermodel.fonts.FontGroup;
@@ -66,7 +66,7 @@ import org.openxmlformats.schemas.drawingml.x2006.main.impl.CTSRgbColorImpl;
  */
 @Beta
 public class XSLFTextRun implements TextRun, HighlightColorSupport {
-    private static final Logger LOG = LogManager.getLogger(XSLFTextRun.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSLFTextRun.class);
 
     private final XmlObject _r;
     private final XSLFTextParagraph _p;

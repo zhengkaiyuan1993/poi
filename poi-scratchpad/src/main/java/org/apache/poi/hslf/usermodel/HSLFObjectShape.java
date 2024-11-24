@@ -23,8 +23,8 @@ import java.io.OutputStream;
 
 import org.apache.commons.io.output.AbstractByteArrayOutputStream;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ddf.EscherContainerRecord;
 import org.apache.poi.ddf.EscherPropertyTypes;
 import org.apache.poi.ddf.EscherSpRecord;
@@ -47,7 +47,7 @@ import org.apache.poi.sl.usermodel.ShapeContainer;
  * A shape representing embedded OLE object.
  */
 public final class HSLFObjectShape extends HSLFPictureShape implements ObjectShape<HSLFShape,HSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(HSLFObjectShape.class);
+    private static final Logger LOG = PoiLogManager.getLogger(HSLFObjectShape.class);
 
     private ExEmbed _exEmbed;
 

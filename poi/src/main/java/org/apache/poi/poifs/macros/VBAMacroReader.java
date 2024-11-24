@@ -38,8 +38,8 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.filesystem.DirectoryNode;
 import org.apache.poi.poifs.filesystem.DocumentInputStream;
 import org.apache.poi.poifs.filesystem.DocumentNode;
@@ -70,7 +70,7 @@ import org.apache.poi.util.StringUtil;
  */
 @SuppressWarnings("unused")
 public class VBAMacroReader implements Closeable {
-    private static final Logger LOGGER = LogManager.getLogger(VBAMacroReader.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(VBAMacroReader.class);
 
     //arbitrary limit on size of strings to read, etc.
     private static final int MAX_STRING_LENGTH = 20000;

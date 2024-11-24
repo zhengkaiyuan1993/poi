@@ -36,8 +36,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.GenericRecord;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.poi.sl.draw.Drawable;
@@ -50,7 +50,7 @@ import org.apache.poi.util.LocaleUtil;
  * An utility to convert slides of a .pptx slide show to a PNG image
  */
 public final class PPTX2PNG {
-    private static final Logger LOG = LogManager.getLogger(PPTX2PNG.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PPTX2PNG.class);
 
     private static final String INPUT_PAT_REGEX =
         "(?<slideno>[^|]+)\\|(?<format>[^|]+)\\|(?<basename>.+)\\.(?<ext>[^.]++)";

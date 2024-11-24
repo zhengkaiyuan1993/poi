@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.common.POIFSBigBlockSize;
 import org.apache.poi.poifs.common.POIFSConstants;
 import org.apache.poi.poifs.filesystem.BATManaged;
@@ -43,7 +43,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
  * chain of blocks.
  */
 public final class PropertyTable implements BATManaged {
-    private static final Logger LOG = LogManager.getLogger(PropertyTable.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PropertyTable.class);
 
     private final HeaderBlock    _header_block;
     private final List<Property> _properties = new ArrayList<>();

@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.util.GenericRecordUtil;
 import org.apache.poi.util.HexDump;
 import org.apache.poi.util.LittleEndian;
@@ -48,7 +48,7 @@ public final class EscherContainerRecord extends EscherRecord implements Iterabl
     public static final short SP_CONTAINER     = EscherRecordTypes.SP_CONTAINER.typeID;
     public static final short SOLVER_CONTAINER = EscherRecordTypes.SOLVER_CONTAINER.typeID;
 
-    private static final Logger LOGGER = LogManager.getLogger(EscherContainerRecord.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(EscherContainerRecord.class);
 
     private static final int MAX_NESTED_CHILD_NODES = 1000;
 

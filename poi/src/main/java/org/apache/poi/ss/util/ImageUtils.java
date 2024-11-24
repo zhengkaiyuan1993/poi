@@ -31,8 +31,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Picture;
@@ -45,7 +45,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public final class ImageUtils {
-    private static final Logger LOG = LogManager.getLogger(ImageUtils.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ImageUtils.class);
 
     private static final int WIDTH_UNITS = 1024;
     private static final int HEIGHT_UNITS = 256;

@@ -40,8 +40,8 @@ import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 
 import org.apache.jcp.xml.dsig.internal.dom.DOMKeyInfo;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.dsig.SignatureConfig;
 import org.apache.poi.poifs.crypt.dsig.SignatureInfo;
 import org.w3c.dom.Document;
@@ -54,7 +54,7 @@ import org.w3c.dom.NodeList;
  */
 public class KeyInfoSignatureFacet implements SignatureFacet {
 
-    private static final Logger LOG = LogManager.getLogger(KeyInfoSignatureFacet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(KeyInfoSignatureFacet.class);
 
     @Override
     public void postSign(SignatureInfo signatureInfo, Document document)

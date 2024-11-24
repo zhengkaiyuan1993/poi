@@ -33,8 +33,8 @@ import java.util.List;
 
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.NullOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.dev.BiffDumpingStream.IBiffRecordListener;
 import org.apache.poi.hssf.record.ContinueRecord;
 import org.apache.poi.hssf.record.HSSFRecordTypes;
@@ -53,7 +53,7 @@ import org.apache.poi.util.StringUtil;
  */
 public final class BiffViewer {
     private static final char[] NEW_LINE_CHARS = System.getProperty("line.separator").toCharArray();
-    private static final Logger LOG = LogManager.getLogger(BiffViewer.class);
+    private static final Logger LOG = PoiLogManager.getLogger(BiffViewer.class);
     private static final String ESCHER_SERIALIZE = "poi.deserialize.escher";
     private static final int DUMP_LINE_LEN = 16;
     private static final char[] COLUMN_SEPARATOR = " | ".toCharArray();

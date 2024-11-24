@@ -18,8 +18,8 @@ package org.apache.poi.hwpf.model;
 
 import java.util.Arrays;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.LittleEndian;
 import org.apache.poi.util.LittleEndianConsts;
@@ -28,7 +28,7 @@ import static java.lang.Integer.toHexString;
 import static org.apache.logging.log4j.util.Unbox.box;
 
 public class NilPICFAndBinData {
-    private static final Logger LOGGER = LogManager.getLogger(NilPICFAndBinData.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(NilPICFAndBinData.class);
 
     // limit the default maximum length of the allocated fields
     private static final int MAX_SIZE = 100_000;

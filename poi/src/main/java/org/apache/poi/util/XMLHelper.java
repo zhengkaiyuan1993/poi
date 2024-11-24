@@ -48,8 +48,8 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogBuilder;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -78,7 +78,7 @@ public final class XMLHelper {
     };
 
 
-    private static final Logger LOG = LogManager.getLogger(XMLHelper.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XMLHelper.class);
     private static long lastLog;
 
     // DocumentBuilderFactory.newDocumentBuilder is thread-safe

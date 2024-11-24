@@ -17,8 +17,8 @@
 
 package org.apache.poi.hssf.usermodel;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -70,7 +70,7 @@ import java.util.Map;
  * </blockquote>
  */
 public final class EscherGraphics2d extends Graphics2D {
-    private static final Logger LOG = LogManager.getLogger(EscherGraphics2d.class);
+    private static final Logger LOG = PoiLogManager.getLogger(EscherGraphics2d.class);
 
     private final EscherGraphics _escherGraphics;
     private BufferedImage _img;

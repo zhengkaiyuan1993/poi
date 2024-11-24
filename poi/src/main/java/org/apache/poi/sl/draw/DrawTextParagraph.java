@@ -41,8 +41,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.fonts.FontGroup;
 import org.apache.poi.common.usermodel.fonts.FontGroup.FontGroupRange;
 import org.apache.poi.common.usermodel.fonts.FontInfo;
@@ -69,7 +69,7 @@ import org.apache.poi.util.Units;
 import org.w3c.dom.Text;
 
 public class DrawTextParagraph implements Drawable {
-    private static final Logger LOG = LogManager.getLogger(DrawTextParagraph.class);
+    private static final Logger LOG = PoiLogManager.getLogger(DrawTextParagraph.class);
 
     /** Keys for passing hyperlinks to the graphics context */
     public static final XlinkAttribute HYPERLINK_HREF = new XlinkAttribute("href");

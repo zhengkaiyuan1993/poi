@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.StreamSupport;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EmptyFileException;
 import org.apache.poi.hssf.extractor.ExcelExtractor;
 import org.apache.poi.poifs.crypt.Decryptor;
@@ -61,7 +61,7 @@ public final class ExtractorFactory {
      */
     public static final String OOXML_PACKAGE = "Package";
 
-    private static final Logger LOGGER = LogManager.getLogger(ExtractorFactory.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(ExtractorFactory.class);
 
     /** Should this thread prefer event based over usermodel based extractors? */
     private static final ThreadLocal<Boolean> threadPreferEventExtractors = ThreadLocal.withInitial(() -> Boolean.FALSE);

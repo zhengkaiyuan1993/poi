@@ -38,8 +38,8 @@ import java.util.Optional;
 import java.util.Spliterator;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.PictureType;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
@@ -103,7 +103,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.StylesDocument;
  */
 @SuppressWarnings("unused")
 public class XWPFDocument extends POIXMLDocument implements Document, IBody {
-    private static final Logger LOG = LogManager.getLogger(XWPFDocument.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XWPFDocument.class);
 
     protected List<XWPFFooter> footers = new ArrayList<>();
     protected List<XWPFHeader> headers = new ArrayList<>();

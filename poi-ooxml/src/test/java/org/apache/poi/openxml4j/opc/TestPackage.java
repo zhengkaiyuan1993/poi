@@ -59,8 +59,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.POIDataSamples;
 import org.apache.poi.POITestCase;
@@ -100,7 +100,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public final class TestPackage {
-    private static final Logger LOG = LogManager.getLogger(TestPackage.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestPackage.class);
     private static final String CONTENT_EXT_PROPS = "application/vnd.openxmlformats-officedocument.extended-properties+xml";
     private static final POIDataSamples xlsSamples = POIDataSamples.getSpreadSheetInstance();
 

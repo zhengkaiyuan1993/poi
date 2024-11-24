@@ -21,8 +21,8 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.opc.PackagePart;
 import org.apache.poi.openxml4j.opc.PackageRelationship;
 import org.apache.poi.ss.usermodel.Picture;
@@ -45,7 +45,7 @@ import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTPictureNo
  * Represents a picture shape in a SpreadsheetML drawing.
  */
 public final class XSSFPicture extends XSSFShape implements Picture {
-    private static final Logger LOG = LogManager.getLogger(XSSFPicture.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFPicture.class);
 
     /*
      * Column width measured as the number of characters of the maximum digit width of the

@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 
 /**
  * Allows the user to lookup the font metrics for a particular font without
@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
  * font. Use a multiplier for other sizes.
  */
 final class StaticFontMetrics {
-    private static final Logger LOGGER = LogManager.getLogger(StaticFontMetrics.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(StaticFontMetrics.class);
     /** The font metrics property file we're using */
     private static Properties fontMetricsProps;
     /** Our cache of font details we've already looked up */

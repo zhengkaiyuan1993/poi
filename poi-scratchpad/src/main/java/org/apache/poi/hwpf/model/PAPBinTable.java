@@ -26,8 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hwpf.sprm.SprmBuffer;
 import org.apache.poi.hwpf.sprm.SprmIterator;
 import org.apache.poi.hwpf.sprm.SprmOperation;
@@ -46,7 +46,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
 @Internal
 public class PAPBinTable
 {
-    private static final Logger LOG = LogManager.getLogger(PAPBinTable.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PAPBinTable.class);
 
     protected final ArrayList<PAPX> _paragraphs = new ArrayList<>();
 

@@ -31,15 +31,15 @@ import java.util.zip.InflaterInputStream;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.usermodel.HSSFPictureData;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.LittleEndian;
 import org.apache.poi.util.Removal;
 
 public final class EscherMetafileBlip extends EscherBlipRecord {
-    private static final Logger LOGGER = LogManager.getLogger(EscherMetafileBlip.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(EscherMetafileBlip.class);
     //arbitrarily selected; may need to increase
     private static final int DEFAULT_MAX_RECORD_LENGTH = 100_000_000;
     private static int MAX_RECORD_LENGTH = DEFAULT_MAX_RECORD_LENGTH;

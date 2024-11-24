@@ -40,8 +40,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -66,7 +66,7 @@ import org.w3c.dom.Text;
  */
 @Beta
 public class ExcelToHtmlConverter extends AbstractExcelConverter {
-    private static final Logger LOG = LogManager.getLogger(ExcelToHtmlConverter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ExcelToHtmlConverter.class);
 
     /**
      * Java main() interface to interact with ExcelToHtmlConverter

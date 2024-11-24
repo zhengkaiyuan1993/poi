@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.HWPFDocumentCore;
@@ -119,7 +119,7 @@ public abstract class AbstractWordConverter {
     private static final int FIELD_HYPERLINK = 88;
 
 
-    private static final Logger LOG = LogManager.getLogger(AbstractWordConverter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(AbstractWordConverter.class);
 
     private static final Pattern PATTERN_HYPERLINK_EXTERNAL = Pattern
         .compile("^[ \\t\\r\\n]*HYPERLINK \"(.*)\".*$");

@@ -35,8 +35,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.util.DocumentHelper;
 import org.apache.poi.ooxml.util.XPathHelper;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -72,7 +72,7 @@ public class XSSFImportFromXML {
 
     private final XSSFMap _map;
 
-    private static final Logger LOG = LogManager.getLogger(XSSFImportFromXML.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFImportFromXML.class);
 
     public XSSFImportFromXML(XSSFMap map) {
         _map = map;

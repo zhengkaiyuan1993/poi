@@ -23,8 +23,8 @@ import java.security.AccessControlException;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ddf.EscherBSERecord;
 import org.apache.poi.ddf.EscherBoolProperty;
 import org.apache.poi.ddf.EscherContainerRecord;
@@ -118,7 +118,7 @@ public final class InternalWorkbook {
      */
     public static final String OLD_WORKBOOK_DIR_ENTRY_NAME = "Book";
 
-    private static final Logger LOG = LogManager.getLogger(InternalWorkbook.class);
+    private static final Logger LOG = PoiLogManager.getLogger(InternalWorkbook.class);
 
     /**
      * constant used to set the "codepage" wherever "codepage" is set in records

@@ -26,8 +26,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.zaxxer.sparsebits.SparseBitSet;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.extractor.POITextExtractor;
 import org.apache.poi.sl.usermodel.MasterSheet;
 import org.apache.poi.sl.usermodel.Notes;
@@ -57,7 +57,7 @@ public class SlideShowExtractor<
     S extends Shape<S,P>,
     P extends TextParagraph<S,P,? extends TextRun>
 > implements POITextExtractor {
-    private static final Logger LOG = LogManager.getLogger(SlideShowExtractor.class);
+    private static final Logger LOG = PoiLogManager.getLogger(SlideShowExtractor.class);
 
     // placeholder text for slide numbers
     private static final String SLIDE_NUMBER_PH = "‹#›";

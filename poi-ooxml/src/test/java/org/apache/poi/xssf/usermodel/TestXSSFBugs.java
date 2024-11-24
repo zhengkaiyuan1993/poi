@@ -49,8 +49,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.POIDataSamples;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.HSSFITestDataProvider;
@@ -137,7 +137,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 public final class TestXSSFBugs extends BaseTestBugzillaIssues {
-    private static final Logger LOG = LogManager.getLogger(TestXSSFBugs.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestXSSFBugs.class);
 
     public TestXSSFBugs() {
         super(XSSFITestDataProvider.instance);

@@ -27,8 +27,8 @@ import java.util.Spliterator;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.Duplicatable;
 import org.apache.poi.common.usermodel.GenericRecord;
 import org.apache.poi.hssf.record.RecordInputStream;
@@ -46,7 +46,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
  * This is often called a XLUnicodeRichExtendedString in MS documentation.
  */
 public class UnicodeString implements Comparable<UnicodeString>, Duplicatable, GenericRecord {
-    private static final Logger LOG = LogManager.getLogger(UnicodeString.class);
+    private static final Logger LOG = PoiLogManager.getLogger(UnicodeString.class);
 
     private static final BitField highByte  = BitFieldFactory.getInstance(0x1);
     // 0x2 is reserved

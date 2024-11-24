@@ -31,8 +31,8 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.DocumentSummaryInformation;
 import org.apache.poi.hpsf.PropertySet;
 import org.apache.poi.hpsf.PropertySetFactory;
@@ -62,7 +62,7 @@ public abstract class POIDocument implements Closeable {
     private DirectoryNode directory;
 
     /** For our own logging use */
-    private static final Logger LOG = LogManager.getLogger(POIDocument.class);
+    private static final Logger LOG = PoiLogManager.getLogger(POIDocument.class);
 
     /* Have the property streams been read yet? (Only done on-demand) */
     private boolean initialized;

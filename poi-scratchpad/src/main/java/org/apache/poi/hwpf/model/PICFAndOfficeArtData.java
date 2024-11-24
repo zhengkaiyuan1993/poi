@@ -19,8 +19,8 @@ package org.apache.poi.hwpf.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ddf.DefaultEscherRecordFactory;
 import org.apache.poi.ddf.EscherBSERecord;
 import org.apache.poi.ddf.EscherBlipRecord;
@@ -35,7 +35,7 @@ import org.apache.poi.util.LittleEndian;
 
 @Internal
 public class PICFAndOfficeArtData {
-    private static final Logger LOG = LogManager.getLogger(PicturesTable.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PicturesTable.class);
 
     /**
      * Can contain either a {@link EscherBlipRecord} or a {@link EscherBSERecord}.

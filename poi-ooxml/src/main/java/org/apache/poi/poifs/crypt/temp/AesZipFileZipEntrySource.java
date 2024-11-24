@@ -36,8 +36,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.output.CloseShieldOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.util.ZipEntrySource;
 import org.apache.poi.poifs.crypt.ChainingMode;
 import org.apache.poi.poifs.crypt.CipherAlgorithm;
@@ -53,7 +53,7 @@ import org.apache.poi.util.TempFile;
  */
 @Beta
 public final class AesZipFileZipEntrySource implements ZipEntrySource {
-    private static final Logger LOG = LogManager.getLogger(AesZipFileZipEntrySource.class);
+    private static final Logger LOG = PoiLogManager.getLogger(AesZipFileZipEntrySource.class);
 
     private static final String PADDING = "PKCS5Padding";
 

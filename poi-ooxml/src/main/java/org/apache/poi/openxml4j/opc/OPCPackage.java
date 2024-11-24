@@ -42,8 +42,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JRuntimeException;
@@ -72,7 +72,7 @@ public abstract class OPCPackage implements RelationshipSource, Closeable {
     /**
      * Logger.
      */
-    private static final Logger LOG = LogManager.getLogger(OPCPackage.class);
+    private static final Logger LOG = PoiLogManager.getLogger(OPCPackage.class);
 
     /**
      * Default package access.

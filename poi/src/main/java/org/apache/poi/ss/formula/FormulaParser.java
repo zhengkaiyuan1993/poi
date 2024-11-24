@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.SpreadsheetVersion;
@@ -97,7 +97,7 @@ import org.apache.poi.util.StringUtil;
  */
 @Internal
 public final class FormulaParser {
-    private static final Logger LOGGER = LogManager.getLogger(FormulaParser.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(FormulaParser.class);
 
     private final String _formulaString;
     private final int _formulaLength;

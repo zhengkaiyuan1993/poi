@@ -25,8 +25,8 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.ooxml.POIXMLProperties.CoreProperties;
@@ -63,7 +63,7 @@ import org.xml.sax.XMLReader;
 public class XSSFEventBasedExcelExtractor
     implements POIXMLTextExtractor, ExcelExtractor {
 
-    private static final Logger LOGGER = LogManager.getLogger(XSSFEventBasedExcelExtractor.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(XSSFEventBasedExcelExtractor.class);
 
     protected final OPCPackage container;
     protected final POIXMLProperties properties;

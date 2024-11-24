@@ -31,8 +31,8 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
@@ -70,7 +70,7 @@ public class XSSFReader {
                             XSSFRelation.CHARTSHEET.getRelation(),
                             XSSFRelation.MACRO_SHEET_XML.getRelation())
             ));
-    private static final Logger LOGGER = LogManager.getLogger(XSSFReader.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(XSSFReader.class);
 
     protected OPCPackage pkg;
     protected PackagePart workbookPart;

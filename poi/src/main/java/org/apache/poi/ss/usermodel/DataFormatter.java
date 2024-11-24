@@ -36,8 +36,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.format.CellFormat;
 import org.apache.poi.ss.format.CellFormatResult;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
@@ -221,7 +221,7 @@ public class DataFormatter {
     private final PropertyChangeSupport pcs;
 
     /** For logging any problems we find */
-    private static final Logger LOG = LogManager.getLogger(DataFormatter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(DataFormatter.class);
 
     /**
      * Creates a formatter using the {@link Locale#getDefault() default locale}.

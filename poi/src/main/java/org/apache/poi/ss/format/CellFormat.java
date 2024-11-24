@@ -28,8 +28,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ConditionalFormatting;
@@ -93,7 +93,7 @@ import org.apache.poi.util.LocaleUtil;
  */
 public class CellFormat {
     /** The logger to use in the formatting code. */
-    private static final Logger LOG = LogManager.getLogger(CellFormat.class);
+    private static final Logger LOG = PoiLogManager.getLogger(CellFormat.class);
 
     private static final Pattern ONE_PART = Pattern.compile(
             CellFormatPart.FORMAT_PAT.pattern() + "(;|$)",

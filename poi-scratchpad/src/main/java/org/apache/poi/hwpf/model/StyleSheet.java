@@ -20,8 +20,8 @@ package org.apache.poi.hwpf.model;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hwpf.sprm.CharacterSprmUncompressor;
 import org.apache.poi.hwpf.sprm.ParagraphSprmUncompressor;
 import org.apache.poi.hwpf.usermodel.CharacterProperties;
@@ -41,7 +41,7 @@ import org.apache.poi.util.LittleEndianConsts;
  */
 @Internal
 public final class StyleSheet {
-    private static final Logger LOG = LogManager.getLogger(StyleSheet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(StyleSheet.class);
 
     public static final int NIL_STYLE = 4095;
 //  private static final int PAP_TYPE = 1;

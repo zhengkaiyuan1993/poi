@@ -39,8 +39,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.ITestDataProvider;
 import org.apache.poi.ss.SpreadsheetVersion;
@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
  * A base class for bugzilla issues that can be described in terms of common ss interfaces.
  */
 public abstract class BaseTestBugzillaIssues {
-    private static final Logger LOG = LogManager.getLogger(BaseTestBugzillaIssues.class);
+    private static final Logger LOG = PoiLogManager.getLogger(BaseTestBugzillaIssues.class);
 
     private static final String TEST_32 = "Some text with 32 characters to ";
     private static final String TEST_255 = "Some very long text that is exactly 255 characters, which are allowed here, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla bla, bla.....";

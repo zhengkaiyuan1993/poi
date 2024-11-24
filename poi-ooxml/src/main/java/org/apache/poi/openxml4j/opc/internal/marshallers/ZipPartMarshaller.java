@@ -25,8 +25,8 @@ import java.util.Objects;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.PackageNamespaces;
 import org.apache.poi.openxml4j.opc.PackagePart;
@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
  * Zip part marshaller. This marshaller is use to save any part in a zip stream.
  */
 public final class ZipPartMarshaller implements PartMarshaller {
-    private static final Logger LOG = LogManager.getLogger(ZipPartMarshaller.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ZipPartMarshaller.class);
 
     /**
      * Save the specified part to the given stream.

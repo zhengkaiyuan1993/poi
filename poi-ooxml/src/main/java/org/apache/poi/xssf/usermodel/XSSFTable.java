@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.openxml4j.opc.PackagePart;
 import org.apache.poi.ss.SpreadsheetVersion;
@@ -58,7 +58,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.TableDocument;
  */
 public class XSSFTable extends POIXMLDocumentPart implements Table {
 
-    private static final Logger LOG = LogManager.getLogger(XSSFTable.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFTable.class);
 
     private CTTable ctTable;
     private transient List<XSSFXmlColumnPr> xmlColumnPrs;

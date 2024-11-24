@@ -30,8 +30,8 @@ import java.net.URI;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.OpenXML4JTestDataSamples;
 import org.apache.poi.xssf.usermodel.XSSFRelation;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class TestRelationships {
     private static final String SHEET_WITH_COMMENTS =
         "/xl/worksheets/sheet1.xml";
 
-    private static final Logger LOG = LogManager.getLogger(TestRelationships.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestRelationships.class);
 
     /**
      * Test relationships are correctly loaded. This at the moment fails (as of r499)

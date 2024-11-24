@@ -29,8 +29,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hslf.exceptions.CorruptPowerPointFileException;
 import org.apache.poi.hslf.exceptions.OldPowerPointFormatException;
 import org.apache.poi.poifs.filesystem.DirectoryNode;
@@ -47,7 +47,7 @@ import org.apache.poi.util.StringUtil;
  *  document. As such, it has to be treated specially
  */
 public class CurrentUserAtom {
-    private static final Logger LOG = LogManager.getLogger(CurrentUserAtom.class);
+    private static final Logger LOG = PoiLogManager.getLogger(CurrentUserAtom.class);
 
     /** Standard Atom header */
     private static final byte[] atomHeader = new byte[] { 0, 0, -10, 15 };

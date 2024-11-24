@@ -22,8 +22,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.RichTextString;
@@ -48,7 +48,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * you need to implement for reading information from a file.
  */
 public class XSSFSheetXMLHandler extends DefaultHandler {
-    private static final Logger LOG = LogManager.getLogger(XSSFSheetXMLHandler.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFSheetXMLHandler.class);
 
     /**
      * These are the different kinds of cells we support.

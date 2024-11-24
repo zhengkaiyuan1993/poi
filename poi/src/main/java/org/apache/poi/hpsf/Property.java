@@ -31,8 +31,8 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.wellknown.PropertyIDMap;
 import org.apache.poi.util.CodePageUtil;
 import org.apache.poi.util.HexDump;
@@ -73,7 +73,7 @@ public class Property {
      */
     public static final int DEFAULT_CODEPAGE = CodePageUtil.CP_WINDOWS_1252;
 
-    private static final Logger LOG = LogManager.getLogger(Property.class);
+    private static final Logger LOG = PoiLogManager.getLogger(Property.class);
 
     /** The property's ID. */
     private long id;

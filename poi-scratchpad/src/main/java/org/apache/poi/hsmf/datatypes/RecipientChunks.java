@@ -24,8 +24,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 
 /**
  * Collection of convenience chunks for the Recip(ient) part of an outlook file.
@@ -33,7 +33,7 @@ import org.apache.logging.log4j.Logger;
  * If a message has multiple recipients, there will be several of these.
  */
 public final class RecipientChunks implements ChunkGroupWithProperties {
-    private static final Logger LOG = LogManager.getLogger(RecipientChunks.class);
+    private static final Logger LOG = PoiLogManager.getLogger(RecipientChunks.class);
 
     public static final String PREFIX = "__recip_version1.0_#";
 

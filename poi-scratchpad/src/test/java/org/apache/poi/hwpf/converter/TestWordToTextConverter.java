@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.POIDataSamples;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.OldWordFileFormatException;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.poi.util.RecordFormatException;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class TestWordToTextConverter {
-    private static final Logger LOG = LogManager.getLogger(TestWordToTextConverter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestWordToTextConverter.class);
 
     private static final List<String> failingFiles = Arrays.asList(
         // Excel file

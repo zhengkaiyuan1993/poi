@@ -62,8 +62,8 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
 import org.apache.jcp.xml.dsig.internal.dom.DOMSignedInfo;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.POIDataSamples;
 import org.apache.poi.POITestCase;
@@ -126,7 +126,7 @@ import org.w3.x2000.x09.xmldsig.SignatureDocument;
 import org.w3c.dom.Document;
 
 class TestSignatureInfo {
-    private static final Logger LOG = LogManager.getLogger(TestSignatureInfo.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TestSignatureInfo.class);
     private static final POIDataSamples testdata = POIDataSamples.getXmlDSignInstance();
     private static final String STORE_PASS = "test";
 

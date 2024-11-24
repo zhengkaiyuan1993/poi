@@ -22,8 +22,8 @@ import java.nio.file.Files;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.temp.EncryptedTempData;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.TempFile;
@@ -36,7 +36,7 @@ import org.apache.poi.util.TempFile;
  * @see ZipInputStreamZipEntrySource#setThresholdBytesForTempFiles(int)
  */
 /* package */ class ZipArchiveFakeEntry extends ZipArchiveEntry implements Closeable {
-    private static final Logger LOG = LogManager.getLogger(ZipArchiveFakeEntry.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ZipArchiveFakeEntry.class);
 
     // how large a single entry in a zip-file should become at max
     // can be overwritten via IOUtils.setByteArrayMaxOverride()

@@ -26,8 +26,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.HWPFDocumentCore;
 import org.apache.poi.hwpf.HWPFOldDocument;
@@ -53,7 +53,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
 public class AbstractWordUtils {
     static final String EMPTY = "";
 
-    private static final Logger LOG = LogManager.getLogger(AbstractWordUtils.class);
+    private static final Logger LOG = PoiLogManager.getLogger(AbstractWordUtils.class);
 
     public static final float TWIPS_PER_INCH = 1440.0f;
     public static final int TWIPS_PER_PT = 20;

@@ -27,8 +27,8 @@ import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.ooxml.util.POIXMLUnits;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -55,7 +55,7 @@ import org.openxmlformats.schemas.presentationml.x2006.main.CTGroupShape;
 @Beta
 public class XSLFGraphicFrame extends XSLFShape implements GraphicalFrame<XSLFShape, XSLFTextParagraph> {
     private static final String DRAWINGML_CHART_URI = "http://schemas.openxmlformats.org/drawingml/2006/chart";
-    private static final Logger LOG = LogManager.getLogger(XSLFGraphicFrame.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSLFGraphicFrame.class);
 
     /*package*/ XSLFGraphicFrame(CTGraphicalObjectFrame shape, XSLFSheet sheet){
         super(shape,sheet);

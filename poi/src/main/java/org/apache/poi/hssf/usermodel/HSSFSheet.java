@@ -27,8 +27,8 @@ import java.util.Spliterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.poi.ddf.EscherRecord;
 import org.apache.poi.hssf.model.DrawingManager2;
@@ -94,7 +94,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
  * High level representation of a worksheet.
  */
 public final class HSSFSheet implements Sheet {
-    private static final Logger LOGGER = LogManager.getLogger(HSSFSheet.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(HSSFSheet.class);
 
     /**
      * width of 1px in columns with default width in units of 1/256 of a character width

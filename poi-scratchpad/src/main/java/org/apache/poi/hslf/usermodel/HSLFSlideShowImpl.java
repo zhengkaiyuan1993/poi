@@ -47,8 +47,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.POIDocument;
 import org.apache.poi.ddf.EscherBSERecord;
 import org.apache.poi.ddf.EscherContainerRecord;
@@ -86,7 +86,7 @@ import org.apache.poi.util.LittleEndianConsts;
  * "reader". It is only a very basic class for now
  */
 public final class HSLFSlideShowImpl extends POIDocument implements Closeable {
-    private static final Logger LOG = LogManager.getLogger(HSLFSlideShowImpl.class);
+    private static final Logger LOG = PoiLogManager.getLogger(HSLFSlideShowImpl.class);
 
     static final int UNSET_OFFSET = -1;
 

@@ -23,8 +23,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
 
@@ -37,7 +37,7 @@ public final class PackagingURIHelper {
     // FIXME: this class implements a lot of path joining and splitting logic that
     // is already implemented in java.nio.file.Path.
     // This class should heavily leverage Java library code to reduce the number of lines of code that POI has to maintain and test
-    private static final Logger LOG = LogManager.getLogger(PackagingURIHelper.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PackagingURIHelper.class);
 
     /**
      * Package root URI.

@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment.WorkbookNotFoundException;
@@ -54,7 +54,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
 @Internal
 public final class WorkbookEvaluator {
 
-    private static final Logger LOG = LogManager.getLogger(WorkbookEvaluator.class);
+    private static final Logger LOG = PoiLogManager.getLogger(WorkbookEvaluator.class);
 
     private final EvaluationWorkbook _workbook;
     private EvaluationCache _cache;
@@ -78,7 +78,7 @@ public final class WorkbookEvaluator {
     private boolean dbgEvaluationOutputForNextEval;
 
     // special logger for formula evaluation output (because of possibly very large output)
-    private static final Logger EVAL_LOG = LogManager.getLogger("POI.FormulaEval");
+    private static final Logger EVAL_LOG = PoiLogManager.getLogger("POI.FormulaEval");
     // current indent level for evaluation; negative value for no output
     private int dbgEvaluationOutputIndent = -1;
 

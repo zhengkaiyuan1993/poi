@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.common.usermodel.GenericRecord;
 import org.apache.poi.hssf.model.RecordStream;
 import org.apache.poi.hssf.record.CFHeader12Record;
@@ -54,7 +54,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
 public final class CFRecordsAggregate extends RecordAggregate implements GenericRecord {
     /** Excel 97-2003 allows up to 3 conditional formating rules */
     private static final int MAX_97_2003_CONDTIONAL_FORMAT_RULES = 3;
-    private static final Logger LOG = LogManager.getLogger(CFRecordsAggregate.class);
+    private static final Logger LOG = PoiLogManager.getLogger(CFRecordsAggregate.class);
 
     private final CFHeaderBase header;
 
