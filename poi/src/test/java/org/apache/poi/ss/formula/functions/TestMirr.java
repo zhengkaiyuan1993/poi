@@ -113,6 +113,41 @@ final class TestMirr {
     }
 
     @Test
+    void testMicrosoftSample() {
+        // https://support.microsoft.com/en-us/office/mirr-function-b020f038-7492-4fb4-93c1-35c345b53524
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("Sheet1");
+
+        int row = 0;
+        sheet.createRow(row++).createCell(0).setCellValue("Data");
+        sheet.createRow(row++).createCell(0).setCellValue(-120000);
+        sheet.createRow(row++).createCell(0).setCellValue(39000);
+        sheet.createRow(row++).createCell(0).setCellValue(30000);
+        sheet.createRow(row++).createCell(0).setCellValue(21000);
+        sheet.createRow(row++).createCell(0).setCellValue(37000);
+        sheet.createRow(row++).createCell(0).setCellValue(46000);
+        sheet.createRow(row++).createCell(0).setCellValue(0.1);
+        sheet.createRow(row++).createCell(0).setCellValue(0.12);
+
+        HSSFFormulaEvaluator fe = new HSSFFormulaEvaluator(wb);
+        HSSFCell cell = sheet.createRow(row).createCell(0);
+        cell.setCellFormula("MIRR(A2:A7, A8, A9)");
+        fe.clearAllCachedResultValues();
+        fe.evaluateFormulaCell(cell);
+        assertEquals(0.126094, cell.getNumericCellValue(), 0.00000015);
+
+        cell.setCellFormula("MIRR(A2:A5, A8, A9)");
+        fe.clearAllCachedResultValues();
+        fe.evaluateFormulaCell(cell);
+        assertEquals(-0.048044655, cell.getNumericCellValue(), 0.00000015);
+
+        cell.setCellFormula("MIRR(A2:A7, A8, .14)");
+        fe.clearAllCachedResultValues();
+        fe.evaluateFormulaCell(cell);
+        assertEquals(0.134759111, cell.getNumericCellValue(), 0.00000015);
+    }
+
+    @Test
     void testMirrFromSpreadsheet() {
         HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook("mirrTest.xls");
         HSSFSheet sheet = wb.getSheet("Mirr");

@@ -56,10 +56,10 @@ public class Mirr extends MultiOperandNumericFunction {
     @Override
     protected double evaluate(double[] values) throws EvaluationException {
 
-        double financeRate = values[values.length-2];
-        double reinvestRate = values[values.length-1];
+        final double financeRate = values[values.length-2];
+        final double reinvestRate = values[values.length-1];
 
-        double[] mirrValues = Arrays.copyOf(values, values.length - 2);
+        final double[] mirrValues = Arrays.copyOf(values, values.length - 2);
 
         boolean mirrValuesAreAllNegatives = true;
         boolean mirrValuesAreAllPositives = true;
