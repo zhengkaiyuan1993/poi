@@ -20,7 +20,9 @@ def poijobs = [
           // only a limited set of nodes still have OpenJDK 8 (on Ubuntu) installed
           slaves: 'ubuntu',
           skipcigame: true,
-          jenkinsLite: true
+          jenkinsLite: true,
+          // OpenJDK 1.8 is not available on the Apache CI any more
+          disabled: true
         ],
         [ name: 'POI-DSL-1.11', jdk: '1.11', trigger: triggerSundays, skipcigame: true
         ],
