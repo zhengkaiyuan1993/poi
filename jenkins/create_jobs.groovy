@@ -29,21 +29,6 @@ def poijobs = [
         [ name: 'POI-DSL-1.17', jdk: '1.17', trigger: 'H */12 * * *', skipcigame: true
         ],
         // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
-        [ name: 'POI-DSL-1.18', jdk: '1.18', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true,
-          // let's save some CPU cycles here, 18 is not a LTS and JDK 20 is out
-          disabled: true
-        ],
-        // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
-        [ name: 'POI-DSL-1.19', jdk: '1.19', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true,
-          // let's save some CPU cycles here, 19 is not a LTS and JDK 20 is out
-          disabled: true
-        ],
-        // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
-        [ name: 'POI-DSL-1.20', jdk: '1.20', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true,
-          // let's save some CPU cycles here, 20 is not a LTS and JDK 21 is out
-          disabled: true
-        ],
-        // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
         [ name: 'POI-DSL-1.21', jdk: '1.21', trigger: 'H */12 * * *', skipcigame: true, skipSpotbugs: true
         ],
         // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
@@ -95,15 +80,6 @@ def poijobs = [
           jenkinsLite: true
         ],
         [ name: 'POI-DSL-Windows-1.17', jdk: '1.17', trigger: 'H */12 * * *', windows: true, slaves: 'Windows', skipcigame: true
-        ],
-        [ name: 'POI-DSL-Windows-1.18', jdk: '1.18', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true,
-          skipSpotbugs: true,
-          // let's save some CPU cycles here, 18 is not an LTS and JDK 20 is out
-          disabled: true
-        ],
-        [ name: 'POI-DSL-Windows-1.20', jdk: '1.20', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true,
-          // let's save some CPU cycles here, 20 is not a LTS and JDK 21 is out
-          disabled: true
         ],
         [ name: 'POI-DSL-Windows-1.21', jdk: '1.21', trigger: 'H */12 * * *', windows: true, slaves: 'Windows', skipcigame: true
         ],
