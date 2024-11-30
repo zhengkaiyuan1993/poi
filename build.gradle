@@ -708,7 +708,9 @@ rat {
         "osgi/README.md",
         "src/resources/ooxml-lite-report.*",
         // ignore svn conflict artifacts
-        "**/module-info.*"
+        "**/module-info.*",
+        "poi-examples/src/main/groovy/settings.gradle",
+        "poi-examples/src/main/groovy/.gradle/**"
     ]
 
     /*
