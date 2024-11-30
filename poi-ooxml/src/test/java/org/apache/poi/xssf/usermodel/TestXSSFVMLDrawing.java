@@ -48,6 +48,7 @@ import com.microsoft.schemas.vml.STStrokeJoinStyle;
 import com.microsoft.schemas.vml.impl.CTShapetypeImpl;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
 import org.apache.poi.POIDataSamples;
+import org.apache.poi.ooxml.POIXMLException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -218,6 +219,9 @@ class TestXSSFVMLDrawing {
     void testInvalidFile() throws IOException {
         try (XSSFWorkbook workbook = openSampleWorkbook("clusterfuzz-testcase-minimized-POIXSSFFuzzer-5089447305609216.xlsx")) {
             assertNotNull(workbook);
+        } catch (POIXMLException e) {
+            // XML parser of IBM JDK is a bit more picky on XML in this file, so we expect it to fail there with this error
+            assertTrue(e.getMessage().contains("Attribute name \"sheetId\" associated with an element type \"sheet\" must be followed by the ' = ' character."));
         }
     }
 }
