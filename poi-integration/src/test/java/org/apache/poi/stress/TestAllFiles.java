@@ -140,7 +140,9 @@ public class TestAllFiles {
     });
 
     private static final Set<String> EXPECTED_FAILURES = StressTestUtils.unmodifiableHashSet(
-            "document/truncated62886.docx"
+            "document/truncated62886.docx",
+            // this document fails with IBM JDK because of a different exception being thrown
+            "spreadsheet/clusterfuzz-testcase-minimized-POIXSSFFuzzer-5089447305609216.xlsx"
     );
 
     public static Stream<Arguments> allfiles(String testName) throws IOException {
@@ -241,6 +243,9 @@ public class TestAllFiles {
         String threadName = Thread.currentThread().getName();
         try {
             Thread.currentThread().setName("Additional - " + file + " - " + handler);
+            if (StressTestUtils.excludeFile(file, EXPECTED_FAILURES))
+                return;
+
             System.out.println("Running additionals on "+file);
             FileHandler fileHandler = handler.getHandler();
             assertNotNull(fileHandler, "Did not find a handler for file " + file);
