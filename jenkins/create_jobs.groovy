@@ -32,15 +32,16 @@ def poijobs = [
         [ name: 'POI-DSL-1.21', jdk: '1.21', trigger: 'H */12 * * *', skipcigame: true, skipSpotbugs: true
         ],
         // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
-        [ name: 'POI-DSL-1.22', jdk: '1.22', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true,
-          // issues with jacoco and Gradle and this JDK
-          useAnt: true
+        [ name: 'POI-DSL-1.22', jdk: '1.22', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true
         ],
         // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
-        [ name: 'POI-DSL-1.23', jdk: '1.23', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true,
-          // use Ant for building until Gradle supports JDK 23
+        [ name: 'POI-DSL-1.23', jdk: '1.23', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true
+        ],
+        // Jenkins on ci-builds.apache.org does not support spotbugs with a new enough version of asm for Java18+
+        [ name: 'POI-DSL-1.24', jdk: '1.24', trigger: triggerSundays, skipcigame: true, skipSpotbugs: true,
+          // use Ant for building until Gradle supports JDK 24
           // see https://docs.gradle.org/current/userguide/compatibility.html
-          // and https://github.com/gradle/gradle/issues/26162
+          // and https://github.com/gradle/gradle/issues/31625
           useAnt: true
         ],
         // Use Ant-build for now as selecting IBM JDK via toolchain does not work (yet)
@@ -83,14 +84,14 @@ def poijobs = [
         ],
         [ name: 'POI-DSL-Windows-1.21', jdk: '1.21', trigger: 'H */12 * * *', windows: true, slaves: 'Windows', skipcigame: true
         ],
-        [ name: 'POI-DSL-Windows-1.22', jdk: '1.22', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true,
-          // issues with jacoco and Gradle and this JDK
-          useAnt: true
+        [ name: 'POI-DSL-Windows-1.22', jdk: '1.22', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true
         ],
-        [ name: 'POI-DSL-Windows-1.23', jdk: '1.23', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true,
-          // use Ant for building until Gradle supports JDK 22
+        [ name: 'POI-DSL-Windows-1.23', jdk: '1.23', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true
+        ],
+        [ name: 'POI-DSL-Windows-1.24', jdk: '1.24', trigger: triggerSundays, windows: true, slaves: 'Windows', skipcigame: true,
+          // use Ant for building until Gradle supports JDK 24
           // see https://docs.gradle.org/current/userguide/compatibility.html
-          // and https://github.com/gradle/gradle/issues/26162
+          // and https://github.com/gradle/gradle/issues/31625
           useAnt: true
         ],
         [ name: 'POI-DSL-Github-PullRequests', trigger: '', skipcigame: true, disabled: true
@@ -149,6 +150,7 @@ def jdkMapping = [
         '1.21': [ jenkinsJdk: 'jdk_21_latest', jdkVersion: 21, jdkVendor: '' ],
         '1.22': [ jenkinsJdk: 'jdk_22_latest', jdkVersion: 22, jdkVendor: '' ],
         '1.23': [ jenkinsJdk: 'jdk_23_latest', jdkVersion: 23, jdkVendor: '' ],
+        '1.24': [ jenkinsJdk: 'jdk_24_latest', jdkVersion: 24, jdkVendor: '' ],
         'OpenJDK 1.8': [ jenkinsJdk: 'adoptopenjdk_hotspot_8u282', jdkVersion: 8, jdkVendor: 'adoptopenjdk' ],
         'IBMJDK': [ jenkinsJdk: 'ibmjdk_1.8.0_261', jdkVersion: 8, jdkVendor: 'ibm' ]
 ]
@@ -613,12 +615,10 @@ Unfortunately we often see builds break because of changes/new machines...''')
                 'jdk_1.8_latest',
                 'jdk_11_latest',
                 'jdk_17_latest',
-                'jdk_18_latest',
-                'jdk_19_latest',
-                'jdk_20_latest',
                 'jdk_21_latest',
                 'jdk_22_latest',
                 'jdk_23_latest',
+                'jdk_24_latest',
                 'adoptopenjdk_hotspot_8u282',
                 'ibmjdk_1.8.0_261'
         )
