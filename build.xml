@@ -2439,7 +2439,11 @@ under the License.
              uri="antlib:org.apache.rat.anttasks"
              classpath="${rat.jar}" />
         <rat:report xmlns:rat="antlib:org.apache.rat.anttasks" reportFile="${rat.report}">
-            <fileset dir="poi-examples/src" excludes="main/java/org/apache/poi/**/*-chart-data.txt"/>
+            <fileset dir="poi-examples/src">
+                <exclude name="main/java/org/apache/poi/**/*-chart-data.txt" />
+                <exclude name="main/groovy/settings.gradle" />
+                <exclude name="main/groovy/.gradle/**" />
+            </fileset>
             <fileset dir="poi-excelant/src"/>
             <fileset dir="poi-integration/src"/>
             <fileset dir="poi/src">
