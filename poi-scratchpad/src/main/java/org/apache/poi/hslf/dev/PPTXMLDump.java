@@ -207,7 +207,7 @@ public final class PPTXMLDump {
 
             if (arg.startsWith("-")) {
                 if ("-f".equals(arg)) {
-                    //write ouput to a file
+                    //write output to a file
                     outFile = true;
                 }
             } else {

@@ -351,7 +351,7 @@ public final class HSLFSlideShow extends POIDocument implements SlideShow<HSLFSh
         // SlideAtomsSet for each Notes
         // These SlideAtomsSets will not normally contain text
         //
-        // Having indentified the masters, slides and notes + their orders,
+        // Having identified the masters, slides and notes + their orders,
         // we have to go and find their matching records
         // We always use the latest versions of these records, and use the
         // SlideAtom/NotesAtom to match them with the StyleAtomSet
@@ -1060,7 +1060,7 @@ public final class HSLFSlideShow extends POIDocument implements SlideShow<HSLFSh
         }
 
         ExEmbed exEmbed = new ExEmbed();
-        // remove unneccessary infos, so we don't need to specify the type
+        // remove unnecessary infos, so we don't need to specify the type
         // of the ole object multiple times
         Record[] children = exEmbed.getChildRecords();
         exEmbed.removeChild(children[2]);
