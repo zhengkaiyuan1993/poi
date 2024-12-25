@@ -623,7 +623,8 @@ Unfortunately we often see builds break because of changes/new machines...''')
                 'ibmjdk_1.8.0_261'
         )
         // Note H50 is reserved according to its node-description
-        label('Nodes','builds22','builds23','builds24','builds25','builds26','builds27','builds28','builds29','builds30','builds31','builds32','builds33','builds34','builds35','builds36','builds37','builds38','builds39','builds40','builds50','builds56','builds57','builds58','builds59','builds60')
+        label('Nodes','builds22','builds23','builds24','builds25','builds26','builds27','builds28','builds29','builds30','builds31','builds32','builds33','builds34','builds35','builds36','builds37','builds38','builds39','builds40','builds50','builds56','builds57','builds58','builds59','builds60',
+                'jenkins-win-azr-1','jenkins-win-azr-2','jenkins-win-azr-3','jenkins-win-azr-4','jenkins-win-azr-5','jenkins-win-azr-6','jenkins-win-azr-7','jenkins-win-azr-8','jenkins-win-azr-10','jenkins-win-azr-11','jenkins-win-azr-12')
     }
     steps {
         conditionalSteps {
