@@ -83,8 +83,8 @@ public class DefaultTempFileCreationStrategy implements TempFileCreationStrategy
         // Generate a unique new filename
         File newFile = Files.createTempFile(dir.toPath(), prefix, suffix).toFile();
 
-        // Set the delete on exit flag, but only when explicitly disabled
-        if (System.getProperty(DELETE_FILES_ON_EXIT) != null) {
+        // Set the delete on exit flag if requested
+        if (Boolean.getBoolean(DELETE_FILES_ON_EXIT)) {
             newFile.deleteOnExit();
         }
 
