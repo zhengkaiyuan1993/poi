@@ -30,12 +30,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Default implementation of the {@link TempFileCreationStrategy} used by {@link TempFile}:
- * Files are collected into one directory and by default are deleted on exit from the VM.
+ * Files are collected into one directory.
  * Files may be manually deleted by user prior to JVM exit.
- * Files can be kept by defining the system property {@link #DELETE_FILES_ON_EXIT}.
+ * You can define the system property {@link #DELETE_FILES_ON_EXIT} and set to true if you want to
+ * delete any stray files on clean JVM exit.
  *
- * Each file is registered for deletion with the JVM and the temporary directory is not deleted
- * after the JVM exits. Files that are created in the poifiles directory outside
+ * The POI code should tidy up temp files when it no longer needs them.
+ * The temporary directory is not deleted after the JVM exits.
+ * Files that are created in the poifiles directory outside
  * the control of DefaultTempFileCreationStrategy are not deleted.
  * See {@link TempFileCreationStrategy} for better strategies for long-running
  * processes or limited temporary storage.
