@@ -32,8 +32,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * Default implementation of the {@link TempFileCreationStrategy} used by {@link TempFile}:
  * Files are collected into one directory.
  * Files may be manually deleted by user prior to JVM exit.
- * You can define the system property {@link #DELETE_FILES_ON_EXIT} and set to true if you want to
- * delete any stray files on clean JVM exit.
+ * You can define the system property {@link #DELETE_FILES_ON_EXIT} if you want to
+ * delete any stray files on clean JVM exit (any non-empty value means add the deleteOnExit flag).
  *
  * The POI code should tidy up temp files when it no longer needs them.
  * The temporary directory is not deleted after the JVM exits.
@@ -83,8 +83,8 @@ public class DefaultTempFileCreationStrategy implements TempFileCreationStrategy
         // Generate a unique new filename
         File newFile = Files.createTempFile(dir.toPath(), prefix, suffix).toFile();
 
-        // Set the delete on exit flag if requested
-        if (Boolean.getBoolean(DELETE_FILES_ON_EXIT)) {
+        // Set the delete on exit flag if sys prop is set
+        if (System.getProperty(DELETE_FILES_ON_EXIT) != null) {
             newFile.deleteOnExit();
         }
 
