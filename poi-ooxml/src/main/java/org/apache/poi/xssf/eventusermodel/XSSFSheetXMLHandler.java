@@ -394,7 +394,7 @@ public class XSSFSheetXMLHandler extends DefaultHandler {
                                 // Try to use the value as a formattable number
                                 double d = Double.parseDouble(fv);
                                 thisStr = formatter.formatRawCellContents(d, this.formatIndex, this.formatString);
-                            } catch (NumberFormatException e) {
+                            } catch (Exception e) {
                                 // Formula is a String result not a Numeric one
                                 LOG.atInfo().log(
                                         "Error formatting cell '{}' - will use its raw value instead (format '{}')",
@@ -434,7 +434,7 @@ public class XSSFSheetXMLHandler extends DefaultHandler {
                         try {
                             thisStr = formatter.formatRawCellContents(
                                     Double.parseDouble(n), this.formatIndex, this.formatString);
-                        } catch (NumberFormatException e) {
+                        } catch (Exception e) {
                             LOG.atInfo().log(
                                     "Error formatting cell '{}' - will use its raw value instead (format '{}')",
                                     cellRef,
