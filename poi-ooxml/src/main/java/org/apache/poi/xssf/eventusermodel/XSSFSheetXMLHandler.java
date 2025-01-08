@@ -426,10 +426,18 @@ public class XSSFSheetXMLHandler extends DefaultHandler {
 
                 case NUMBER:
                     String n = value.toString();
-                    if (this.formatString != null && n.length() > 0)
-                        thisStr = formatter.formatRawCellContents(Double.parseDouble(n), this.formatIndex, this.formatString);
-                    else
+                    if (this.formatString != null && n.length() > 0) {
+                        try {
+                            thisStr = formatter.formatRawCellContents(
+                                    Double.parseDouble(n), this.formatIndex, this.formatString);
+                        } catch (NumberFormatException e) {
+                            LOG.atInfo().log("Error formatting cell '{}' - will use its raw value instead",
+                                    cellRef);
+                            thisStr = n;
+                        }
+                    } else {
                         thisStr = n;
+                    }
                     break;
 
                 default:
