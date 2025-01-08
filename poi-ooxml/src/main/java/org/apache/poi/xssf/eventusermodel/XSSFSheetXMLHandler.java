@@ -396,6 +396,10 @@ public class XSSFSheetXMLHandler extends DefaultHandler {
                                 thisStr = formatter.formatRawCellContents(d, this.formatIndex, this.formatString);
                             } catch (NumberFormatException e) {
                                 // Formula is a String result not a Numeric one
+                                LOG.atInfo().log(
+                                        "Error formatting cell '{}' - will use its raw value instead (format '{}')",
+                                        cellRef,
+                                        this.formatString);
                                 thisStr = fv;
                             }
                         } else {
@@ -431,8 +435,10 @@ public class XSSFSheetXMLHandler extends DefaultHandler {
                             thisStr = formatter.formatRawCellContents(
                                     Double.parseDouble(n), this.formatIndex, this.formatString);
                         } catch (NumberFormatException e) {
-                            LOG.atInfo().log("Error formatting cell '{}' - will use its raw value instead",
-                                    cellRef);
+                            LOG.atInfo().log(
+                                    "Error formatting cell '{}' - will use its raw value instead (format '{}')",
+                                    cellRef,
+                                    this.formatString);
                             thisStr = n;
                         }
                     } else {
