@@ -29,7 +29,6 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.util.Utils;
-import org.apache.poi.util.LocaleUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
