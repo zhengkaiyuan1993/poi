@@ -1666,7 +1666,8 @@ public class SXSSFSheet implements Sheet, OoxmlSheetExtensions {
         }
 
         // get the best-fit width of rows currently in the random access window
-        final int activeWidth = (int) (256 * SheetUtil.getColumnWidth(this, column, useMergedCells));
+        final double w1 = SheetUtil.getColumnWidth(this, column, useMergedCells);
+        final int activeWidth = (int) ((256 * w1) + getArbitraryExtraWidth());
 
         // the best-fit width for both flushed rows and random access window rows
         // flushedWidth or activeWidth may be negative if column contains only blank cells

@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
@@ -45,7 +46,7 @@ public final class TestSXSSFSheet extends BaseTestXSheet {
 
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         SXSSFITestDataProvider.instance.cleanup();
     }
 
@@ -84,9 +85,9 @@ public final class TestSXSSFSheet extends BaseTestXSheet {
     }
 
     /**
-     *  Bug 35084: cloning cells with formula
-     *
-     *  The test is disabled because cloning of sheets is not supported in SXSSF
+     * Bug 35084: cloning cells with formula
+     * <p>
+     * The test is disabled because cloning of sheets is not supported in SXSSF
      */
     @Override
     @Test
@@ -193,9 +194,9 @@ public final class TestSXSSFSheet extends BaseTestXSheet {
             //one level
             sheet.groupRow(9, 10);
 
-            try(UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()) {
+            try (UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()) {
                 workbook.write(bos);
-                try(XSSFWorkbook xssfWorkbook = new XSSFWorkbook(bos.toInputStream())) {
+                try (XSSFWorkbook xssfWorkbook = new XSSFWorkbook(bos.toInputStream())) {
                     XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
                     CTRow ctrow = xssfSheet.getRow(9).getCTRow();
 
@@ -223,9 +224,9 @@ public final class TestSXSSFSheet extends BaseTestXSheet {
             //two level
             sheet.groupRow(10, 13);
 
-            try(UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()) {
+            try (UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()) {
                 workbook.write(bos);
-                try(XSSFWorkbook xssfWorkbook = new XSSFWorkbook(bos.toInputStream())) {
+                try (XSSFWorkbook xssfWorkbook = new XSSFWorkbook(bos.toInputStream())) {
                     XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
                     CTRow ctrow = xssfSheet.getRow(9).getCTRow();
 
@@ -242,4 +243,43 @@ public final class TestSXSSFSheet extends BaseTestXSheet {
             }
         }
     }
+
+    @Test
+    void autosizeWithArbitraryExtraWidth() throws IOException {
+        final int extra = 100;
+        final String longText =
+                "This is a very long text that will exceed default column width for sure.";
+        int width0, width1 = 0;
+        try (SXSSFWorkbook workbook0 = new SXSSFWorkbook()) {
+            SXSSFSheet sheet = workbook0.createSheet();
+            sheet.trackColumnForAutoSizing(0);
+
+            SXSSFRow row = sheet.createRow(0);
+            row.createCell(0).setCellValue(longText);
+            sheet.autoSizeColumn(0);
+
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                workbook0.write(bos);
+            }
+            width0 = sheet.getColumnWidth(0);
+        }
+
+        try (SXSSFWorkbook workbook1 = new SXSSFWorkbook()) {
+            SXSSFSheet sheet = workbook1.createSheet();
+            sheet.setArbitraryExtraWidth(extra);
+            sheet.trackColumnForAutoSizing(0);
+
+            SXSSFRow row = sheet.createRow(0);
+            row.createCell(0).setCellValue(longText);
+            sheet.autoSizeColumn(0);
+
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                workbook1.write(bos);
+            }
+            width1 = sheet.getColumnWidth(0);
+        }
+
+        assertEquals(width0 + extra, width1);
+    }
+
 }

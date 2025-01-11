@@ -392,9 +392,9 @@ import org.apache.poi.util.Internal;
      */
     private void updateColumnWidth(final Cell cell, final ColumnWidthPair pair) {
         final double unmergedWidth =
-                SheetUtil.getCellWidth(cell, defaultCharWidth, dataFormatter, false) + arbitraryExtraWidth;
+                SheetUtil.getCellWidth(cell, defaultCharWidth, dataFormatter, false);
         final double mergedWidth =
-                SheetUtil.getCellWidth(cell, defaultCharWidth, dataFormatter, true) + arbitraryExtraWidth;
+                SheetUtil.getCellWidth(cell, defaultCharWidth, dataFormatter, true);
         pair.setMaxColumnWidths(unmergedWidth, mergedWidth);
     }
 }
