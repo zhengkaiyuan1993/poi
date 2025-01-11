@@ -79,7 +79,7 @@ public class XSLFGraphicFrame extends XSLFShape implements GraphicalFrame<XSLFSh
         }
 
         CTPoint2D off = xfrm.getOff();
-        if (off == null) {
+        if (off == null || off.getX() == null || off.getY() == null) {
             throw new IllegalArgumentException("Could not retrieve Off from the XML object");
         }
         double x = Units.toPoints(POIXMLUnits.parseLength(off.xgetX()));
