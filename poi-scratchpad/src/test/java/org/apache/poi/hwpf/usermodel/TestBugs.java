@@ -23,12 +23,12 @@ import static org.apache.poi.hwpf.HWPFTestDataSamples.openSampleFile;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +37,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.poi.extractor.ExtractorFactory;
+import org.apache.poi.extractor.POITextExtractor;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.HWPFOldDocument;
 import org.apache.poi.hwpf.HWPFTestDataSamples;
@@ -798,9 +800,14 @@ class TestBugs {
                 run.replaceText("_TEST_", "This text is longer than the initial text. It goes on and on without interruption.");
             }
 
-            try (FileOutputStream fos = new FileOutputStream(new File("/tmp/test.doc"))) {
-                doc.write(fos);
-            }
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            doc.write(out);
+            out.flush();
+
+            POITextExtractor extractor = ExtractorFactory.createExtractor(new ByteArrayInputStream(out.toByteArray()));
+            assertThrows(IllegalArgumentException.class,
+                    () -> /*String text =*/ extractor.getText());
+            // assertFalse(text.contains("_TEST_"), "Had: " + text);
         }
     }
 }
