@@ -29,9 +29,13 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.util.Utils;
+import org.apache.poi.util.LocaleUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Tests for {@link Value}
@@ -83,6 +87,14 @@ final class TestValue {
         confirmValue("30 %", 0.3);
         //next test is based on https://support.microsoft.com/en-us/office/value-function-257d0108-07dc-437d-ae1c-bc2d3953d8c2
         confirmValue("4:48:00", 0.2);
+    }
+
+    @Test
+    void testDates() {
+        confirmValue("1 January 2025", 45658);
+        confirmValue("01 January 2025", 45658);
+        confirmValue("1 Jan 2025", 45658);
+        confirmValue("01 Jan 2025", 45658);
     }
 
     @Test
