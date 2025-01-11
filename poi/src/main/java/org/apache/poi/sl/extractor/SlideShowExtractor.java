@@ -364,6 +364,10 @@ public class SlideShowExtractor<
         // PowerPoint seems to store files with \r as the line break
         // The messes things up on everything but a Mac, so translate them to \n
         String txt = tr.getRawText();
+        if (txt == null) {
+            return "";
+        }
+
         txt = txt.replace('\r', '\n');
         txt = txt.replace((char) 0x0B, sep);
 
