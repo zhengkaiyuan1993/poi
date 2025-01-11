@@ -366,7 +366,7 @@ public class PAPBinTable
     }
 
     public void writeTo( ByteArrayOutputStream wordDocumentStream,
-            ByteArrayOutputStream tableStream, CharIndexTranslator translator )
+            ByteArrayOutputStream tableStream, ByteArrayOutputStream dataStream, CharIndexTranslator translator )
             throws IOException
     {
 
@@ -401,7 +401,7 @@ public class PAPBinTable
             PAPFormattedDiskPage pfkp = new PAPFormattedDiskPage();
             pfkp.fill(overflow);
 
-            byte[] bufFkp = pfkp.toByteArray(tableStream, translator);
+            byte[] bufFkp = pfkp.toByteArray(dataStream, translator);
             wordDocumentStream.write(bufFkp);
             overflow = pfkp.getOverflow();
 

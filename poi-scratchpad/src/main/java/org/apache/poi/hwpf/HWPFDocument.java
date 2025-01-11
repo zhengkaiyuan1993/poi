@@ -765,7 +765,8 @@ public final class HWPFDocument extends HWPFDocumentCore {
 
         // write out the PAPBinTable.
         _fib.setFcPlcfbtePapx(tableOffset);
-        _pbt.writeTo(wordDocumentStream, tableStream, _cft.getTextPieceTable());
+        // Right now we don't know how to save dataStream modifications, so we can just pipe them to a black hole.
+        _pbt.writeTo(wordDocumentStream, tableStream, new ByteArrayOutputStream(), _cft.getTextPieceTable());
         _fib.setLcbPlcfbtePapx(tableStream.size() - tableOffset);
         tableOffset = tableStream.size();
 
