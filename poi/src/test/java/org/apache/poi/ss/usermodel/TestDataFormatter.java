@@ -1207,4 +1207,27 @@ class TestDataFormatter {
             assertEquals("25571.751069247686", df.formatCellValue(cell));*/
         }
     }
+
+    @Test
+    void testBug65190() {
+        DataFormatter formatter = new DataFormatter(Locale.ENGLISH);
+
+        assertEquals("12334567890",
+                formatter.formatRawCellContents(12334567890.0, 0, "0"));
+        assertEquals("12334567890",
+                formatter.formatRawCellContents(12334567890.0, 0, "#"));
+        assertEquals("12334567890",
+                formatter.formatRawCellContents(12334567890.0, 0, "#0"));
+        assertEquals("12334567890",
+                formatter.formatRawCellContents(12334567890.0, 0, "0#"));
+
+        assertEquals("12334567890123",
+                formatter.formatRawCellContents(12334567890123.0, 0, "0"));
+        assertEquals("12334567890123",
+                formatter.formatRawCellContents(12334567890123.0, 0, "#"));
+        assertEquals("12334567890123",
+                formatter.formatRawCellContents(12334567890123.0, 0, "#0"));
+        assertEquals("12334567890123",
+                formatter.formatRawCellContents(12334567890123.0, 0, "0#"));
+    }
 }

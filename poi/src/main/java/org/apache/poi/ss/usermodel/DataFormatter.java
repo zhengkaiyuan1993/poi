@@ -163,6 +163,11 @@ public class DataFormatter {
     private static final Pattern alternateGrouping = Pattern.compile("([#0]([^.#0])[#0]{3})");
 
     /**
+     * For handling '0#' properly
+     */
+    private static final Pattern decimalFormatFix = Pattern.compile("0+#");
+
+    /**
       * Cells formatted with a date or time format and which contain invalid date or time values
      *  show 255 pound signs ("#").
       */
@@ -848,6 +853,11 @@ public class DataFormatter {
                 String newPart = oldPart.replace(grouping, ',');
                 format = format.replace(oldPart, newPart);
             }
+        }
+
+        // Excel ignores leading zeros, but Java fails with an exception below
+        if (decimalFormatFix.matcher(format).matches()) {
+            format = "#";
         }
 
         try {
