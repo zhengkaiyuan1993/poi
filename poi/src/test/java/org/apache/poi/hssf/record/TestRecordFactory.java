@@ -33,10 +33,12 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.util.HexRead;
 import org.apache.poi.util.RecordFormatException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 
 /**
  * Tests the record factory
  */
+@Isolated // changes static values, so other tests should not run at the same time
 final class TestRecordFactory {
 
 
@@ -245,6 +247,7 @@ final class TestRecordFactory {
             assertEquals(0, RecordFactory.getMaxNumberOfRecords());
 
             // check exception when exceeding the limit
+            //noinspection resource
             assertThrows(RecordFormatException.class,
                     () -> HSSFTestDataSamples.openSampleWorkbook("SampleSS.xls"));
         } finally {
