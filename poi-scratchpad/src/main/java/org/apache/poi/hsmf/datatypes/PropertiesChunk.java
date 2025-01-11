@@ -209,6 +209,12 @@ public abstract class PropertiesChunk extends Chunk {
                 int id = LittleEndian.readUShort(value);
                 long flags = LittleEndian.readUInt(value);
 
+                boolean multivalued = false;
+                if ((typeID & Types.MULTIVALUED_FLAG) != 0) {
+                    typeID -= Types.MULTIVALUED_FLAG;
+                    multivalued = true;
+                }
+
                 // Turn the Type and ID into helper objects
                 MAPIType type = Types.getById(typeID);
                 MAPIProperty prop = MAPIProperty.get(id);
@@ -255,7 +261,7 @@ public abstract class PropertiesChunk extends Chunk {
                 // to another chunk which holds the data itself
                 boolean isPointer = false;
                 int length = type.getLength();
-                if (type.isPointer()) {
+                if (type.isPointer() || multivalued) {
                     isPointer = true;
                     length = 8;
                 }
