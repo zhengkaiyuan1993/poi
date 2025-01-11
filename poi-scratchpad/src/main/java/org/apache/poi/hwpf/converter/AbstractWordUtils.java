@@ -240,6 +240,11 @@ public class AbstractWordUtils {
                     }
                 }
 
+                // ensure the format does not grow too large, number-format
+                // can be roman-numbers, where very large numbers would have
+                // very many "M" and thus may cause memory to overload
+                IOUtils.safelyAllocateCheck(num, MAX_BULLET_BUFFER_SIZE/10);
+
                 bulletBuffer.append( NumberFormatter.getNumber( num,
                         list.getNumberFormat( level ) ) );
             } else {
