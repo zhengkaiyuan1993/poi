@@ -216,7 +216,8 @@ public final class RecordInputStream implements LittleEndianInput {
         _currentDataLength = _bhi.readDataSize();
         if (_currentDataLength > MAX_RECORD_DATA_SIZE) {
             throw new RecordFormatException("The content of an excel record cannot exceed "
-                    + MAX_RECORD_DATA_SIZE + " bytes");
+                    + MAX_RECORD_DATA_SIZE + " bytes, but had: " + _currentDataLength +
+                    " for record with sid: " + _currentSid);
         }
     }
 
