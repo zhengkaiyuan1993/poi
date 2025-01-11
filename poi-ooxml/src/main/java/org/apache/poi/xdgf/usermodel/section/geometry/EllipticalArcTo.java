@@ -73,6 +73,10 @@ public class EllipticalArcTo implements GeometryRow {
         for (CellType cell : row.getCellArray()) {
             String cellName = cell.getN();
 
+            if (cellName == null) {
+                throw new POIXMLException("Missing cellName in EllipticalArcTo row");
+            }
+
             switch (cellName) {
                 case "X":
                     x = XDGFCell.parseDoubleValue(cell);
