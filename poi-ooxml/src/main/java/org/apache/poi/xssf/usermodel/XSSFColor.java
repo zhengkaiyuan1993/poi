@@ -145,7 +145,7 @@ public class XSSFColor extends ExtendedColor {
     }
 
     /**
-     * @return true if the ctColor has a alpha
+     * @return true if the ctColor has an alpha
      */
     public boolean hasAlpha() {
         return ctColor.isSetRgb() && ctColor.getRgb().length == 4;
@@ -217,7 +217,7 @@ public class XSSFColor extends ExtendedColor {
    }
 
    @Override
-   protected byte[] getStoredRBG() {
+   protected byte[] getStoredRGB() {
        return ctColor.getRgb();
    }
 

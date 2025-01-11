@@ -18,11 +18,12 @@
 package org.apache.poi.openxml4j.util;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.temp.EncryptedTempData;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.TempFile;
@@ -35,7 +36,7 @@ import org.apache.poi.util.TempFile;
  * @see ZipInputStreamZipEntrySource#setThresholdBytesForTempFiles(int)
  */
 /* package */ class ZipArchiveFakeEntry extends ZipArchiveEntry implements Closeable {
-    private static final Logger LOG = LogManager.getLogger(ZipArchiveFakeEntry.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ZipArchiveFakeEntry.class);
 
     // how large a single entry in a zip-file should become at max
     // can be overwritten via IOUtils.setByteArrayMaxOverride()
@@ -68,8 +69,8 @@ import org.apache.poi.util.TempFile;
                 }
             } else {
                 tempFile = TempFile.createTempFile("poi-zip-entry", ".tmp");
-                LOG.atInfo().log("created for temp file {} for zip entry {} of size {} bytes",
-                        () -> tempFile.getAbsolutePath(), entry::getName, () -> entrySize);
+                LOG.atInfo().log("Creating temp file {} for zip entry {} of size {} bytes",
+                        tempFile.getAbsolutePath(), entry.getName(), entrySize);
                 IOUtils.copy(inp, tempFile);
             }
         } else {
@@ -99,12 +100,12 @@ import org.apache.poi.util.TempFile;
             }
         } else if (tempFile != null) {
             try {
-                return new FileInputStream(tempFile);
+                return Files.newInputStream(tempFile.toPath());
             } catch (FileNotFoundException e) {
                 throw new IOException("temp file " + tempFile.getAbsolutePath() + " is missing");
             }
         } else if (data != null) {
-            return new UnsynchronizedByteArrayInputStream(data);
+            return UnsynchronizedByteArrayInputStream.builder().setByteArray(data).get();
         } else {
             throw new IOException("Cannot retrieve data from Zip Entry, probably because the Zip Entry was closed before the data was requested.");
         }

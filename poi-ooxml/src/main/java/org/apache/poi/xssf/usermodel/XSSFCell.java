@@ -29,7 +29,6 @@ import org.apache.poi.ss.formula.FormulaRenderer;
 import org.apache.poi.ss.formula.FormulaType;
 import org.apache.poi.ss.formula.SharedFormula;
 import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.ptg.ErrPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellBase;
@@ -50,6 +49,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.util.Beta;
+import org.apache.poi.util.ExceptionUtil;
 import org.apache.poi.util.Internal;
 import org.apache.poi.util.LocaleUtil;
 import org.apache.poi.xssf.model.CalculationChain;
@@ -297,45 +297,54 @@ public final class XSSFCell extends CellBase {
                 rt = new XSSFRichTextString("");
                 break;
             case STRING:
-                STCellType.Enum xmlbeanCellType = _cell.getT();
-                if (xmlbeanCellType == STCellType.INLINE_STR) {
-                    if(_cell.isSetIs()) {
-                        //string is expressed directly in the cell definition instead of implementing the shared string table.
-                        rt = new XSSFRichTextString(_cell.getIs());
-                    } else if (_cell.isSetV()) {
-                        //cached result of a formula
-                        rt = new XSSFRichTextString(_cell.getV());
-                    } else {
-                        rt = new XSSFRichTextString("");
-                    }
-                } else if (xmlbeanCellType == STCellType.STR) {
-                    //cached formula value
-                    rt = new XSSFRichTextString(_cell.isSetV() ? _cell.getV() : "");
-                } else {
-                    if (_cell.isSetV()) {
-                        try {
-                            int idx = Integer.parseInt(_cell.getV());
-                            rt = (XSSFRichTextString)_sharedStringSource.getItemAt(idx);
-                        } catch(Throwable t) {
-                            rt = new XSSFRichTextString("");
-                        }
-                    } else {
-                        rt = new XSSFRichTextString("");
-                    }
-                }
+                rt = findStringValue();
                 break;
             case FORMULA: {
                 CellType cachedValueType = getBaseCellType(false);
                 if (cachedValueType != CellType.STRING) {
                     throw typeMismatch(CellType.STRING, cachedValueType, true);
                 }
-                rt = new XSSFRichTextString(_cell.isSetV() ? _cell.getV() : "");
+                rt = findStringValue();
                 break;
             }
             default:
                 throw typeMismatch(CellType.STRING, cellType, false);
         }
         rt.setStylesTableReference(_stylesSource);
+        return rt;
+    }
+
+    private XSSFRichTextString findStringValue() {
+        XSSFRichTextString rt;
+        STCellType.Enum xmlbeanCellType = _cell.getT();
+        if (xmlbeanCellType == STCellType.INLINE_STR) {
+            if(_cell.isSetIs()) {
+                //string is expressed directly in the cell definition instead of implementing the shared string table.
+                rt = new XSSFRichTextString(_cell.getIs());
+            } else if (_cell.isSetV()) {
+                //cached result of a formula
+                rt = new XSSFRichTextString(_cell.getV());
+            } else {
+                rt = new XSSFRichTextString("");
+            }
+        } else if (xmlbeanCellType == STCellType.STR) {
+            //cached formula value
+            rt = new XSSFRichTextString(_cell.isSetV() ? _cell.getV() : "");
+        } else {
+            if (_cell.isSetV()) {
+                try {
+                    int idx = Integer.parseInt(_cell.getV());
+                    rt = (XSSFRichTextString)_sharedStringSource.getItemAt(idx);
+                } catch (Throwable t) {
+                    if (ExceptionUtil.isFatal(t)) {
+                        ExceptionUtil.rethrow(t);
+                    }
+                    rt = new XSSFRichTextString("");
+                }
+            } else {
+                rt = new XSSFRichTextString("");
+            }
+        }
         return rt;
     }
 
@@ -483,19 +492,7 @@ public final class XSSFCell extends CellBase {
         if (wb.getCellFormulaValidation()) {
             XSSFEvaluationWorkbook fpb = XSSFEvaluationWorkbook.create(wb);
             //validate through the FormulaParser
-            Ptg[] ptgs = FormulaParser.parse(formula, fpb, formulaType, wb.getSheetIndex(getSheet()), getRowIndex());
-            // Make its format consistent with Excel.
-            // eg: "SUM('Sheet1:Sheet2'!A1:B1)" will be trans to "SUM(Sheet1:Sheet2!A1:B1)"
-            boolean hasError = false;
-            for (Ptg ptg : ptgs) {
-                if (ptg instanceof ErrPtg) {
-                    hasError = true;
-                    break;
-                }
-            }
-            if (!hasError) {
-                formula = FormulaRenderer.toFormulaString(fpb, ptgs);
-            }
+            FormulaParser.parse(formula, fpb, formulaType, wb.getSheetIndex(getSheet()), getRowIndex());
         }
 
         CTCellFormula f;
@@ -609,10 +606,10 @@ public final class XSSFCell extends CellBase {
      * the XSSFWorkbook.</p>
      *
      * <p>To change the style of a cell without affecting other cells that use the same style,
-     * use {@link org.apache.poi.ss.util.CellUtil#setCellStyleProperties(Cell, java.util.Map)}</p>
+     * use {@link org.apache.poi.ss.util.CellUtil#setCellStylePropertiesEnum(Cell, java.util.Map)}</p>
      *
      * @param style  reference contained in the workbook.
-     * If the value is null then the style information is removed causing the cell to used the default workbook style.
+     * If the value is null then the style information is removed causing the cell to use the default workbook style.
      * @throws IllegalArgumentException if style belongs to a different styles source (most likely because style is from a different Workbook)
      */
     @Override
@@ -807,7 +804,7 @@ public final class XSSFCell extends CellBase {
     }
 
     /**
-     * Set a error value for the cell
+     * Set an error value for the cell
      *
      * @param errorCode the error value to set this cell to.  For formulas, we'll set the
      *        precalculated value , for errors we'll set
@@ -822,7 +819,7 @@ public final class XSSFCell extends CellBase {
     }
 
     /**
-     * Set a error value for the cell
+     * Set an error value for the cell
      *
      * @param error the error value to set this cell to.  For formulas, we'll set the
      *        precalculated value , for errors we'll set
@@ -988,7 +985,7 @@ public final class XSSFCell extends CellBase {
     }
 
     /**
-     * @throws RuntimeException if the bounds are exceeded.
+     * @throws IllegalStateException if the bounds are exceeded.
      */
     private static void checkBounds(int cellIndex) {
         SpreadsheetVersion v = SpreadsheetVersion.EXCEL2007;
@@ -1158,6 +1155,9 @@ public final class XSSFCell extends CellBase {
                     RichTextString rt = _sharedStringSource.getItemAt(sstIndex);
                     return rt.getString();
                 } catch (Throwable t) {
+                    if (ExceptionUtil.isFatal(t)) {
+                        ExceptionUtil.rethrow(t);
+                    }
                     return "";
                 }
             case NUMERIC:

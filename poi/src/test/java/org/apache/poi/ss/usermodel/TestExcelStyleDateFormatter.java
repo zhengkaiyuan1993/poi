@@ -73,10 +73,26 @@ class TestExcelStyleDateFormatter {
      * is expected and selected via an index
      */
     private static int localeIndex(Locale locale) {
-        return jreVersion < 9 ||
-            !locale.equals (Locale.CHINESE) ||
-            (provider != null && (provider.startsWith("JRE") || provider.startsWith("COMPAT")))
-            ? 0 : 1;
+        if (jreVersion < 9) {
+            return 0;
+        }
+
+        // only Chinese needs special handling
+        if (!locale.equals (Locale.CHINESE)) {
+            return 0;
+        }
+
+        // in JDK 23, the COMPAT/JRE provider was removed completely
+        if (jreVersion >= 23) {
+            return 1;
+        }
+
+        // check if the JRE/COMPAT locale provide is selected
+        if (provider != null && (provider.startsWith("JRE") || provider.startsWith("COMPAT"))) {
+            return 0;
+        }
+
+        return 1;
     }
 
     /**

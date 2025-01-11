@@ -16,8 +16,8 @@
 ==================================================================== */
 package org.apache.poi.ss.format;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.util.CodepointsUtil;
 import org.apache.poi.util.LocaleUtil;
@@ -26,7 +26,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +47,7 @@ import static org.apache.poi.ss.format.CellFormatter.quote;
  */
 @SuppressWarnings("RegExpRepeatedSpace")
 public class CellFormatPart {
-    private static final Logger LOG = LogManager.getLogger(CellFormatPart.class);
+    private static final Logger LOG = PoiLogManager.getLogger(CellFormatPart.class);
 
     static final Map<String, Color> NAMED_COLORS;
 
@@ -136,7 +135,7 @@ public class CellFormatPart {
                 "|\\[h{1,2}]                     # Elapsed time: hour spec\n" +
                 "|\\[m{1,2}]                     # Elapsed time: minute spec\n" +
                 "|\\[s{1,2}]                     # Elapsed time: second spec\n" +
-                "|[^;]                           # A character\n" + "";
+                "|[^;]                           # A character\n";
 
         String format = "(?:" + color + ")?                 # Text color\n" +
                 "(?:\\[" + condition + "])?               # Condition\n" +
@@ -256,7 +255,7 @@ public class CellFormatPart {
             return null;
         Color c = NAMED_COLORS.get(cdesc);
         if (c == null) {
-            LOG.warn("Unknown color: " + quote(cdesc));
+            LOG.warn("Unknown color: {}", quote(cdesc));
         }
         return c;
     }
@@ -342,9 +341,6 @@ public class CellFormatPart {
             Iterator<String> codePoints = CodepointsUtil.iteratorFor(repl);
             if (codePoints.hasNext()) {
                 String c1 = codePoints.next();
-                String c2 = null;
-                if (codePoints.hasNext())
-                    c2 = codePoints.next().toLowerCase(Locale.ROOT);
 
                 switch (c1) {
                 case "@":
@@ -368,6 +364,9 @@ public class CellFormatPart {
                     seenZero = true;
                     break;
                 case "[":
+                    String c2 = null;
+                    if (codePoints.hasNext())
+                        c2 = codePoints.next().toLowerCase(Locale.ROOT);
                     if ("h".equals(c2) || "m".equals(c2) || "s".equals(c2)) {
                         return CellFormatType.ELAPSED;
                     }
@@ -407,19 +406,21 @@ public class CellFormatPart {
      */
     static String quoteSpecial(String repl, CellFormatType type) {
         StringBuilder sb = new StringBuilder();
-        Iterator<String> codePoints = CodepointsUtil.iteratorFor(repl);
+        PrimitiveIterator.OfInt codePoints = CodepointsUtil.primitiveIterator(repl);
 
+        int codepoint;
         while (codePoints.hasNext()) {
-            String ch = codePoints.next();
-            if ("'".equals(ch) && type.isSpecial('\'')) {
+            codepoint = codePoints.nextInt();
+            if (codepoint == '\'' && type.isSpecial('\'')) {
                 sb.append('\u0000');
                 continue;
             }
 
-            boolean special = type.isSpecial(ch.charAt(0));
+            char[] chars = Character.toChars(codepoint);
+            boolean special = type.isSpecial(chars[0]);
             if (special)
                 sb.append('\'');
-            sb.append(ch);
+            sb.append(chars);
             if (special)
                 sb.append('\'');
         }
@@ -571,11 +572,17 @@ public class CellFormatPart {
      * @return The character repeated three times.
      */
     static String expandChar(String part) {
-        List<String> codePoints = new ArrayList<>();
-        CodepointsUtil.iteratorFor(part).forEachRemaining(codePoints::add);
-        if (codePoints.size() < 2) throw new IllegalArgumentException("Expected part string to have at least 2 chars");
-        String ch = codePoints.get(1);
-        return ch + ch + ch;
+        PrimitiveIterator.OfInt iterator = CodepointsUtil.primitiveIterator(part);
+        Integer c0 = iterator.hasNext() ? iterator.next() : null;
+        Integer c1 = iterator.hasNext() ? iterator.next() : null;
+        if (c0 == null || c1 == null)
+            throw new IllegalArgumentException("Expected part string to have at least 2 chars");
+        char[] ch = Character.toChars(c1);
+        StringBuilder sb = new StringBuilder(ch.length * 3);
+        sb.append(ch);
+        sb.append(ch);
+        sb.append(ch);
+        return sb.toString();
     }
 
     /**

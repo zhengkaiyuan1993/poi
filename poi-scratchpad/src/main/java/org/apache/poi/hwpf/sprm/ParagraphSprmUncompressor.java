@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hwpf.model.TabDescriptor;
 import org.apache.poi.hwpf.model.types.TBDAbstractType;
 import org.apache.poi.hwpf.usermodel.BorderCode;
@@ -44,7 +44,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
 @Internal
 public final class ParagraphSprmUncompressor extends SprmUncompressor {
 
-    private static final Logger LOG = LogManager.getLogger(ParagraphSprmUncompressor.class);
+    private static final Logger LOG = PoiLogManager.getLogger(ParagraphSprmUncompressor.class);
 
   public ParagraphSprmUncompressor()
   {

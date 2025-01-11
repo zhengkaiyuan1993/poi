@@ -19,8 +19,8 @@ package org.apache.poi.hslf.usermodel;
 
 import java.awt.Color;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ddf.AbstractEscherOptRecord;
 import org.apache.poi.ddf.EscherChildAnchorRecord;
 import org.apache.poi.ddf.EscherClientAnchorRecord;
@@ -58,7 +58,7 @@ import org.apache.poi.util.Units;
  *  This is the parent class for all primitive shapes like Line, Rectangle, etc.
  */
 public abstract class HSLFSimpleShape extends HSLFShape implements SimpleShape<HSLFShape,HSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(HSLFSimpleShape.class);
+    private static final Logger LOG = PoiLogManager.getLogger(HSLFSimpleShape.class);
 
     public static final double DEFAULT_LINE_WIDTH = 0.75;
 

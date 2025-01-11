@@ -31,8 +31,8 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
@@ -68,9 +68,9 @@ public class XSSFReader {
             Collections.unmodifiableSet(new HashSet<>(
                     Arrays.asList(XSSFRelation.WORKSHEET.getRelation(),
                             XSSFRelation.CHARTSHEET.getRelation(),
-                            XSSFRelation.MACRO_SHEET_BIN.getRelation())
+                            XSSFRelation.MACRO_SHEET_XML.getRelation())
             ));
-    private static final Logger LOGGER = LogManager.getLogger(XSSFReader.class);
+    private static final Logger LOGGER = PoiLogManager.getLogger(XSSFReader.class);
 
     protected OPCPackage pkg;
     protected PackagePart workbookPart;
@@ -265,8 +265,24 @@ public class XSSFReader {
      *
      * @throws InvalidFormatException if the sheet data format is invalid
      * @throws IOException if there is an I/O issue reading the data
+     * @see #getSheetIterator()
      */
     public Iterator<InputStream> getSheetsData() throws IOException, InvalidFormatException {
+        return getSheetIterator();
+    }
+
+    /**
+     * Returns an Iterator which will let you get at all the
+     * different Sheets in turn.
+     * Each sheet's InputStream is only opened when fetched
+     * from the Iterator. It's up to you to close the
+     * InputStreams when done with each one.
+     *
+     * @throws InvalidFormatException if the sheet data format is invalid
+     * @throws IOException if there is an I/O issue reading the data
+     * @since POI 5.4.0
+     */
+    public SheetIterator getSheetIterator() throws IOException, InvalidFormatException {
         return new SheetIterator(workbookPart);
     }
 
@@ -300,6 +316,9 @@ public class XSSFReader {
          * @throws IOException if there is an I/O issue reading the data
          */
         protected SheetIterator(PackagePart wb) throws IOException, InvalidFormatException {
+            if (wb == null) {
+                throw new InvalidFormatException("Cannot create sheet-iterator with missing package part for workbook");
+            }
 
             /*
              * The order of sheets is defined by the order of CTSheet elements in workbook.xml
@@ -377,6 +396,10 @@ public class XSSFReader {
          */
         @Override
         public InputStream next() {
+            if (!sheetIterator.hasNext()) {
+                throw new IllegalStateException("Cannot get next from iterator");
+            }
+
             xssfSheetRef = sheetIterator.next();
 
             String sheetId = xssfSheetRef.getId();

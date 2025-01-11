@@ -844,7 +844,7 @@ public abstract class BaseTestCell {
             Cell cell = row.createCell(0);
 
             // different default style indexes for HSSF and XSSF/SXSSF
-            CellStyle defaultStyle = wb.getCellStyleAt(wb instanceof HSSFWorkbook ? (short) 15 : (short) 0);
+            CellStyle defaultStyle = wb.getCellStyleAt(wb instanceof HSSFWorkbook ? 15 : 0);
 
             // Starts out with the default style
             assertEquals(defaultStyle, cell.getCellStyle());
@@ -1408,7 +1408,7 @@ public abstract class BaseTestCell {
     }
 
     @Test
-    void setCellType_FORMULA_onAnArrayFormulaCell_doesNothing() throws IOException {
+    protected void setCellType_FORMULA_onAnArrayFormulaCell_doesNothing() throws IOException {
         try (Workbook wb = _testDataProvider.createWorkbook()) {
             Cell cell = getInstance(wb);
             cell.getSheet().setArrayFormula("3", CellRangeAddress.valueOf("A1:A2"));

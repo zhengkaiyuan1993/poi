@@ -26,8 +26,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.util.Beta;
 
 /**
@@ -37,11 +37,11 @@ import org.apache.poi.util.Beta;
  */
 @Beta
 public class StreamingSheetWriter extends SheetDataWriter {
-    private static final Logger LOG = LogManager.getLogger(StreamingSheetWriter.class);
+    private static final Logger LOG = PoiLogManager.getLogger(StreamingSheetWriter.class);
     private boolean closed = false;
 
     public StreamingSheetWriter() throws IOException {
-        throw new RuntimeException("StreamingSheetWriter requires OutputStream");
+        throw new IllegalStateException("StreamingSheetWriter requires OutputStream");
     }
 
     public StreamingSheetWriter(OutputStream out) throws IOException {
@@ -51,12 +51,12 @@ public class StreamingSheetWriter extends SheetDataWriter {
 
     @Override
     public File createTempFile() throws IOException {
-        throw new RuntimeException("Not supported with StreamingSheetWriter");
+        throw new IllegalStateException("Not supported with StreamingSheetWriter");
     }
 
     @Override
     public Writer createWriter(File fd) throws IOException {
-        throw new RuntimeException("Not supported with StreamingSheetWriter");
+        throw new IllegalStateException("Not supported with StreamingSheetWriter");
     }
 
     /**
@@ -77,7 +77,7 @@ public class StreamingSheetWriter extends SheetDataWriter {
 
     @Override
     public InputStream getWorksheetXMLInputStream() throws IOException {
-        throw new RuntimeException("Not supported with StreamingSheetWriter");
+        throw new IllegalStateException("Not supported with StreamingSheetWriter");
     }
 
     @Override

@@ -37,8 +37,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.crypt.dsig.SignatureConfig;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.RandomSingleton;
@@ -54,7 +54,7 @@ public class TimeStampSimpleHttpClient implements TimeStampHttpClient {
     protected static final String BASIC_AUTH = "Authorization";
     protected static final String REDIRECT_LOCATION = "Location";
 
-    private static final Logger LOG = LogManager.getLogger(TimeStampSimpleHttpClient.class);
+    private static final Logger LOG = PoiLogManager.getLogger(TimeStampSimpleHttpClient.class);
 
     // how large a timestamp response is expected to be
     // can be overwritten via IOUtils.setByteArrayMaxOverride()

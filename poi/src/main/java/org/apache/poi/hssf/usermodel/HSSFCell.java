@@ -219,7 +219,7 @@ public class HSSFCell extends CellBase {
                          ? CellType.BOOLEAN
                          : CellType.ERROR;
         }
-        throw new RuntimeException("Bad cell value rec (" + cval.getClass().getName() + ")");
+        throw new IllegalStateException("Bad cell value rec (" + cval.getClass().getName() + ")");
     }
 
     /**
@@ -786,7 +786,7 @@ public class HSSFCell extends CellBase {
     }
 
     /**
-     * set a error value for the cell
+     * set an error value for the cell
      *
      * @param errorCode the error value to set this cell to.  For formulas, we'll set the
      *        precalculated value , for errors we'll set
@@ -802,7 +802,7 @@ public class HSSFCell extends CellBase {
         setCellErrorValue(error);
     }
     /**
-     * set a error value for the cell
+     * set an error value for the cell
      *
      * @param error the error value to set this cell to.  For formulas, we'll set the
      *        precalculated value , for errors we'll set
@@ -946,7 +946,7 @@ public class HSSFCell extends CellBase {
      * the HSSFWorkbook.</p>
      *
      * <p>To change the style of a cell without affecting other cells that use the same style,
-     * use {@link org.apache.poi.ss.util.CellUtil#setCellStyleProperties(org.apache.poi.ss.usermodel.Cell, java.util.Map)}</p>
+     * use {@link org.apache.poi.ss.util.CellUtil#setCellStylePropertiesEnum(org.apache.poi.ss.usermodel.Cell, java.util.Map)}</p>
      *
      * @param style  reference contained in the workbook
      * @see org.apache.poi.hssf.usermodel.HSSFWorkbook#createCellStyle()
@@ -1002,7 +1002,7 @@ public class HSSFCell extends CellBase {
     }
 
     /**
-     * @throws RuntimeException if the bounds are exceeded.
+     * @throws IllegalStateException if the bounds are exceeded.
      */
     private static void checkBounds(int cellIndex) {
         if (cellIndex < 0 || cellIndex > LAST_COLUMN_NUMBER) {
