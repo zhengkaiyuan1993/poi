@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -782,6 +784,23 @@ class TestBugs {
             PicturesTable picturesTable = doc.getPicturesTable();
             List<Picture> pictures = picturesTable.getAllPictures();
             assertNotNull(pictures);
+        }
+    }
+
+    //
+    @Test
+    void test58805() throws IOException {
+        try (HWPFDocument doc = openSampleFile("header_footer_replace.doc")) {
+
+            Range oRange = doc.getHeaderStoryRange();
+            for (int i = 0; i < oRange.numCharacterRuns(); i++) {
+                CharacterRun run = oRange.getCharacterRun(i);
+                run.replaceText("_TEST_", "This text is longer than the initial text. It goes on and on without interruption.");
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(new File("/tmp/test.doc"))) {
+                doc.write(fos);
+            }
         }
     }
 }
