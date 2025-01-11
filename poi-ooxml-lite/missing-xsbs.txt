@@ -128,3 +128,4 @@ ststrokelinestylea509type
 sttargetscreensize4357type
 stverticalanchor22cctype
 stwrapside6d02type
+wsdrd172doctype
