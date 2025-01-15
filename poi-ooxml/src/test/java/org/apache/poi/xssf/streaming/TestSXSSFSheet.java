@@ -277,7 +277,6 @@ public final class TestSXSSFSheet extends BaseTestXSheet {
                 workbook1.write(bos);
             }
             width1 = sheet.getColumnWidth(0);
-            sheet.setColumnWidth(0, sheet.getColumnWidth(0) + 100);
         }
 
         assertEquals(width0 + extra, width1);
