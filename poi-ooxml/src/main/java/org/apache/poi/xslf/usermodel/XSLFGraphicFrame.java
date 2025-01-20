@@ -84,9 +84,14 @@ public class XSLFGraphicFrame extends XSLFShape implements GraphicalFrame<XSLFSh
         }
         double x = Units.toPoints(POIXMLUnits.parseLength(off.xgetX()));
         double y = Units.toPoints(POIXMLUnits.parseLength(off.xgetY()));
+
         CTPositiveSize2D ext = xfrm.getExt();
+        if (ext == null) {
+            throw new IllegalArgumentException("Could not retrieve Ext from the XML object");
+        }
         double cx = Units.toPoints(ext.getCx());
         double cy = Units.toPoints(ext.getCy());
+
         return new Rectangle2D.Double(x, y, cx, cy);
     }
 
