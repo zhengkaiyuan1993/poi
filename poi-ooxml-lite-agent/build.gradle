@@ -36,7 +36,7 @@ java {
     }
 }
 
-task compileJava9(type: JavaCompile) {
+tasks.register('compileJava9', JavaCompile) {
     dependsOn 'compileJava'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -49,8 +49,8 @@ task compileJava9(type: JavaCompile) {
     classpath = files()
     doFirst {
         options.compilerArgs = [
-            '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
-            '--module-path', sourceSets.main.compileClasspath.asPath
+                '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
+                '--module-path', sourceSets.main.compileClasspath.asPath
         ]
     }
 }

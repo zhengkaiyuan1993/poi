@@ -53,7 +53,7 @@ final Pattern MODULE_REGEX = ~'\\.jar$'
 final List MAIN_MODULE_PATH = sourceSets.main.runtimeClasspath.findAll{ it.path =~ MODULE_REGEX }.collect{ it.parent }.unique()
 final List TEST_MODULE_PATH = sourceSets.test.runtimeClasspath.findAll{ it.path =~ MODULE_REGEX && !(it.path =~ MODULE_NOT_REGEX) }.collect{ it.parent }.unique()
 
-task compileJava9(type: JavaCompile) {
+tasks.register('compileJava9', JavaCompile) {
     dependsOn 'compileJava', ':poi:jar'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -65,12 +65,12 @@ task compileJava9(type: JavaCompile) {
     source = file(JAVA9_SRC)
     classpath = files()
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
-        '--module-path', files(MAIN_MODULE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
+            '--module-path', files(MAIN_MODULE_PATH).asPath
     ]
 }
 
-task compileTest9(type: JavaCompile) {
+tasks.register('compileTest9', JavaCompile) {
     dependsOn 'compileTestJava', ':poi:jar'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -81,8 +81,8 @@ task compileTest9(type: JavaCompile) {
     destinationDirectory = file(TEST9_OUT + VERSIONS9)
     source = file(TEST9_SRC)
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${(sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs).asPath}",
-        '--module-path', files(TEST_MODULE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${(sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs).asPath}",
+            '--module-path', files(TEST_MODULE_PATH).asPath
     ]
     classpath = files()
 }
@@ -103,7 +103,7 @@ task testJar(type: Jar, dependsOn: testClasses) {
 
     setArchiveClassifier 'tests'
     // ignore second module-info.class from main
-    duplicatesStrategy = 'exclude'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from sourceSets.test.output + sourceSets.main.output
 

@@ -34,10 +34,10 @@ sourceSets {
 }
 
 // Run out read demo by default
-tasks.withType(JavaExec) {
-   classpath = sourceSets.main.runtimeClasspath
+tasks.withType(JavaExec).configureEach {
+    classpath = sourceSets.main.runtimeClasspath
 }
-task runScript(type: JavaExec) {
+tasks.register('runScript', JavaExec) {
     mainClass = "SpreadSheetDemo"
     args = ["../../../../test-data/spreadsheet/Simple.xls"]
 }

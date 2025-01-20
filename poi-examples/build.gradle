@@ -49,7 +49,7 @@ final String MODULE_NAME = 'org.apache.poi.examples'
 final Pattern MODULE_REGEX = ~'\\.jar$'
 final List MODULE_COMPILE_PATH = sourceSets.main.compileClasspath.findAll{ it.path =~ MODULE_REGEX }.collect{ it.parent }.unique()
 
-task compileJava9(type: JavaCompile) {
+tasks.register('compileJava9', JavaCompile) {
     dependsOn 'compileJava', ':poi-ooxml:jar', ':poi-scratchpad:jar'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -61,8 +61,8 @@ task compileJava9(type: JavaCompile) {
     source = file(JAVA9_SRC)
     classpath = files()
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
-        '--module-path', files(MODULE_COMPILE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
+            '--module-path', files(MODULE_COMPILE_PATH).asPath
     ]
 }
 

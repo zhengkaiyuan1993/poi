@@ -30,7 +30,7 @@ wrapper {
 // Custom task to inject support for downloading the gradle wrapper jar if it doesn't exist.
 // This allows us to avoid checking in the jar to our repository.
 // Additionally adds a license header to the wrapper while editing the file contents.
-task bootstrapWrapper() {
+tasks.register('bootstrapWrapper') {
     // In the doLast block so this runs when the task is called and not during project configuration.
     doLast {
         def wrapperBasePath = "\$APP_HOME/gradle/wrapper"
@@ -79,7 +79,7 @@ task bootstrapWrapper() {
 wrapper.finalizedBy bootstrapWrapper
 
 // Remove the generated batch file since we don't test building in the Windows environment.
-task removeWindowsScript(type: Delete) {
+tasks.register('removeWindowsScript', Delete) {
     delete "$rootDir/gradlew.bat"
 }
 wrapper.finalizedBy removeWindowsScript

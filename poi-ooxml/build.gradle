@@ -149,7 +149,7 @@ compileJava {
     dependsOn 'fixBatik', 'cleanupBatik'
 }
 
-task compileJava9(type: JavaCompile) {
+tasks.register('compileJava9', JavaCompile) {
     dependsOn 'compileJava', ':poi:jar'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -161,12 +161,12 @@ task compileJava9(type: JavaCompile) {
     source = file(JAVA9_SRC)
     classpath = files()
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
-        '--module-path', files(MAIN_MODULE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
+            '--module-path', files(MAIN_MODULE_PATH).asPath
     ]
 }
 
-task compileTest9(type: JavaCompile) {
+tasks.register('compileTest9', JavaCompile) {
     dependsOn 'compileTestJava', ':poi:testJar'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -177,8 +177,8 @@ task compileTest9(type: JavaCompile) {
     destinationDirectory = file(TEST9_OUT + VERSIONS9)
     source = file(TEST9_SRC)
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${(sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs).asPath}",
-        '--module-path', files(TEST_MODULE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${(sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs).asPath}",
+            '--module-path', files(TEST_MODULE_PATH).asPath
     ]
     classpath = files()
 }
@@ -199,7 +199,7 @@ task testJar(type: Jar, dependsOn: testClasses) {
 
     setArchiveClassifier 'tests'
     // ignore second module-info.class from main
-    duplicatesStrategy = 'exclude'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from sourceSets.test.output + sourceSets.main.output
 
@@ -209,17 +209,17 @@ task testJar(type: Jar, dependsOn: testClasses) {
 }
 
 // based on https://github.com/moditect/moditect-gradle-plugin/issues/12
-task fixBatik(type: Zip) {
+tasks.register('fixBatik', Zip) {
     ant.mkdir(dir: "${buildDir}/brokenJars")
     archiveFileName = "batik-script-${batikVersion}.jar"
     destinationDirectory = file("${buildDir}/brokenJars")
-    from zipTree(configurations.broken.files.find{ f -> f.name.startsWith("batik-script") })
+    from zipTree(configurations.broken.files.find { f -> f.name.startsWith("batik-script") })
     filesMatching("**/org.apache.batik.script.InterpreterFactory") {
-        it.filter{ it2 -> it2.contains("Rhino") ? "#" + it2 : it2 }
+        it.filter { it2 -> it2.contains("Rhino") ? "#" + it2 : it2 }
     }
 }
 
-task cleanupBatik(type: Delete) {
+tasks.register('cleanupBatik', Delete) {
     // remove older files to avoid build failures because of duplicate modules
     delete fileTree("${buildDir}/brokenJars/").matching {
         include "*.jar"

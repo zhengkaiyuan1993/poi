@@ -56,7 +56,7 @@ dependencies {
 }
 
 // generate and compile the file Version.java file
-task generateVersionJava() {
+tasks.register('generateVersionJava') {
     //dependsOn ':poi-ooxml:build', ':poi-integration:build', ':poi-excelant:build'
 
     File fileIn = file("src/main/version/Version.java.template")
@@ -80,7 +80,7 @@ final Pattern MODULE_NOT_REGEX = ~'(poi[/\\\\][^/\\\\]+$|batik-script)'
 final Pattern MODULE_REGEX = ~'\\.jar$'
 final List MODULE_PATH = sourceSets.test.runtimeClasspath.findAll{ it.path =~ MODULE_REGEX && !(it.path =~ MODULE_NOT_REGEX) }.collect{ it.parent }.unique()
 
-task compileJava9(type: JavaCompile) {
+tasks.register('compileJava9', JavaCompile) {
     dependsOn 'compileJava'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -92,12 +92,12 @@ task compileJava9(type: JavaCompile) {
     source = file(JAVA9_SRC)
     classpath = files()
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
-        '--module-path', sourceSets.main.compileClasspath.asPath
+            '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.classesDirs.asPath}",
+            '--module-path', sourceSets.main.compileClasspath.asPath
     ]
 }
 
-task compileTest9(type: JavaCompile) {
+tasks.register('compileTest9', JavaCompile) {
     dependsOn 'compileTestJava'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -108,8 +108,8 @@ task compileTest9(type: JavaCompile) {
     destinationDirectory = file(TEST9_OUT + VERSIONS9)
     source = file(TEST9_SRC)
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${(sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs).asPath}",
-        '--module-path', files(MODULE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${(sourceSets.main.output.classesDirs + sourceSets.test.output.classesDirs).asPath}",
+            '--module-path', files(MODULE_PATH).asPath
     ]
     classpath = files()
 }
@@ -129,7 +129,7 @@ task testJar(type: Jar, dependsOn: [ testClasses, compileTest9 ]) {
 
     setArchiveClassifier 'tests'
     // ignore second module-info.class from main
-    duplicatesStrategy = 'exclude'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from sourceSets.test.output + sourceSets.main.output
 

@@ -54,7 +54,7 @@ compileJava {
     options.forkOptions.jvmArgs += '-Xmx2G'
 }
 
-task compileJava9(type: JavaCompile) {
+tasks.register('compileJava9', JavaCompile) {
     dependsOn 'compileJava'
 
     javaCompiler = javaToolchains.compilerFor {
@@ -66,24 +66,24 @@ task compileJava9(type: JavaCompile) {
     source = file(JAVA9_SRC)
     classpath = files()
     options.compilerArgs = [
-        '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.asPath}",
-        '--module-path', files(MAIN_MODULE_PATH).asPath
+            '--patch-module', "${MODULE_NAME}=${sourceSets.main.output.asPath}",
+            '--module-path', files(MAIN_MODULE_PATH).asPath
     ]
 }
 
-task copy_xsds(type: Copy) {
-    from ('src/main/xmlschema/org/apache/poi/xdgf')
-    from ('src/main/xmlschema/org/apache/poi/schemas') {
+tasks.register('copy_xsds', Copy) {
+    from('src/main/xmlschema/org/apache/poi/xdgf')
+    from('src/main/xmlschema/org/apache/poi/schemas') {
         include 'XAdES*.xsd', '*.xsdconfig', 'xmldsig*.xsd', 'ooxmlSchemas.xsdconfig', 'markup-compatibility.xsd',
                 'vmlDrawing.xsd', 'word10.xsd', 'word12.xsd', 'xlThreaded*.xsd', 'dml-drawing.xsd', 'drawing-chart2012.xsd',
                 'chartEx.xsd'
         exclude '*.zip'
     }
-    from ('src/main/xmlschema/org/apache/poi/poifs/crypt') {
+    from('src/main/xmlschema/org/apache/poi/poifs/crypt') {
         include 'signatureInfo.xsd'
     }
-    from (zipTree('src/main/xmlschema/org/apache/poi/schemas/OfficeOpenXML-XMLSchema-Transitional.zip'))
-    from (zipTree('src/main/xmlschema/org/apache/poi/schemas/OpenPackagingConventions-XMLSchema.zip')) {
+    from(zipTree('src/main/xmlschema/org/apache/poi/schemas/OfficeOpenXML-XMLSchema-Transitional.zip'))
+    from(zipTree('src/main/xmlschema/org/apache/poi/schemas/OpenPackagingConventions-XMLSchema.zip')) {
         include 'opc-digSig.xsd', 'opc-relationships.xsd'
     }
     into 'build/xsds'
@@ -95,30 +95,30 @@ task generate_beans(dependsOn: copy_xsds) {
 
     doLast {
         ant.uptodate(
-            property: 'xmlbeans_uptodate',
-            targetfile: 'build/generated-resources/org/apache/poi/schemas/ooxml/system/ooxml/TypeSystemHolder.class'
+                property: 'xmlbeans_uptodate',
+                targetfile: 'build/generated-resources/org/apache/poi/schemas/ooxml/system/ooxml/TypeSystemHolder.class'
         ) {
             srcFiles(dir: 'build/xsds', includes: '*.xsd')
         }
 
         ant.taskdef(
-            name: 'xmlbean',
-            classname: 'org.apache.xmlbeans.impl.tool.XMLBean',
-            classpath: sourceSets.main.runtimeClasspath.asPath
+                name: 'xmlbean',
+                classname: 'org.apache.xmlbeans.impl.tool.XMLBean',
+                classpath: sourceSets.main.runtimeClasspath.asPath
         )
 
         if (!ant.properties.xmlbeans_uptodate) {
             ant.xmlbean(
-                schema: 'build/xsds',
-                srcgendir: BEANS_SRC,
-                classgendir: BEANS_RES,
-                destfile: 'build/xsds.jar',
-                srconly: true,
-                failonerror: true,
-                fork: true,
-                memoryMaximumSize: '1536m',
-                typesystemname: 'ooxml',
-                repackage: 'org.apache.xmlbeans.metadata:org.apache.poi.schemas.ooxml'
+                    schema: 'build/xsds',
+                    srcgendir: BEANS_SRC,
+                    classgendir: BEANS_RES,
+                    destfile: 'build/xsds.jar',
+                    srconly: true,
+                    failonerror: true,
+                    fork: true,
+                    memoryMaximumSize: '1536m',
+                    typesystemname: 'ooxml',
+                    repackage: 'org.apache.xmlbeans.metadata:org.apache.poi.schemas.ooxml'
             ) {
                 classpath = sourceSets.main.runtimeClasspath.asPath
             }
@@ -126,7 +126,7 @@ task generate_beans(dependsOn: copy_xsds) {
     }
 }
 
-task sourceJar(type: Jar) {
+tasks.register('sourceJar', Jar) {
     setArchiveClassifier 'sources'
     from sourceSets.main.allJava
 }
