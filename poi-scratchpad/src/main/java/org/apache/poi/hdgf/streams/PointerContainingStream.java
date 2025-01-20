@@ -30,7 +30,7 @@ import org.apache.poi.hdgf.pointers.PointerFactory;
 public class PointerContainingStream extends Stream { // TODO - instantiable superclass
     private static final Logger LOG = PoiLogManager.getLogger(PointerContainingStream.class);
 
-    private static final int MAX_CHILDREN_NESTING = 500;
+    private static int MAX_CHILDREN_NESTING = 500;
 
     private final Pointer[] childPointers;
     private Stream[] childStreams;
@@ -42,7 +42,7 @@ public class PointerContainingStream extends Stream { // TODO - instantiable sup
         super(pointer, store);
         this.chunkFactory = chunkFactory;
         this.pointerFactory = pointerFactory;
-        
+
         // Have the child pointers identified and created
         childPointers = pointerFactory.createContainerPointers(pointer, store.getContents());
     }
@@ -69,14 +69,15 @@ public class PointerContainingStream extends Stream { // TODO - instantiable sup
 
     private void findChildren(byte[] documentData, int nesting) {
         if (nesting > MAX_CHILDREN_NESTING) {
-            LOG.warn("Encountered too deep nesting, cannot fully process stream " +
-                    " with more than " + MAX_CHILDREN_NESTING + " nested children." +
-                    " Some data could not be parsed.");
-            return;
+            throw new IllegalArgumentException("Encountered too deep nesting, cannot process stream " +
+                    "with more than " + MAX_CHILDREN_NESTING + " nested children. " +
+                    "Some data could not be parsed. You can call setMaxChildrenNesting() to adjust " +
+                    "this limit.");
         }
 
         // For each pointer, generate the Stream it points to
         childStreams = new Stream[childPointers.length];
+
         for(int i=0; i<childPointers.length; i++) {
             Pointer ptr = childPointers[i];
             childStreams[i] = Stream.createStream(ptr, documentData, chunkFactory, pointerFactory);
@@ -94,5 +95,13 @@ public class PointerContainingStream extends Stream { // TODO - instantiable sup
                 child.findChildren(documentData, nesting + 1);
             }
         }
+    }
+
+    public static int getMaxChildrenNesting() {
+        return MAX_CHILDREN_NESTING;
+    }
+
+    public static void setMaxChildrenNesting(int maxChildrenNesting) {
+        MAX_CHILDREN_NESTING = maxChildrenNesting;
     }
 }
