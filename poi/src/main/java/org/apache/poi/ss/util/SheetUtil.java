@@ -259,7 +259,15 @@ public class SheetUtil {
      */
     private static double getCellWidth(float defaultCharWidth, int colspan,
             CellStyle style, double minWidth, AttributedString str) {
-        TextLayout layout = new TextLayout(str.getIterator(), fontRenderContext);
+        TextLayout layout;
+        try {
+            layout = new TextLayout(str.getIterator(), fontRenderContext);
+        } catch (Throwable t) {
+            if (shouldIgnoreMissingFontSystem(t)) {
+                return defaultCharWidth;
+            }
+            throw t;
+        }
         final Rectangle2D bounds;
         if (style.getRotation() != 0) {
             /*
@@ -353,23 +361,23 @@ public class SheetUtil {
             TextLayout layout = new TextLayout(str.getIterator(), fontRenderContext);
             return layout.getAdvance();
         } catch (Throwable t) {
-            // ignore exception and return a default char width if
-            // the ignore-feature is enabled and the exception indicates that
-            // the underlying font system is not available
-            if (ignoreMissingFontSystem && (
-                    // the three types of exception usually indicate here that the font
-                    // system is not fully installed, i.e. system libraries missing or
-                    // some JDK classes cannot be loaded
-                    t instanceof UnsatisfiedLinkError ||
-                    t instanceof NoClassDefFoundError ||
-                    t instanceof InternalError  ||
-                    // other fatal exceptions will always be rethrown
-                    !ExceptionUtil.isFatal(t))) {
+            if (shouldIgnoreMissingFontSystem(t)) {
                 return DEFAULT_CHAR_WIDTH;
             }
-
             throw t;
         }
+    }
+
+    private static boolean shouldIgnoreMissingFontSystem(final Throwable t) {
+        return ignoreMissingFontSystem && (
+                // the three types of exception usually indicate here that the font
+                // system is not fully installed, i.e. system libraries missing or
+                // some JDK classes cannot be loaded
+                t instanceof UnsatisfiedLinkError ||
+                        t instanceof NoClassDefFoundError ||
+                        t instanceof InternalError ||
+                        // other fatal exceptions will always be rethrown
+                        !ExceptionUtil.isFatal(t));
     }
 
     /**
