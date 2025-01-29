@@ -523,7 +523,10 @@ public class XWPFRun implements ISDTContents, IRunElement, CharacterRun {
      * @return The underline, or null create is false and there is no underline.
      */
     private CTUnderline getCTUnderline(boolean create) {
-        CTRPr pr = getRunProperties(true);
+        CTRPr pr = getRunProperties(create);
+        if (pr == null) {
+            return null;
+        }
         return pr.sizeOfUArray() > 0 ? pr.getUArray(0) : (create ? pr.addNewU() : null);
     }
 
@@ -582,7 +585,7 @@ public class XWPFRun implements ISDTContents, IRunElement, CharacterRun {
     /**
      * Get the underline color for the run's underline, if any.
      *
-     * @return The RGB color value as as a string of hexadecimal digits (e.g., "A0B2F1") or "auto".
+     * @return The RGB color value as a string of hexadecimal digits (e.g., "A0B2F1") or "auto".
      * @since 4.0.0
      */
     public String getUnderlineColor() {
