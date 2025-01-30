@@ -26,6 +26,7 @@ import java.text.AttributedString;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -257,14 +258,14 @@ public class SheetUtil {
      * @param str the text contained in the cell
      * @return the best fit cell width
      */
-    private static double getCellWidth(float defaultCharWidth, int colspan,
-            CellStyle style, double minWidth, AttributedString str) {
+    private static double getCellWidth(float defaultCharWidth, final int colspan,
+            final CellStyle style, final double minWidth, final AttributedString str) {
         TextLayout layout;
         try {
             layout = new TextLayout(str.getIterator(), fontRenderContext);
         } catch (Throwable t) {
             if (shouldIgnoreMissingFontSystem(t)) {
-                return defaultCharWidth;
+                return FAILOVER_FUNCTION.apply(defaultCharWidth, colspan, style, minWidth, str);
             }
             throw t;
         }
@@ -366,6 +367,21 @@ public class SheetUtil {
             }
             throw t;
         }
+    }
+
+    @FunctionalInterface
+    public interface Function5Arity<A, B, C, D, E, R> {
+        R apply(A a, B b, C c, D d, E e);
+    }
+
+    private static final Function5Arity<Float, Integer, CellStyle, Double, AttributedString, Float> DEFAULT_FAILOVER_FUNCTION =
+            (defaultCharWidth, colspan, style, minWidth, string) -> defaultCharWidth;
+
+    private static Function5Arity<Float, Integer, CellStyle, Double, AttributedString, Float> FAILOVER_FUNCTION =
+            DEFAULT_FAILOVER_FUNCTION;
+
+    public static void setFailoverFunction(Function5Arity<Float, Integer, CellStyle, Double, AttributedString, Float> failoverFunction) {
+        FAILOVER_FUNCTION = failoverFunction == null ? DEFAULT_FAILOVER_FUNCTION : failoverFunction;
     }
 
     private static boolean shouldIgnoreMissingFontSystem(final Throwable t) {
