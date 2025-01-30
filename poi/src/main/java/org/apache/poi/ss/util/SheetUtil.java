@@ -26,7 +26,6 @@ import java.text.AttributedString;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -369,6 +368,16 @@ public class SheetUtil {
         }
     }
 
+    /**
+     * A function with 5 inputs and a return value.
+     * @param <A> the type of the first input to the function
+     * @param <B> the type of the second input to the function
+     * @param <C> the type of the third input to the function
+     * @param <D> the type of the fourth input to the function
+     * @param <E> the type of the fifth input to the function
+     * @param <R> the return type of the function
+     * @since POI 5.4.1
+     */
     @FunctionalInterface
     public interface Function5Arity<A, B, C, D, E, R> {
         R apply(A a, B b, C c, D d, E e);
@@ -380,6 +389,15 @@ public class SheetUtil {
     private static Function5Arity<Float, Integer, CellStyle, Double, AttributedString, Float> FAILOVER_FUNCTION =
             DEFAULT_FAILOVER_FUNCTION;
 
+    /**
+     * Define a function to be used as a failover when the font system is not available.
+     * This function will be called with the default character width, the colspan, the cell style,
+     * the minimum width and the attributed string of the cell.
+     * <p>
+     *     The default function will return the default character width.
+     * </p>
+     * @since POI 5.4.1
+     */
     public static void setFailoverFunction(Function5Arity<Float, Integer, CellStyle, Double, AttributedString, Float> failoverFunction) {
         FAILOVER_FUNCTION = failoverFunction == null ? DEFAULT_FAILOVER_FUNCTION : failoverFunction;
     }
