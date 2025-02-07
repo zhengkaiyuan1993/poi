@@ -46,8 +46,8 @@ class Zip64Impl {
         final String filename;
         long crc;
         long size;
-        int compressedSize;
-        int offset;
+        long compressedSize;
+        long offset;
 
         Entry(String filename) {
             this.filename = filename;
@@ -128,7 +128,7 @@ class Zip64Impl {
     /**
      * Write End of central directory record (EOCD)
      */
-    int writeEND(int entriesCount, int offset, int length) throws IOException {
+    int writeEND(int entriesCount, long offset, long length) throws IOException {
         written = 0;
         writeInt(PK0506);         // "PK\005\006"
         writeShort(0);         // number of this disk
