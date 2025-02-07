@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.poifs.common.POIFSBigBlockSize;
 import org.apache.poi.poifs.common.POIFSConstants;
 import org.apache.poi.poifs.filesystem.BATManaged;
@@ -43,7 +43,7 @@ import static org.apache.logging.log4j.util.Unbox.box;
  * chain of blocks.
  */
 public final class PropertyTable implements BATManaged {
-    private static final Logger LOG = LogManager.getLogger(PropertyTable.class);
+    private static final Logger LOG = PoiLogManager.getLogger(PropertyTable.class);
 
     private final HeaderBlock    _header_block;
     private final List<Property> _properties = new ArrayList<>();
@@ -105,11 +105,15 @@ public final class PropertyTable implements BATManaged {
             PropertyFactory.convertToProperties(data, _properties);
         }
 
-        if (_properties.get(0) != null) {
-            populatePropertyTree((DirectoryProperty) _properties.get(0));
+        Property property = _properties.get(0);
+        if (property != null) {
+            if (property instanceof DirectoryProperty) {
+                populatePropertyTree((DirectoryProperty) property);
+            } else {
+                throw new IOException("Invalid format, cannot convert property " + property + " to DirectoryProperty");
+            }
         }
     }
-
 
     /**
      * Add a property to the list of properties we manage
@@ -136,7 +140,13 @@ public final class PropertyTable implements BATManaged {
      */
     public RootProperty getRoot() {
         // it's always the first element in the List
-        return ( RootProperty ) _properties.get(0);
+        Property property = _properties.get(0);
+        if (property instanceof RootProperty) {
+            return (RootProperty) property;
+        } else {
+            throw new IllegalStateException("Invalid format, cannot convert property " +
+                    property + " to RootProperty");
+        }
     }
 
     /**
@@ -209,6 +219,9 @@ public final class PropertyTable implements BATManaged {
        if(getStartBlock() != stream.getStartBlock()) {
           setStartBlock(stream.getStartBlock());
        }
+
+       // Update the number of property blocks in the header
+       _header_block.setPropertyCount(countBlocks());
     }
 
     private void populatePropertyTree(DirectoryProperty root) throws IOException {

@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.util.LocaleUtil;
+import org.apache.poi.util.ThreadLocalUtil;
 
 /**
  * Contains methods for dealing with Excel dates.
@@ -77,8 +78,8 @@ public class DateUtil {
     private static final Pattern date_ptrn5 = Pattern.compile("^\\[DBNum([123])]");
 
     private static final DateTimeFormatter dateTimeFormats = new DateTimeFormatterBuilder()
-            .appendPattern("[dd MMM[ yyyy]][[ ]h:m[:s][.SSS] a][[ ]H:m[:s][.SSS]]")
-            .appendPattern("[[yyyy ]dd-MMM[-yyyy]][[ ]h:m[:s][.SSS] a][[ ]H:m[:s][.SSS]]")
+            .appendPattern("[d[.] [MMMM][MMM][ yyyy]][[ ]h:m[:s][.SSS] a][[ ]H:m[:s][.SSS]]")
+            .appendPattern("[[yyyy ]d-[MMMM][MMM][-yyyy]][[ ]h:m[:s][.SSS] a][[ ]H:m[:s][.SSS]]")
             .appendPattern("[M/dd[/yyyy]][[ ]h:m[:s][.SSS] a][[ ]H:m[:s][.SSS]]")
             .appendPattern("[[yyyy/]M/dd][[ ]h:m[:s][.SSS] a][[ ]H:m[:s][.SSS]]")
             .parseDefaulting(ChronoField.YEAR_OF_ERA, LocaleUtil.getLocaleCalendar().get(Calendar.YEAR))
@@ -546,6 +547,14 @@ public class DateUtil {
     private static final ThreadLocal<Integer> lastFormatIndex = ThreadLocal.withInitial(() -> -1);
     private static final ThreadLocal<String> lastFormatString = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> lastCachedResult = new ThreadLocal<>();
+    static {
+        // allow to clear all thread-locals via ThreadLocalUtil
+        ThreadLocalUtil.registerCleaner(() -> {
+            lastFormatIndex.remove();
+            lastFormatString.remove();
+            lastCachedResult.remove();
+        });
+    }
 
     private static boolean isCached(String formatString, int formatIndex) {
         return formatIndex == lastFormatIndex.get()

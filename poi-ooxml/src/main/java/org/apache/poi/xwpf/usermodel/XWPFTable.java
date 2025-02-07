@@ -156,11 +156,15 @@ public class XWPFTable implements IBodyElement, ISDTContents {
     }
 
     public XWPFTable(CTTbl table, IBody part) {
+        this(table, part, true);
+    }
+
+    public XWPFTable(CTTbl table, IBody part, boolean initRow) {
         this.part = part;
         this.ctTbl = table;
 
         // is an empty table: I add one row and one column as default
-        if (table.sizeOfTrArray() == 0) {
+        if (initRow && table.sizeOfTrArray() == 0) {
             createEmptyTable(table);
         }
 
@@ -1218,7 +1222,7 @@ public class XWPFTable implements IBodyElement, ISDTContents {
      */
     protected static void setWidthValue(String widthValue, CTTblWidth ctWidth) {
         if (!widthValue.matches(REGEX_WIDTH_VALUE)) {
-            throw new RuntimeException("Table width value \"" + widthValue + "\" "
+            throw new IllegalStateException("Table width value \"" + widthValue + "\" "
                     + "must match regular expression \"" + REGEX_WIDTH_VALUE + "\".");
         }
         if (widthValue.matches("auto")) {
@@ -1250,7 +1254,7 @@ public class XWPFTable implements IBodyElement, ISDTContents {
         } else if (widthValue.matches("[0-9]+")) {
             ctWidth.setW(new BigInteger(widthValue));
         } else {
-            throw new RuntimeException("setWidthPercentage(): Width value must be a percentage (\"33.3%\" or an integer, was \"" + widthValue + "\"");
+            throw new IllegalStateException("setWidthPercentage(): Width value must be a percentage (\"33.3%\" or an integer, was \"" + widthValue + "\"");
         }
     }
 

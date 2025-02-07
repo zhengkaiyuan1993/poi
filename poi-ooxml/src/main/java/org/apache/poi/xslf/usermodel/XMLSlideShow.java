@@ -21,10 +21,10 @@ import static org.apache.poi.ooxml.POIXMLTypeLoader.DEFAULT_XML_OPTIONS;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,8 +35,8 @@ import java.util.OptionalLong;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ooxml.POIXMLException;
@@ -53,6 +53,7 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.Internal;
 import org.apache.poi.util.LittleEndian;
 import org.apache.poi.util.LittleEndianConsts;
+import org.apache.poi.util.NotImplemented;
 import org.apache.poi.util.Units;
 import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.presentationml.x2006.main.CTNotesMasterIdList;
@@ -73,7 +74,7 @@ import org.openxmlformats.schemas.presentationml.x2006.main.PresentationDocument
 @Beta
 public class XMLSlideShow extends POIXMLDocument
         implements SlideShow<XSLFShape, XSLFTextParagraph> {
-    private static final Logger LOG = LogManager.getLogger(XMLSlideShow.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XMLSlideShow.class);
     //arbitrarily selected; may need to increase
     private static final int DEFAULT_MAX_RECORD_LENGTH = 1_000_000;
     private static int MAX_RECORD_LENGTH = DEFAULT_MAX_RECORD_LENGTH;
@@ -110,7 +111,7 @@ public class XMLSlideShow extends POIXMLDocument
     /**
      * @param pkg OPC package
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
     public XMLSlideShow(OPCPackage pkg) {
@@ -129,14 +130,27 @@ public class XMLSlideShow extends POIXMLDocument
     }
 
     /**
-     * @param is InputStream
+     * @param stream InputStream, which is closed after it is read
      * @throws IOException If reading data from the stream fails
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
-    public XMLSlideShow(InputStream is) throws IOException {
-        this(PackageHelper.open(is));
+    public XMLSlideShow(InputStream stream) throws IOException {
+        this(stream, true);
+    }
+
+    /**
+     * @param stream InputStream
+     * @param closeStream Whether to close the InputStream
+     * @throws IOException If reading data from the stream fails
+     * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * input format
+     * @since POI 5.2.5
+     */
+    public XMLSlideShow(InputStream stream, boolean closeStream) throws IOException {
+        this(PackageHelper.open(stream, closeStream));
     }
 
     static OPCPackage empty() {
@@ -279,7 +293,7 @@ public class XMLSlideShow extends POIXMLDocument
         try {
             return getPackage().getUnusedPartIndex(relationType.getDefaultFileName());
         } catch (InvalidFormatException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -472,7 +486,7 @@ public class XMLSlideShow extends POIXMLDocument
      * @param index The slide number to remove.
      * @return The slide that was removed.
      *
-     * @throws RuntimeException a number of runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
     public XSLFSlide removeSlide(int index) {
@@ -509,7 +523,7 @@ public class XMLSlideShow extends POIXMLDocument
             if (shape instanceof XSLFGroupShape) {
                 removePictureRelations(slide, (XSLFGroupShape)shape, picture);
             }
-            // ... or the picture shape with this picture data and remove it's relation to the picture data.
+            // ... or the picture shape with this picture data and remove its relation to the picture data.
             if (shape instanceof XSLFPictureShape) {
                 XSLFPictureShape pic = (XSLFPictureShape) shape;
                 if (pic.getPictureData() == picture) {
@@ -607,7 +621,7 @@ public class XMLSlideShow extends POIXMLDocument
     @Override
     public XSLFPictureData addPicture(File pict, PictureType format) throws IOException {
         byte[] data = IOUtils.safelyAllocate(pict.length(), MAX_RECORD_LENGTH);
-        try (InputStream is = new FileInputStream(pict)) {
+        try (InputStream is = Files.newInputStream(pict.toPath())) {
             IOUtils.readFully(is, data);
         }
         return addPicture(data, format);
@@ -657,8 +671,14 @@ public class XMLSlideShow extends POIXMLDocument
         return _tableStyles;
     }
 
-    @SuppressWarnings("RedundantThrows")
+    /**
+     * This method is not yet supported.
+     *
+     * @throws UnsupportedOperationException this method is not yet supported
+     */
     @Override
+    @NotImplemented
+    @SuppressWarnings("RedundantThrows")
     public MasterSheet<XSLFShape, XSLFTextParagraph> createMasterSheet() throws IOException {
         // TODO: implement!
         throw new UnsupportedOperationException();
@@ -695,14 +715,14 @@ public class XMLSlideShow extends POIXMLDocument
     String importBlip(String blipId, POIXMLDocumentPart parent, POIXMLDocumentPart target) {
         OPCPackage targetPackage = target.getPackagePart().getPackage();
         if (targetPackage != getPackage()) {
-            throw new RuntimeException("the target document part is not a child of this package");
+            throw new IllegalStateException("the target document part is not a child of this package");
         }
         final POIXMLDocumentPart docPart = parent.getRelationPartById(blipId).getDocumentPart();
         XSLFPictureData parData;
         if (docPart instanceof XSLFPictureData) {
             parData = (XSLFPictureData)docPart;
         } else {
-            throw new RuntimeException("cannot import blip " + blipId + " - its document part is not XSLFPictureData");
+            throw new IllegalStateException("cannot import blip " + blipId + " - its document part is not XSLFPictureData");
         }
         final XSLFPictureData pictureData;
         if (targetPackage == parent.getPackagePart().getPackage()) {

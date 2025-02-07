@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -386,7 +387,7 @@ public final class TestXSSFSheet extends BaseTestXSheet {
     void saveGroupColumns() throws IOException {
         try (
                 XSSFWorkbook workbook = new XSSFWorkbook();
-                UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream()
+                UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()
         ) {
             XSSFSheet sheet = workbook.createSheet();
             XSSFRow row0 = sheet.createRow(0);
@@ -2268,7 +2269,7 @@ public final class TestXSSFSheet extends BaseTestXSheet {
     void testBug64536() throws IOException {
         try (
                 XSSFWorkbook xssfWorkbook = (XSSFWorkbook) _testDataProvider.openSampleWorkbook("1_NoIden.xlsx");
-                UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream()
+                UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()
         ) {
             XSSFSheet fileSheet = xssfWorkbook.getSheetAt(0);
             assertEquals(CellRangeAddress.valueOf("B1:D9"), fileSheet.getDimension());
@@ -2385,5 +2386,32 @@ public final class TestXSSFSheet extends BaseTestXSheet {
         }
         sheet.addHyperlink(hyperlink);
         return wb;
+    }
+
+    @Test
+    void testSetBlankOnNestedSharedFormulas() throws IOException {
+        try (XSSFWorkbook wb1 = XSSFTestDataSamples.openSampleWorkbook("testSharedFormulasSetBlank.xlsx")) {
+            XSSFSheet s1 = wb1.getSheetAt(0);
+            assertNotNull(s1);
+            Iterator<Row> rowIterator = s1.rowIterator();
+            int count = 0;
+            StringBuilder sb = new StringBuilder();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+
+                    // the toString is needed to exhibit the broken state
+                    sb.append(cell.toString()).append(",");
+                    count++;
+
+                    // breaks the sheet state
+                    cell.setBlank();
+                }
+            }
+            assertEquals(10, count);
+            assertEquals("2-1,2-1,1+2,2-1,2-1,3+3,3+3,3+3,2-1,2-1,", sb.toString());
+        }
     }
 }

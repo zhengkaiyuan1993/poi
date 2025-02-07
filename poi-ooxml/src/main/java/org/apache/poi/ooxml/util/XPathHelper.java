@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 import javax.xml.xpath.XPathFactory;
 
 import com.microsoft.schemas.compatibility.AlternateContentDocument;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.util.Internal;
 import org.apache.poi.xslf.usermodel.XSLFShape;
 import org.apache.xmlbeans.XmlCursor;
@@ -34,7 +34,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlAnyTypeImpl;
 
 public final class XPathHelper {
-    private static final Logger LOG = LogManager.getLogger(XPathHelper.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XPathHelper.class);
 
     private static final String OSGI_ERROR =
             "Schemas (*.xsb) for <CLASS> can't be loaded - usually this happens when OSGI " +

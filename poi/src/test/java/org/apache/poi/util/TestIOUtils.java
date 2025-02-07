@@ -229,7 +229,7 @@ final class TestIOUtils {
 
     @Test
     void testSkipFullyByteArray() throws IOException {
-        UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream();
+        UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get();
         try (InputStream is = new FileInputStream(TMP)) {
             assertEquals(LENGTH, IOUtils.copy(is, bos));
             long skipped = IOUtils.skipFully(bos.toInputStream(), 20000L);
@@ -239,7 +239,7 @@ final class TestIOUtils {
 
     @Test
     void testSkipFullyByteArrayGtIntMax() throws IOException {
-        UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream();
+        UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get();
         try (InputStream is = new FileInputStream(TMP)) {
             assertEquals(LENGTH, IOUtils.copy(is, bos));
             long skipped = IOUtils.skipFully(bos.toInputStream(), Integer.MAX_VALUE + 20000L);
@@ -322,7 +322,8 @@ final class TestIOUtils {
             len = IOUtils.toByteArray(is, 90, 100).length;
             assertEquals(90, len);
             len = IOUtils.toByteArray(is, Integer.MAX_VALUE, Integer.MAX_VALUE).length;
-            assertTrue(len > 300-2*90);
+            assertTrue(len >= 300-2*90,
+                    "Had: " + len + " when reading file " + TMP + " with size " + TMP.length());
         }
     }
 

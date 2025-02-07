@@ -30,8 +30,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -76,7 +76,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.*;
  * </p>
  */
 public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetExtensions  {
-    private static final Logger LOG = LogManager.getLogger(XSSFSheet.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFSheet.class);
 
     private static final double DEFAULT_ROW_HEIGHT = 15.0;
     private static final double DEFAULT_MARGIN_HEADER = 0.3;
@@ -146,7 +146,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
     protected void onDocumentRead() {
         try (InputStream stream = getPackagePart().getInputStream()) {
             read(stream);
-        } catch (IOException e){
+        } catch (IOException | ArithmeticException e){
             throw new POIXMLException(e);
         }
     }
@@ -158,8 +158,8 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
             throw new POIXMLException(e);
         }
 
-        initRows(worksheet);
         columnHelper = new ColumnHelper(worksheet);
+        initRows(worksheet);
         // Look for bits we're interested in
         for(RelationPart rp : getRelationParts()){
             POIXMLDocumentPart p = rp.getDocumentPart();
@@ -975,10 +975,11 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
         return (float)(pr == null ? 0 : pr.getDefaultRowHeight());
     }
 
-    private CTSheetFormatPr getSheetTypeSheetFormatPr() {
-        return worksheet.isSetSheetFormatPr() ?
-                worksheet.getSheetFormatPr() :
-                worksheet.addNewSheetFormatPr();
+    private CTSheetFormatPr getSheetTypeSheetFormatPr(final boolean createIfNotExists) {
+        if (worksheet.isSetSheetFormatPr()) {
+            return worksheet.getSheetFormatPr();
+        }
+        return createIfNotExists ? worksheet.addNewSheetFormatPr() : null;
     }
 
     /**
@@ -989,7 +990,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
     @Override
     public CellStyle getColumnStyle(int column) {
         int idx = columnHelper.getColDefaultStyle(column);
-        return getWorkbook().getCellStyleAt((short)(idx == -1 ? 0 : idx));
+        return getWorkbook().getCellStyleAt(idx == -1 ? 0 : idx);
     }
 
     /**
@@ -1695,15 +1696,18 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
             this.columnHelper.setColumnAttributes(fixCol_before, fixCol_after);
         }
 
-        for(int index=fromColumn;index<=toColumn;index++){
-            CTCol col=columnHelper.getColumn1Based(index, false);
+        int maxLevelCol = -1;
+        for(int index = fromColumn; index <= toColumn; index++){
+            CTCol col = columnHelper.getColumn1Based(index, false);
             //col must exist
-            short outlineLevel=col.getOutlineLevel();
-            col.setOutlineLevel((short)(outlineLevel+1));
+            final short outlineLevel = col.getOutlineLevel();
+            final int newOutlineLevel = outlineLevel + 1;
+            col.setOutlineLevel((short) newOutlineLevel);
+            maxLevelCol = Math.max(maxLevelCol, newOutlineLevel);
             index = Math.toIntExact(col.getMax());
         }
-        worksheet.setColsArray(0,ctCols);
-        setSheetFormatPrOutlineLevelCol();
+        worksheet.setColsArray(0, ctCols);
+        increaseSheetFormatPrOutlineLevelColIfNecessary((short) Math.min(Short.MAX_VALUE, maxLevelCol));
     }
 
     /**
@@ -1726,16 +1730,19 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      */
     @Override
     public void groupRow(int fromRow, int toRow) {
+        int maxOutlineLevel = -1;
         for (int i = fromRow; i <= toRow; i++) {
             XSSFRow xrow = getRow(i);
             if (xrow == null) {
                 xrow = createRow(i);
             }
             CTRow ctrow = xrow.getCTRow();
-            short outlineLevel = ctrow.getOutlineLevel();
-            ctrow.setOutlineLevel((short) (outlineLevel + 1));
+            final short outlineLevel = ctrow.getOutlineLevel();
+            final int newOutlineLevel = outlineLevel + 1;
+            maxOutlineLevel = Math.max(maxOutlineLevel, newOutlineLevel);
+            ctrow.setOutlineLevel((short) newOutlineLevel);
         }
-        setSheetFormatPrOutlineLevelRow();
+        increaseSheetFormatPrOutlineLevelRowIfNecessary((short) Math.min(Short.MAX_VALUE, maxOutlineLevel));
     }
 
     private short getMaxOutlineLevelRows(){
@@ -1935,7 +1942,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      * Breaks occur above the specified row and left of the specified column inclusive.
      *
      * For example, {@code sheet.setColumnBreak(2);} breaks the sheet into two parts
-     * with columns A,B,C in the first and D,E,... in the second. Simuilar, {@code sheet.setRowBreak(2);}
+     * with columns A,B,C in the first and D,E,... in the second. Similar, {@code sheet.setRowBreak(2);}
      * breaks the sheet into two parts with first three rows (rownum=1...3) in the first part
      * and rows starting with rownum=4 in the second.
      *
@@ -2174,7 +2181,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      * Breaks occur above the specified row and left of the specified column inclusive.
      *
      * For example, {@code sheet.setColumnBreak(2);} breaks the sheet into two parts
-     * with columns A,B,C in the first and D,E,... in the second. Simuilar, {@code sheet.setRowBreak(2);}
+     * with columns A,B,C in the first and D,E,... in the second. Similar, {@code sheet.setRowBreak(2);}
      * breaks the sheet into two parts with first three rows (rownum=1...3) in the first part
      * and rows starting with rownum=4 in the second.
      *
@@ -2553,7 +2560,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      * using the default font (first font in the workbook).
      * <br>
      * Unless you are using a very special font, the default character is '0' (zero),
-     * this is true for Arial (default font font in HSSF) and Calibri (default font in XSSF)
+     * this is true for Arial (default font in HSSF) and Calibri (default font in XSSF)
      * </p>
      *
      * <p>
@@ -2606,7 +2613,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      */
     @Override
     public void setDefaultColumnWidth(int width) {
-        getSheetTypeSheetFormatPr().setBaseColWidth(width);
+        getSheetTypeSheetFormatPr(true).setBaseColWidth(width);
     }
 
     /**
@@ -2627,7 +2634,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      */
     @Override
     public void setDefaultRowHeightInPoints(float height) {
-        CTSheetFormatPr pr = getSheetTypeSheetFormatPr();
+        CTSheetFormatPr pr = getSheetTypeSheetFormatPr(true);
         pr.setDefaultRowHeight(height);
         pr.setCustomHeight(true);
     }
@@ -3391,10 +3398,12 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
     @Override
     public void ungroupColumn(int fromColumn, int toColumn) {
         CTCols cols = worksheet.getColsArray(0);
+        int maxLevelCol = -1;
         for (int index = fromColumn; index <= toColumn; index++) {
             CTCol col = columnHelper.getColumn(index, false);
             if (col != null) {
-                short outlineLevel = col.getOutlineLevel();
+                final short outlineLevel = col.getOutlineLevel();
+                maxLevelCol = Math.max(maxLevelCol, outlineLevel);
                 col.setOutlineLevel((short) (outlineLevel - 1));
                 index = Math.toIntExact(col.getMax());
 
@@ -3405,40 +3414,70 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
             }
         }
         worksheet.setColsArray(0, cols);
-        setSheetFormatPrOutlineLevelCol();
+        if (maxLevelCol >= getSheetFormatPrOutlineLevelCol()) {
+            setSheetFormatPrOutlineLevelCol();
+        }
     }
 
     /**
-     * Ungroup a range of rows that were previously groupped
+     * Ungroup a range of rows that were previously grouped
      *
      * @param fromRow   start row (0-based)
      * @param toRow     end row (0-based)
      */
     @Override
     public void ungroupRow(int fromRow, int toRow) {
+        int maxOutlineLevel = -1;
         for (int i = fromRow; i <= toRow; i++) {
             XSSFRow xrow = getRow(i);
             if (xrow != null) {
                 CTRow ctRow = xrow.getCTRow();
-                int outlineLevel = ctRow.getOutlineLevel();
+                final short outlineLevel = ctRow.getOutlineLevel();
                 ctRow.setOutlineLevel((short) (outlineLevel - 1));
+                maxOutlineLevel = Math.max(maxOutlineLevel, outlineLevel);
                 //remove a row only if the row has no cell and if the outline level is 0
                 if (outlineLevel == 1 && xrow.getFirstCellNum() == -1) {
                     removeRow(xrow);
                 }
             }
         }
-        setSheetFormatPrOutlineLevelRow();
+        if (maxOutlineLevel >= getSheetFormatPrOutlineLevelRow()) {
+            setSheetFormatPrOutlineLevelRow();
+        }
     }
 
-    private void setSheetFormatPrOutlineLevelRow(){
-        short maxLevelRow=getMaxOutlineLevelRows();
-        getSheetTypeSheetFormatPr().setOutlineLevelRow(maxLevelRow);
+    private void increaseSheetFormatPrOutlineLevelRowIfNecessary(final short levelRow) {
+        if (levelRow > getSheetFormatPrOutlineLevelRow()) {
+            getSheetTypeSheetFormatPr(true).setOutlineLevelRow(levelRow);
+        }
     }
 
-    private void setSheetFormatPrOutlineLevelCol(){
-        short maxLevelCol=getMaxOutlineLevelCols();
-        getSheetTypeSheetFormatPr().setOutlineLevelCol(maxLevelCol);
+    private void increaseSheetFormatPrOutlineLevelColIfNecessary(final short levelCol) {
+        if (levelCol > getSheetFormatPrOutlineLevelCol()) {
+            getSheetTypeSheetFormatPr(true).setOutlineLevelCol(levelCol);
+        }
+    }
+
+    private void setSheetFormatPrOutlineLevelRow() {
+        final short maxLevelRow = getMaxOutlineLevelRows();
+        getSheetTypeSheetFormatPr(true).setOutlineLevelRow(maxLevelRow);
+    }
+
+    @Internal // used by SXSSFSHeet
+    public short getSheetFormatPrOutlineLevelRow() {
+        final CTSheetFormatPr pr = getSheetTypeSheetFormatPr(false);
+        return pr == null ? 0 : pr.getOutlineLevelRow();
+    }
+
+    @Internal // used by SXSSFSHeet
+    public short getSheetFormatPrOutlineLevelCol() {
+        final CTSheetFormatPr pr = getSheetTypeSheetFormatPr(false);
+        return pr == null ? 0 : pr.getOutlineLevelCol();
+    }
+
+    private void setSheetFormatPrOutlineLevelCol() {
+        final short maxLevelCol = getMaxOutlineLevelCols();
+        getSheetTypeSheetFormatPr(true).setOutlineLevelCol(maxLevelCol);
     }
 
     protected CTSheetViews getSheetTypeSheetViews(final boolean create) {
@@ -3751,6 +3790,10 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
     }
 
     protected void write(OutputStream out) throws IOException {
+        if (worksheet == null) {
+            throw new POIXMLException("Cannot write invalid sheet, internal data is missing");
+        }
+
         boolean setToNull = false;
         if(worksheet.sizeOfColsArray() == 1) {
             CTCols col = worksheet.getColsArray(0);
@@ -4128,8 +4171,10 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
     }
 
     /* package */ boolean isCellInArrayFormulaContext(XSSFCell cell) {
+        final int rowIndex = cell.getRowIndex();
+        final int columnIndex = cell.getColumnIndex();
         for (CellRangeAddress range : arrayFormulas) {
-            if (range.isInRange(cell.getRowIndex(), cell.getColumnIndex())) {
+            if (range.isInRange(rowIndex, columnIndex)) {
                 return true;
             }
         }
@@ -4137,8 +4182,10 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
     }
 
     /* package */ XSSFCell getFirstCellInArrayFormula(XSSFCell cell) {
+        final int rowIndex = cell.getRowIndex();
+        final int columnIndex = cell.getColumnIndex();
         for (CellRangeAddress range : arrayFormulas) {
-            if (range.isInRange(cell.getRowIndex(), cell.getColumnIndex())) {
+            if (range.isInRange(rowIndex, columnIndex)) {
                 return getRow(range.getFirstRow()).getCell(range.getFirstColumn());
             }
         }
@@ -4592,7 +4639,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
         pivotTables.add(pivotTable);
         XSSFWorkbook workbook = getWorkbook();
 
-        //Create relationship between the pivot cache defintion and the workbook
+        //Create relationship between the pivot cache definition and the workbook
         XSSFPivotCacheDefinition pivotCacheDefinition = (XSSFPivotCacheDefinition) workbook.
                 createRelationship(XSSFRelation.PIVOT_CACHE_DEFINITION, getWorkbook().getXssfFactory(), tableId);
         String rId = workbook.getRelationId(pivotCacheDefinition);
@@ -4603,7 +4650,7 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
 
         pivotTable.setPivotCacheDefinition(pivotCacheDefinition);
 
-        //Create pivotCache and sets up it's relationship with the workbook
+        //Create pivotCache and sets up its relationship with the workbook
         pivotTable.setPivotCache(new XSSFPivotCache(workbook.addPivotCache(rId)));
 
         //Create relationship between pivotcacherecord and pivotcachedefinition
@@ -4825,18 +4872,19 @@ public class XSSFSheet extends POIXMLDocumentPart implements Sheet, OoxmlSheetEx
      * @param cell The cell that is removed
      * @param evalWb BaseXSSFEvaluationWorkbook in use, if one exists
      */
-    protected void onDeleteFormula(XSSFCell cell, BaseXSSFEvaluationWorkbook evalWb){
-
+    protected void onDeleteFormula(final XSSFCell cell, final BaseXSSFEvaluationWorkbook evalWb) {
+        final int rowIndex = cell.getRowIndex();
+        final int columnIndex = cell.getColumnIndex();
         CTCellFormula f = cell.getCTCell().getF();
         if (f != null && f.getT() == STCellFormulaType.SHARED && f.isSetRef() && f.getStringValue() != null) {
 
             CellRangeAddress ref = CellRangeAddress.valueOf(f.getRef());
             if(ref.getNumberOfCells() > 1){
                 DONE:
-                for(int i = cell.getRowIndex(); i <= ref.getLastRow(); i++){
+                for(int i = rowIndex; i <= ref.getLastRow(); i++){
                     XSSFRow row = getRow(i);
                     if(row != null) {
-                        for(int j = cell.getColumnIndex(); j <= ref.getLastColumn(); j++){
+                        for(int j = columnIndex; j <= ref.getLastColumn(); j++){
                             XSSFCell nextCell = row.getCell(j);
                             if(nextCell != null && nextCell != cell && nextCell.getCellType() == CellType.FORMULA) {
                                 CTCellFormula nextF = nextCell.getCTCell().getF();

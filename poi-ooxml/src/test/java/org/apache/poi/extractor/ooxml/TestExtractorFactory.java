@@ -20,6 +20,7 @@ import static org.apache.poi.POITestCase.assertContains;
 import static org.apache.poi.extractor.ExtractorFactory.createExtractor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -178,11 +179,14 @@ class TestExtractorFactory {
             assertNotNull(ext);
             testExtractor(ext, testcase, extractor, count);
             pkg.revert();
+        } catch (Exception e) {
+            throw new Exception("While handling " + testcase + " - " + testFile + " - " + extractor, e);
         }
     }
 
     @Test
     void testFileInvalid() {
+        //noinspection resource
         IOException ex = assertThrows(IOException.class, () -> createExtractor(txt));
         assertEquals("Can't create extractor - unsupported file type: UNKNOWN", ex.getMessage());
     }
@@ -198,22 +202,15 @@ class TestExtractorFactory {
     @Test
     void testPOIFSInvalid() {
         // Not really an Extractor test, but we'll leave it to test POIFS reaction anyway ...
+        //noinspection resource
         IOException ex = assertThrows(IOException.class, () -> new POIFSFileSystem(txt));
         assertTrue(ex.getMessage().contains("Invalid header signature; read 0x3D20726F68747541, expected 0xE11AB1A1E011CFD0"));
     }
 
-    private void testExtractor(final POITextExtractor ext, final String testcase, final String extrClass, final Integer minLength) {
-        assertEquals(extrClass, ext.getClass().getSimpleName(), "invalid extractor for " + testcase);
-        final String actual = ext.getText();
-        if (minLength == -1) {
-            assertContains(actual.toLowerCase(Locale.ROOT), "test");
-        } else {
-            assertTrue(actual.length() > minLength, "extracted content too short for " + testcase);
-        }
-    }
     @Test
     void testPackageInvalid() {
         // Text
+        //noinspection resource
         assertThrows(NotOfficeXmlFileException.class, () -> OPCPackage.open(txt, PackageAccess.READ));
     }
 
@@ -244,12 +241,12 @@ class TestExtractorFactory {
         try {
             // Check we get the right extractors now
             try (POITextExtractor extractor = createExtractor(new POIFSFileSystem(new FileInputStream(xls)))) {
-                assertTrue(extractor instanceof EventBasedExcelExtractor);
+                assertInstanceOf(EventBasedExcelExtractor.class, extractor);
                 assertTrue(extractor.getText().length() > 200);
             }
             try (POITextExtractor extractor = xmlFactory.create(OPCPackage.open(xlsx.toString(), PackageAccess.READ))) {
                 assertNotNull(extractor);
-                assertTrue(extractor instanceof XSSFEventBasedExcelExtractor);
+                assertInstanceOf(XSSFEventBasedExcelExtractor.class, extractor);
                 assertTrue(extractor.getText().length() > 200);
             }
         } finally {
@@ -263,12 +260,12 @@ class TestExtractorFactory {
 
         // And back
         try (POITextExtractor extractor = createExtractor(new POIFSFileSystem(new FileInputStream(xls)))) {
-            assertTrue(extractor instanceof ExcelExtractor);
+            assertInstanceOf(ExcelExtractor.class, extractor);
             assertTrue(extractor.getText().length() > 200);
         }
 
         try (POITextExtractor extractor = xmlFactory.create(OPCPackage.open(xlsx.toString(), PackageAccess.READ))) {
-            assertTrue(extractor instanceof XSSFExcelExtractor);
+            assertInstanceOf(XSSFExcelExtractor.class, extractor);
         }
 
         try (POITextExtractor extractor = xmlFactory.create(OPCPackage.open(xlsx.toString()))) {
@@ -328,8 +325,6 @@ class TestExtractorFactory {
             final String actual = embeds.length+"-"+numWord+"-"+numXls+"-"+numPpt+"-"+numMsg+"-"+numWordX;
             assertEquals(expected, actual, "invalid number of embeddings - "+format);
         }
-
-
     }
 
     @ParameterizedTest
@@ -419,6 +414,7 @@ class TestExtractorFactory {
         // run a number of files that might fail in order to catch
         // leaked file resources when using file-leak-detector while
         // running the test
+        //noinspection resource
         assertThrows(Exception.class, () -> ex(file));
     }
 
@@ -440,6 +436,15 @@ class TestExtractorFactory {
         assertThrows(IllegalStateException.class, () -> ExtractorFactory.getEmbeddedDocsTextExtractors(null));
     }
 
+    @Test
+    void test66365() throws Exception {
+        try (POITextExtractor extractor = ex("66365.xlsx")) {
+            String text = extractor.getText();
+            assertContains(text, "Alice\tAlice");
+            assertContains(text, "Bob\tBob");
+        }
+    }
+
     // This bug is currently open. This test will fail with "expected error not thrown" when the bug has been fixed.
     // When this happens, change this from @Test(expected=...) to @Test
     // bug 45565: text within TextBoxes is extracted by ExcelExtractor and WordExtractor
@@ -451,6 +456,16 @@ class TestExtractorFactory {
                 assertContains(text, "testdoc");
                 assertContains(text, "test phrase");
             });
+        }
+    }
+
+    private void testExtractor(final POITextExtractor ext, final String testcase, final String extrClass, final Integer minLength) {
+        assertEquals(extrClass, ext.getClass().getSimpleName(), "invalid extractor for " + testcase);
+        final String actual = ext.getText();
+        if (minLength == -1) {
+            assertContains(actual.toLowerCase(Locale.ROOT), "test");
+        } else {
+            assertTrue(actual.length() > minLength, "extracted content too short for " + testcase);
         }
     }
 

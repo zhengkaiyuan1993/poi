@@ -44,13 +44,15 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.logging.PoiLogManager;
 import org.apache.poi.hpsf.ClassIDPredefined;
+import org.apache.poi.ooxml.HyperlinkRelationship;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.ooxml.POIXMLProperties;
+import org.apache.poi.ooxml.ReferenceRelationship;
 import org.apache.poi.ooxml.util.PackageHelper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
@@ -192,7 +194,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      */
     private List<XSSFPictureData> pictures;
 
-    private static final Logger LOG = LogManager.getLogger(XSSFWorkbook.class);
+    private static final Logger LOG = PoiLogManager.getLogger(XSSFWorkbook.class);
 
     /**
      * cached instance of XSSFCreationHelper for this workbook
@@ -247,7 +249,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      * @param pkg the OpenXML4J {@code OPC Package} object.
      * @throws IOException If reading data from the package fails
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
     public XSSFWorkbook(OPCPackage pkg) throws IOException {
@@ -277,17 +279,40 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      *       pkg.close(); // gracefully closes the underlying zip file
      *   }</pre>
      *
+     * @param stream The InputStream, which is closed when it is read.
      * @throws IOException If reading data from the stream fails
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
-    public XSSFWorkbook(InputStream is) throws IOException {
-        this(is, false);
+    public XSSFWorkbook(InputStream stream) throws IOException {
+        this(stream, true);
     }
 
-    private XSSFWorkbook(InputStream is, boolean closeStream) throws IOException {
-        this(PackageHelper.open(is, closeStream));
+    /**
+     * Constructs a XSSFWorkbook object, by buffering the whole stream into memory
+     *  and then opening an {@link OPCPackage} object for it.
+     *
+     * <p>Using an {@link InputStream} requires more memory than using a File, so
+     *  if a {@link File} is available then you should instead do something like
+     *   <pre>{@code
+     *       OPCPackage pkg = OPCPackage.open(path);
+     *       XSSFWorkbook wb = new XSSFWorkbook(pkg);
+     *       // work with the wb object
+     *       ......
+     *       pkg.close(); // gracefully closes the underlying zip file
+     *   }</pre>
+     *
+     * @param stream The InputStream.
+     * @param closeStream Whether to close the stream.
+     * @throws IOException If reading data from the stream fails
+     * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * input format
+     * @since POI 5.2.5
+     */
+    public XSSFWorkbook(InputStream stream, boolean closeStream) throws IOException {
+        this(PackageHelper.open(stream, closeStream));
     }
 
     /**
@@ -304,7 +329,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      * @throws IOException If reading data from the file fails
      * @throws InvalidFormatException If the file has a format that cannot be read or if the file is corrupted
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
     public XSSFWorkbook(File file) throws IOException, InvalidFormatException {
@@ -325,7 +350,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      * @param path   the file name.
      * @throws IOException If reading data from the file fails
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      *
      */
@@ -338,7 +363,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      * @param part  package part
      * @throws IOException If reading data from the Package Part fails
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      * @since POI 4.0.0
      */
@@ -412,7 +437,14 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
                 if (packageReadOnly) {
                     sharedStringSource = new SharedStringsTable();
                 } else {
-                    sharedStringSource = (SharedStringsTable)createRelationship(XSSFRelation.SHARED_STRINGS, this.xssfFactory);
+                    List<PackagePart> matchingParts = getPackagePart().getPackage()
+                            .getPartsByContentType(XSSFRelation.SHARED_STRINGS.getContentType());
+                    if (matchingParts.isEmpty()) {
+                        sharedStringSource = (SharedStringsTable)
+                                createRelationship(XSSFRelation.SHARED_STRINGS, this.xssfFactory);
+                    } else {
+                        sharedStringSource = new SharedStringsTable(matchingParts.get(0));
+                    }
                 }
             }
 
@@ -455,7 +487,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
      * the DOM based parse of large sheets (see examples).
      *
      * @throws POIXMLException a RuntimeException that can be caused by invalid OOXML data
-     * @throws RuntimeException a number of other runtime exceptions can be thrown, especially if there are problems with the
+     * @throws IllegalStateException a number of other runtime exceptions can be thrown, especially if there are problems with the
      * input format
      */
     public void parseSheet(Map<String, XSSFSheet> shIdMap, CTSheet ctSheet) {
@@ -511,7 +543,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
     protected static OPCPackage newPackage(XSSFWorkbookType workbookType) {
         OPCPackage pkg = null;
         try {
-            pkg = OPCPackage.create(new UnsynchronizedByteArrayOutputStream());    // NOSONAR - we do not want to close this here
+            pkg = OPCPackage.create(UnsynchronizedByteArrayOutputStream.builder().get());    // NOSONAR - we do not want to close this here
             // Main part
             PackagePartName corePartName = PackagingURIHelper.createPartName(XSSFRelation.WORKBOOK.getDefaultFileName());
             // Create main part relationship
@@ -653,6 +685,14 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
             addRelation(rp, clonedSheet);
         }
 
+        // copy sheet's reference relations;
+        List<ReferenceRelationship> referenceRelationships = srcSheet.getReferenceRelationships();
+        for (ReferenceRelationship ref : referenceRelationships) {
+            if (ref instanceof HyperlinkRelationship) {
+                createHyperlink(ref.getUri(), ref.isExternal(), ref.getId());
+            }
+        }
+
         try {
             for(PackageRelationship pr : srcSheet.getPackagePart().getRelationships()) {
                 if (pr.getTargetMode() == TargetMode.EXTERNAL) {
@@ -665,7 +705,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
         }
 
 
-        try (UnsynchronizedByteArrayOutputStream out = new UnsynchronizedByteArrayOutputStream()) {
+        try (UnsynchronizedByteArrayOutputStream out = UnsynchronizedByteArrayOutputStream.builder().get()) {
             srcSheet.write(out);
             try (InputStream bis = out.toInputStream()) {
                 clonedSheet.read(bis);
@@ -710,6 +750,14 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
                         chart.replaceReferences(clonedSheet);
                     } else {
                         addRelation(rp, clonedDg);
+                    }
+                }
+
+                // copy sheet's reference relations;
+                List<ReferenceRelationship> srcRefs = drawingPatriarch.getReferenceRelationships();
+                for (ReferenceRelationship ref : srcRefs) {
+                    if (ref instanceof HyperlinkRelationship) {
+                        clonedDg.createHyperlink(ref.getUri(), ref.isExternal(), ref.getId());
                     }
                 }
             }
@@ -824,7 +872,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
     private XSSFName createAndStoreName(CTDefinedName ctName) {
         XSSFName name = new XSSFName(ctName, this);
         namedRanges.add(name);
-        namedRangesByName.put(ctName.getName().toLowerCase(Locale.ENGLISH), name);
+        namedRangesByName.put(ctName.getName() == null ? null : ctName.getName().toLowerCase(Locale.ENGLISH), name);
         return name;
     }
 
@@ -1160,6 +1208,9 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
     /**
      * Get sheet with the given name (case insensitive match)
      *
+     * If there are multiple matches, the first sheet from the list
+     * of sheets is returned.
+     *
      * @param name of the sheet
      * @return XSSFSheet with the name provided or {@code null} if it does not exist
      */
@@ -1295,6 +1346,8 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
          * Unexpected behavior may occur if sheets are reordered after iterator
          * has been created. Support for the remove method may be added in the future
          * if someone can figure out a reliable implementation.
+         *
+         * @throws UnsupportedOperationException
          */
         @Override
         public void remove() throws IllegalStateException {
@@ -1823,7 +1876,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
     }
 
     /**
-     * Return a object representing a collection of shared objects used for styling content,
+     * Return an object representing a collection of shared objects used for styling content,
      * e.g. fonts, cell styles, colors, etc.
      */
     public StylesTable getStylesSource() {
@@ -1918,13 +1971,13 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
     @Override
     @NotImplemented
     public boolean isHidden() {
-        throw new RuntimeException("Not implemented yet");
+        throw new IllegalStateException("Not implemented yet");
     }
 
     @Override
     @NotImplemented
     public void setHidden(boolean hiddenFlag) {
-        throw new RuntimeException("Not implemented yet");
+        throw new IllegalStateException("Not implemented yet");
     }
 
     @Override
@@ -2416,7 +2469,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
     }
 
     /**
-     * Returns the spreadsheet version (EXCLE2007) of this workbook
+     * Returns the spreadsheet version (EXCEL2007) of this workbook
      *
      * @return EXCEL2007 SpreadsheetVersion enum
      * @since 3.14 beta 2
@@ -2466,7 +2519,7 @@ public class XSSFWorkbook extends POIXMLDocument implements Workbook, Date1904Su
 
         Ole10Native ole10 = new Ole10Native(label, fileName, command, oleData);
 
-        try (UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream(oleData.length+500)) {
+        try (UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().setBufferSize(oleData.length+500).get()) {
             ole10.writeOut(bos);
 
             try (POIFSFileSystem poifs = new POIFSFileSystem()) {

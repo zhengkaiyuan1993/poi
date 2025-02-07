@@ -17,10 +17,15 @@
 
 package org.apache.poi.xssf.usermodel;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
 import org.apache.poi.POIDataSamples;
 import org.apache.poi.hssf.HSSFTestDataSamples;
 import org.apache.poi.ooxml.POIXMLProperties;
+import org.apache.poi.ooxml.TrackingInputStream;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.ContentTypes;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -32,6 +37,7 @@ import org.apache.poi.openxml4j.opc.PackageRelationshipCollection;
 import org.apache.poi.openxml4j.opc.PackagingURIHelper;
 import org.apache.poi.openxml4j.opc.ZipPackage;
 import org.apache.poi.openxml4j.opc.internal.FileHelper;
+import org.apache.poi.openxml4j.opc.internal.InvalidZipException;
 import org.apache.poi.openxml4j.opc.internal.MemoryPackagePart;
 import org.apache.poi.openxml4j.opc.internal.PackagePropertiesPart;
 import org.apache.poi.openxml4j.util.ZipInputStreamZipEntrySource;
@@ -60,6 +66,8 @@ import org.apache.poi.xddf.usermodel.chart.XDDFBarChartData;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
 import org.apache.poi.xssf.XSSFITestDataProvider;
 import org.apache.poi.xssf.model.StylesTable;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCalcPr;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTExternalLink;
@@ -74,14 +82,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.CRC32;
 
-import static org.apache.commons.io.output.NullOutputStream.NULL_OUTPUT_STREAM;
 import static org.apache.poi.hssf.HSSFTestDataSamples.openSampleFileStream;
+import static org.apache.poi.xssf.XSSFTestDataSamples.getSampleFile;
 import static org.apache.poi.xssf.XSSFTestDataSamples.openSampleWorkbook;
 import static org.apache.poi.xssf.XSSFTestDataSamples.writeOut;
 import static org.apache.poi.xssf.XSSFTestDataSamples.writeOutAndReadBack;
@@ -98,6 +109,16 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
 
     public TestXSSFWorkbook() {
         super(XSSFITestDataProvider.instance);
+    }
+
+    @BeforeAll
+    static void setUp() {
+        LocaleUtil.setUserLocale(Locale.US);
+    }
+
+    @AfterAll
+    static void tearDown() {
+        LocaleUtil.setUserLocale(null);
     }
 
     /**
@@ -573,7 +594,7 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
             sheet.groupColumn((short) 4, (short) 5);
 
             accessWorkbook(workbook);
-            workbook.write(NULL_OUTPUT_STREAM);
+            workbook.write(NullOutputStream.INSTANCE);
             accessWorkbook(workbook);
         }
     }
@@ -751,6 +772,17 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
                 String formula = series.getCategoryData().getFormula();
                 assertTrue(formula.startsWith("'Sheet1-Renamed'!"), "should contain new sheet name");
             }
+        }
+    }
+
+    @Test
+    void bug66365() throws Exception {
+        try (XSSFWorkbook wb = openSampleWorkbook("66365.xlsx")) {
+            XSSFSheet sheet1 = wb.getSheetAt(0);
+            assertEquals(sheet1.getRow(0).getCell(0).getStringCellValue(),
+                  sheet1.getRow(0).getCell(1).getStringCellValue());
+            assertEquals(sheet1.getRow(1).getCell(0).getStringCellValue(),
+                  sheet1.getRow(1).getCell(1).getStringCellValue());
         }
     }
 
@@ -1229,7 +1261,7 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
 
     @Test
     void testNewWorkbookWithTempFilePackageParts() throws Exception {
-        try(UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream()) {
+        try(UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()) {
             assertFalse(ZipPackage.useTempFilePackageParts(), "useTempFilePackageParts defaults to false?");
             assertFalse(ZipPackage.encryptTempFilePackageParts(), "encryptTempFilePackageParts defaults to false?");
             ZipPackage.setUseTempFilePackageParts(true);
@@ -1253,7 +1285,7 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
 
     @Test
     void testNewWorkbookWithEncryptedTempFilePackageParts() throws Exception {
-        try(UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream()) {
+        try(UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get()) {
             assertFalse(ZipPackage.useTempFilePackageParts(), "useTempFilePackageParts defaults to false?");
             assertFalse(ZipPackage.encryptTempFilePackageParts(), "encryptTempFilePackageParts defaults to false?");
             ZipPackage.setUseTempFilePackageParts(true);
@@ -1282,8 +1314,8 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
         String nameA = "link-external-workbook-a.xlsx";
 
         try (
-                UnsynchronizedByteArrayOutputStream bosA = new UnsynchronizedByteArrayOutputStream();
-                UnsynchronizedByteArrayOutputStream bosB = new UnsynchronizedByteArrayOutputStream();
+                UnsynchronizedByteArrayOutputStream bosA = UnsynchronizedByteArrayOutputStream.builder().get();
+                UnsynchronizedByteArrayOutputStream bosB = UnsynchronizedByteArrayOutputStream.builder().get();
                 XSSFWorkbook workbookA = new XSSFWorkbook();
                 XSSFWorkbook workbookB = new XSSFWorkbook()
         ) {
@@ -1332,8 +1364,8 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
         String nameA = "cache-external-workbook-a.xlsx";
 
         try (
-                UnsynchronizedByteArrayOutputStream bosA = new UnsynchronizedByteArrayOutputStream();
-                UnsynchronizedByteArrayOutputStream bosB = new UnsynchronizedByteArrayOutputStream();
+                UnsynchronizedByteArrayOutputStream bosA = UnsynchronizedByteArrayOutputStream.builder().get();
+                UnsynchronizedByteArrayOutputStream bosB = UnsynchronizedByteArrayOutputStream.builder().get();
                 XSSFWorkbook workbookA = new XSSFWorkbook();
                 XSSFWorkbook workbookB = new XSSFWorkbook()
         ) {
@@ -1370,7 +1402,7 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
     @Test
     void checkExistingFileForR1C1Refs() throws IOException {
         try (
-                UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream();
+                UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get();
                 XSSFWorkbook wb = openSampleWorkbook("WithTable.xlsx")
         ) {
             assertEquals(CellReferenceType.A1, wb.getCellReferenceType());
@@ -1386,7 +1418,7 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
     @Test
     void checkNewFileForR1C1Refs() throws IOException {
         try (
-                UnsynchronizedByteArrayOutputStream bos = new UnsynchronizedByteArrayOutputStream();
+                UnsynchronizedByteArrayOutputStream bos = UnsynchronizedByteArrayOutputStream.builder().get();
                 XSSFWorkbook wb = new XSSFWorkbook()
         ) {
             assertEquals(CellReferenceType.UNKNOWN, wb.getCellReferenceType());
@@ -1413,6 +1445,104 @@ public final class TestXSSFWorkbook extends BaseTestXWorkbook {
             assertEquals(2.05, a4.getNumericCellValue());
             assertEquals("2.1", dataFormatter.formatCellValue(a4));
             assertEquals("2.1", dataFormatter.formatCellValue(a4, formulaEvaluator));
+        }
+    }
+
+    @Test
+    void testDuplicateFileReadAsOPCFile() {
+        assertThrows(InvalidFormatException.class, () -> {
+            try (OPCPackage pkg = OPCPackage.open(getSampleFile("duplicate-filename.xlsx"), PackageAccess.READ)) {
+                // expect exception here
+            }
+        });
+    }
+
+    @Test
+    void testDuplicateFileReadAsFile() {
+        assertThrows(InvalidFormatException.class, () -> {
+            try (XSSFWorkbook wb = new XSSFWorkbook(getSampleFile("duplicate-filename.xlsx"))) {
+                // expect exception here
+            }
+        });
+    }
+
+    @Test
+    void testDuplicateFileReadAsStream() {
+        assertThrows(InvalidZipException.class, () -> {
+            try (XSSFWorkbook wb = new XSSFWorkbook(openSampleFileStream("duplicate-filename.xlsx"))) {
+                // expect exception here
+            }
+        });
+    }
+
+    @Test
+    void testDuplicateFileCaseInsensitiveReadAsStream() {
+        assertThrows(InvalidZipException.class, () -> {
+            try (XSSFWorkbook wb = new XSSFWorkbook(openSampleFileStream("duplicate-filename-case-insensitive.xlsx"))) {
+                // expect exception here
+            }
+        });
+    }
+
+    @Test
+    void testWorkbookCloseClosesInputStream() throws Exception {
+        try (TrackingInputStream stream = new TrackingInputStream(
+                HSSFTestDataSamples.openSampleFileStream("github-321.xlsx"))) {
+            try (XSSFWorkbook wb = new XSSFWorkbook(stream)) {
+                XSSFSheet xssfSheet = wb.getSheetAt(0);
+                assertNotNull(xssfSheet);
+            }
+            assertTrue(stream.isClosed(), "stream should be closed by XSSFWorkbook");
+        }
+    }
+
+    @Test
+    void testWorkbookCloseCanBeStoppedFromClosingInputStream() throws Exception {
+        try (TrackingInputStream stream = new TrackingInputStream(
+                HSSFTestDataSamples.openSampleFileStream("github-321.xlsx"))) {
+            // uses new constructor, available since POI 5.2.5
+            try (XSSFWorkbook wb = new XSSFWorkbook(stream, false)) {
+                XSSFSheet xssfSheet = wb.getSheetAt(0);
+                assertNotNull(xssfSheet);
+            }
+            assertFalse(stream.isClosed(), "stream should not be closed by XSSFWorkbook");
+        }
+    }
+
+    @Test
+    void readFromZipStream() throws IOException {
+        File tempFile = TempFile.createTempFile("poitest", ".zip");
+        try {
+            try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(tempFile)) {
+                File f1 = getSampleFile("github-321.xlsx");
+                File f2 = getSampleFile("48495.xlsx");
+                ZipArchiveEntry e1 = zos.createArchiveEntry(f1, "github-321.xlsx");
+                zos.putArchiveEntry(e1);
+                try (InputStream s = Files.newInputStream(f1.toPath())) {
+                    IOUtils.copy(s, zos);
+                }
+                zos.closeArchiveEntry();
+                ZipArchiveEntry e2 = zos.createArchiveEntry(f2, "48495.xlsx");
+                zos.putArchiveEntry(e2);
+                try (InputStream s = Files.newInputStream(f2.toPath())) {
+                    IOUtils.copy(s, zos);
+                }
+                zos.closeArchiveEntry();
+                zos.finish();
+            }
+            int count = 0;
+            try (ZipArchiveInputStream zis = new ZipArchiveInputStream(Files.newInputStream(tempFile.toPath()))) {
+                ZipArchiveEntry entry;
+                while ((entry = zis.getNextEntry()) != null) {
+                    // Since POI 5.2.5, you can stop XSSFWorkbook closing the InputStream by using this new constructor
+                    XSSFWorkbook wb = new XSSFWorkbook(zis, false);
+                    assertNotNull(wb);
+                    count++;
+                }
+            }
+            assertEquals(2, count);
+        } finally {
+            assertTrue(tempFile.delete());
         }
     }
 
